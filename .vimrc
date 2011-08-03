@@ -43,9 +43,6 @@ set cinoptions+=(0
 
 set backspace=indent,eol,start
 
-" Might break some plugins
-"set virtualedit=all
-
 " Remember undo history when switching between files
 if v:version > 702
     set undofile
@@ -89,21 +86,6 @@ set nojoinspaces
 set showbreak=_\ 
 
 set display=lastline
-
-" Automatically format paragraphs when text is inserted. Causes weirdness with
-" some file types (e.g. vimscript), so set only for certain files
-"au bufnewfile,bufread *.c,*.cpp,*.h set formatoptions+=ac
-
-function! Adjust_linelen(len)
-    if v:version > 702
-        "let &colorcolumn = a:len + 1
-    endif
-endfunction
-
-command! -nargs=1 Linelen call Adjust_linelen(<f-args>)
-
-" Default
-Linelen 100
 
 " }}}
 " Tab settings {{{
@@ -279,7 +261,3 @@ endif
 if has("autocmd")
     autocmd bufwritepost .vimrc,_vimrc source $MYVIMRC
 endif
-
-" Sessionman
-" :stag!!
-" motion.txt
