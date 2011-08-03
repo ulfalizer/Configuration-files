@@ -128,10 +128,6 @@ nnoremap <s-right> :cr<CR>
 " }}}
 " Windows and tab pages {{{
 
-if has("gui_running")
-    "winpos 300 300
-endif
-
 set splitbelow
 set splitright
 
