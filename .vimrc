@@ -233,10 +233,6 @@ noremap <leader>t :Tabularize /=<CR>
 
 nnoremap <silent> <F2> :TlistToggle<CR>
 
-" AS
-" g:alternateSearchPath = 'sfr:../source,sfr:../src,sfr:../include,sfr:../inc'
-
-
 " }}}
 " Project-specific settings {{{
 
