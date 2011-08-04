@@ -21,6 +21,9 @@ shopt -s histappend                      # append to history, don't overwrite it
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
+# Make searches in 'less' case-insensitive and enable color output
+export LESS=-ir
+
 # Git {{{
 
 alias gb="git branch"
