@@ -2,6 +2,10 @@
 
 alias ll="ls -l"
 
+alias vimrc="vim ~/.vimrc"
+alias bashrc="vim ~/conf/bash"
+alias gitconfig="vim ~/conf/gitconfig"
+
 function e {
     vim $(find . -iname "$1")
 }
