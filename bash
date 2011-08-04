@@ -21,7 +21,7 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 alias gb="git branch"
 alias gl="git log"
-alias gs="git status"
+alias gs="git status -s"
 
 # Checks if a file is in the repository
 
