@@ -19,6 +19,7 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # Git {{{
 
+alias gb="git branch"
 alias gl="git log"
 alias gs="git status"
 
