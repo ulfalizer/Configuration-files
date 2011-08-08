@@ -29,7 +29,7 @@ gr_fn() {
     shift
     includes=("${@/#/--include=}")
 
-    grep -r --exclude-dir=.git "${includes[@]}" "$pattern" .
+    grep -Inr --exclude-dir=.git "${includes[@]}" "$pattern" .
 }
 
 alias gr='shopts="$SHELLOPTS"; set -f; noglob_helper gr_fn'
