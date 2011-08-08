@@ -46,7 +46,7 @@ shopt -s histappend                      # append to history, don't overwrite it
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # Make searches in 'less' case-insensitive and enable color output
-export LESS=-iR
+export LESS=-iRx4
 
 # Git {{{
 
