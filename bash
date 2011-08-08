@@ -6,9 +6,33 @@ alias vimrc="vim ~/.vimrc"
 alias bashrc="vim ~/conf/bash"
 alias gitconfig="vim ~/conf/gitconfig"
 
-function e {
-    vim $(find . -iname "$1")
+# See http://www.chiark.greenend.org.uk/~sgtatham/aliases.html
+
+noglob_helper() {
+    "$@"
+    case "$shopts" in
+        *noglob*) ;;
+        *) set +f ;;
+    esac
+    unset shopts
 }
+
+e() { vim $(find . -iname "$1"); }
+
+gr_fn() {
+    if [[ $# -eq 0 ]]; then
+        echo "usage: gr <pattern> [<file pattern> ...] " 1>&2
+        return 1
+    fi
+
+    pattern="$1"
+    shift
+    includes=("${@/#/--include=}")
+
+    grep -r --exclude-dir=.git "${includes[@]}" "$pattern" .
+}
+
+alias gr='shopts="$SHELLOPTS"; set -f; noglob_helper gr_fn'
 
 # Share history between sessions
 # (http://stackoverflow.com/questions/103944/real-time-history-export-amongst-bash-terminal-windows)
