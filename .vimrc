@@ -148,7 +148,17 @@ set laststatus=2
 set tags=tags;
 
 " Rebuilding tags
-command! Ctags !./maketags
+
+function! Rebuild_tags()
+    if filereadable("maketags")
+        !./maketags
+    else
+        !ctags --languages=C,C++,Make --langmap=C++:+.inl
+             \ --extra=fq --c-kinds=+p --c++-kinds=+p -R .
+    endif
+endfunction
+
+command! Ctags call Rebuild_tags()
 
 " Jumping to tags
 
