@@ -24,7 +24,7 @@ rm_fn() {
     fi
 
     for f in "$@"; do
-        if [[ ! -e "$f" ]]; then
+        if [[ ! -e $f ]]; then
             echo "'$f' does not exist" 1>&2
             return 1
         fi
