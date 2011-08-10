@@ -6,6 +6,70 @@ alias vimrc="vim ~/.vimrc"
 alias bashrc="vim ~/conf/bash"
 alias gitconfig="vim ~/conf/gitconfig"
 
+# Safe rm command with trash directory
+
+export trash_dir=/tmp/trash
+
+alias rm=rm_fn
+
+rm_fn() {
+    if [[ $# -eq 0 ]]; then
+        echo "usage: rm <file> [<file> ...]" 1>&2
+        return 1
+    fi
+
+    if [[ -z $trash_dir ]]; then
+        echo "trash_dir not set" 1>&2
+        return 1
+    fi
+
+    for f in "$@"; do
+        if [[ ! -e "$f" ]]; then
+            echo "'$f' does not exist" 1>&2
+            return 1
+        fi
+    done
+
+    if [[ -e $trash_dir && ! -d $trash_dir ]]; then
+        error=$?
+        echo "$trash_dir is not a directory" 1>&2
+        return $error
+    fi
+
+    mkdir -p -- "$trash_dir"
+    if [[ ! -e $trash_dir ]]; then
+        error=$?
+        echo "Failed to create $trash_dir" 1>&2
+        return $error
+    fi
+
+    if ! mv -- "$@" "$trash_dir"; then
+        error=$?
+        echo "Failed to move files into $trash_dir" 1>&2
+        return $error
+    fi
+}
+
+empty_trash() {
+    if [[ -z $trash_dir ]]; then
+        error=$?
+        echo "trash_dir not set" 1>&2
+        return $error
+    fi
+
+    if [[ ! -d $trash_dir ]]; then
+        error=$?
+        echo "$trash_dir is not a directory" 1>&2
+        return $error
+    fi
+
+    if ! command rm -rf -- "$trash_dir"; then
+        error=$?
+        echo "Failed to remove $trash_dir" 1>&2
+        return $error
+    fi
+}
+
 # See http://www.chiark.greenend.org.uk/~sgtatham/aliases.html
 
 noglob_helper() {
