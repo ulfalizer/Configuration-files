@@ -63,7 +63,7 @@ empty_trash() {
         return $error
     fi
 
-    if ! command rm -rf -- "$trash_dir"; then
+    if ! rm -rf -- "$trash_dir"; then
         error=$?
         echo "Failed to remove $trash_dir" 1>&2
         return $error
