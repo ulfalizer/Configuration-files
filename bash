@@ -57,6 +57,8 @@ empty_trash() {
         return $error
     fi
 
+    [[ ! -e $trash_dir ]] && return
+
     if [[ ! -d $trash_dir ]]; then
         error=$?
         echo "$trash_dir is not a directory" 1>&2
