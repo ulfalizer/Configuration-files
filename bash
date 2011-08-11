@@ -120,6 +120,8 @@ alias gb="git branch"
 alias gl="git log"
 alias gs="git status -s"
 
+alias discard="git reset --hard HEAD"
+
 # Checks if a file is in the repository
 
 function i {
