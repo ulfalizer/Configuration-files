@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This file is meant to be included from the main Bash configuration file
 
 alias ll="ls -l"
