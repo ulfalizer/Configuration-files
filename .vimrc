@@ -73,6 +73,9 @@ set smartcase
 set encoding=utf-8
 set fileencodings=utf-8
 
+" Default to highlighting sh scripts as Bash
+let g:is_bash = 1
+
 " }}}
 " Line length, wrapping, etc. {{{
 
