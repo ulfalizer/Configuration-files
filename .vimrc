@@ -212,14 +212,6 @@ set shortmess+=I
 runtime! ftplugin/man.vim
                         
 " }}}
-" Building and running {{{
-
-nnoremap <s-left> :cp<CR>
-nnoremap <leader>p :cp<CR>
-nnoremap <s-right> :cn<CR>
-nnoremap <leader>n :cn<CR>
-
-" }}}
 " Plugins {{{
 
 " Alternate
