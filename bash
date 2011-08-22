@@ -116,6 +116,8 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # Make searches in 'less' case-insensitive and enable color output
 export LESS=-iRMx4
 
+export EDITOR=vim
+
 # Git {{{
 
 alias gb="git branch"
