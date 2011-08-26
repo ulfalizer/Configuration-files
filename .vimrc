@@ -241,16 +241,7 @@ nnoremap <silent> <F2> :TlistToggle<CR>
 " }}}
 " Project-specific settings {{{
 
-if match(getcwd(), "core-2-gogi") != -1
-    set noexpandtab
-
-    " Building and running
-    nnoremap <leader>b :!cd minimake && make<CR>
-    nnoremap <leader>r :!./build/nes<CR>
-
-    " Omni completion is too slow
-    au bufnewfile,bufread *.c,*.cpp,*.h set omnifunc=""
-endif
+au BufNewFile,BufReadPost */core-2-gogi/* setlocal noexpandtab
 
 " }}}
 " Reload .vimrc automatically when saved {{{
