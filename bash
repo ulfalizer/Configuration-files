@@ -87,6 +87,15 @@ noglob_helper() {
 
 e() { vim $(find . -iname "$1"); }
 
+f() {
+    if [[ $# -ne 1 ]]; then
+        echo "usage: f <filename>"
+        return 1
+    fi
+
+    find . -iname "*$1*"
+}
+
 gr_fn() {
     if [[ $# -eq 0 ]]; then
         echo "usage: gr <pattern> [<file pattern> ...] " 1>&2
