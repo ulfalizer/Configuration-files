@@ -26,7 +26,7 @@ rm_fn() {
     fi
 
     for f in "$@"; do
-        if [[ ! -e $f ]]; then
+        if [[ ! -e $f && ! -h $f ]]; then
             echo "'$f' does not exist" 1>&2
             return 1
         fi
@@ -45,7 +45,7 @@ rm_fn() {
         return $error
     fi
 
-    if ! mv -- "$@" "$trash_dir"; then
+    if ! mv --backup=numbered -- "$@" "$trash_dir"; then
         error=$?
         echo "Failed to move files into $trash_dir" 1>&2
         return $error
