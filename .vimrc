@@ -15,13 +15,6 @@ filetype plugin indent on
 let c_space_errors = 1
 let python_space_error_highlight = 1
 
-" Highlight space errors in unrecognized filetypes
-
-syn match SpaceError display excludenl "\s\+$"
-syn match SpaceError display "\s\+$"me=e-1
-
-au ColorScheme * highlight SpaceError ctermbg=red guibg=red
-
 " Default to highlighting sh scripts as Bash
 let g:is_bash = 1
 
