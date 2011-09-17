@@ -104,11 +104,6 @@ Tab 4
 " }}}
 " Navigation {{{
 
-command! Bashrc tabe ~/.bashrc
-command! Vimrc  tabe ~/.vimrc
-
-command! Core cd ~/devel/core-2-gogi
-
 " Fold at blocks delimited by {{{ and }}}
 set foldmethod=marker
 
@@ -120,6 +115,32 @@ set nostartofline
 
 nnoremap <s-left> :cp<CR>
 nnoremap <s-right> :cr<CR>
+
+" Bookmarks
+
+if filereadable("bookmarks.vim")
+    source bookmarks.vim
+
+    for key in keys(bookmarks)
+        unlet! location file search_pattern
+
+        let location = bookmarks[key]
+        if type(location) == type("")
+            let file = location
+        else
+            let [file, search_pattern] = location
+        endif
+
+        let cmd = "command! " . key . " :e " . file
+
+        if exists("search_pattern")
+            let cmd .= '| call cursor(1,1) ' .
+                     \ '| call search("' . search_pattern . '", "c")'
+        endif
+
+        exec cmd
+    endfor
+endif
 
 " }}}
 " Windows and tab pages {{{
