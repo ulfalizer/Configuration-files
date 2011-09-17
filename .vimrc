@@ -185,10 +185,6 @@ nnoremap <MiddleMouse> :pop<CR>
 nnoremap <left> :silent tp<CR>
 nnoremap <right> :silent tn<CR>
 
-command! -nargs=1 -complete=tag T silent tag <args>
-
-"cnoremap tag T
-
 " }}}
 " GUI settings {{{
 
