@@ -253,8 +253,13 @@ nnoremap <silent> <F2> :TlistToggle<CR>
 au BufNewFile,BufReadPost */core-2-gogi/* setlocal noexpandtab
 
 " }}}
-" Reload .vimrc automatically when saved {{{
+" .vimrc reloading {{{
 
+command! Reload source $MYVIMRC
+
+" Reload .vimrc automatically when saved
 if has("autocmd")
     autocmd bufwritepost .vimrc,_vimrc source $MYVIMRC
 endif
+
+" }}}
