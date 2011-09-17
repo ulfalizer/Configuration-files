@@ -118,8 +118,8 @@ nnoremap <s-right> :cr<CR>
 
 " Bookmarks
 
-if filereadable("bookmarks.vim")
-    source bookmarks.vim
+if filereadable($HOME . "/.vimbookmarks")
+    source $HOME/.vimbookmarks
 
     for key in keys(bookmarks)
         unlet! location file search_pattern
