@@ -131,11 +131,10 @@ if filereadable($HOME . "/.vimbookmarks")
             let [file, search_pattern] = location
         endif
 
-        let cmd = "command! " . key . " :e " . file
+        let cmd = "command! " . key . " :e " . file . " | call cursor(1,1)"
 
         if exists("search_pattern")
-            let cmd .= '| call cursor(1,1) ' .
-                     \ '| call search("' . search_pattern . '", "c")'
+            let cmd .= ' | call search("' . search_pattern . '", "c")'
         endif
 
         exec cmd
