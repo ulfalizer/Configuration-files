@@ -34,6 +34,9 @@ set cinoptions+=g0
 " nicely
 set cinoptions+=(0
 
+" Do not indent 'case' inside of switch statements
+set cinoptions+=:0
+
 " }}}
 " Editing {{{
 
