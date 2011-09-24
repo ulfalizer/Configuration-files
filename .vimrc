@@ -207,7 +207,6 @@ set guitablabel=%f
 " }}}
 " Misc settings {{{
 
-" Enable mouse support
 set mouse=a
 
 set showcmd
