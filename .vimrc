@@ -82,7 +82,7 @@ set linebreak
 " Avoid J and gq inserting two spaces after .
 set nojoinspaces
 
-set showbreak=_\ 
+set showbreak=_
 
 set display=lastline
 
