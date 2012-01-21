@@ -117,7 +117,7 @@ set nostartofline
 " Quickfix
 
 nnoremap <s-left> :cp<CR>
-nnoremap <s-right> :cr<CR>
+nnoremap <s-right> :cn<CR>
 
 " Bookmarks
 
