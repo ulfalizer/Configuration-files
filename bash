@@ -159,7 +159,7 @@ armasmnothumb() {
 
 # Git {{{
 
-alias gb="git branch"
+alias ga="git add -u"
 alias gl="git log"
 alias gs="git status -s"
 
