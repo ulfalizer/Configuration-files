@@ -253,6 +253,7 @@ nnoremap <silent> <F2> :TlistToggle<CR>
 " Project-specific settings {{{
 
 au BufNewFile,BufReadPost */core-2-gogi/* setlocal noexpandtab
+au BufNewFile,BufReadPost */core-2-gogi/modules/webgl/src/* setlocal expandtab
 
 " }}}
 " .vimrc reloading {{{
