@@ -266,3 +266,10 @@ if has("autocmd")
 endif
 
 " }}}
+" Site-specific settings {{{
+
+if filereadable($HOME . "/conf/vimlocal")
+    so $HOME/conf/vimlocal
+endif
+
+" }}}
