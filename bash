@@ -127,6 +127,36 @@ export LESS=-iRMx4
 
 export EDITOR=vim
 
+# Helper functions for inspecting compiler output
+
+asm_() {
+    prefix="$1"
+    options="$2"
+    file="$3"
+    ofile="/tmp/${1%.cpp}.o"
+
+    if [[ ! -e "$file" ]]; then
+        echo "'$file' does not exist" 1>&2
+        return 1
+    fi
+
+    ${prefix}g++ $options "$file" -c -o "$ofile"
+    ${prefix}objdump -d "$ofile"
+    command rm "$ofile"
+}
+
+asm() {
+    asm_ "" "-O3 -fomit-frame-pointer" "$1"
+}
+
+armasm() {
+    asm_ "arm-none-eabi-" "-O3 -mthumb -mcpu=cortex-a8 -fomit-frame-pointer" "$1"
+}
+
+armasmnothumb() {
+    asm_ "arm-none-eabi-" "-O3 -mcpu=cortex-a8 -fomit-frame-pointer" "$1"
+}
+
 # Git {{{
 
 alias gb="git branch"
