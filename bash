@@ -189,3 +189,9 @@ function where {
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;32m\]$(where)\[\033[00m\]\$ '
 
 # }}}
+
+# Site-specific settings
+
+if [[ -e ~/conf/bashlocal ]]; then
+    . ~/conf/bashlocal
+fi
