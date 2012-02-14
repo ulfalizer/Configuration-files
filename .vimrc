@@ -120,11 +120,13 @@ nnoremap <s-right> :cn<CR>
 
 function! GoFn(where)
     if !filereadable($HOME . "/.vimbookmarks")
+        echoerr "Could not read ~/.vimbookmarks"
         return
     endif
     source ~/.vimbookmarks
 
     if !has_key(g:bookmarks, a:where)
+        echoerr "The bookmark '" . a:where . "' is not defined"
         return
     endif
     let location = g:bookmarks[a:where]
@@ -143,6 +145,7 @@ endfunction
 
 function! Complete_bookmark(ArgLead, CmdLine, CursorPos)
     if !filereadable($HOME . "/.vimbookmarks")
+        echoerr "Could not read ~/.vimbookmarks"
         return
     endif
     source ~/.vimbookmarks
