@@ -148,6 +148,8 @@ function! Complete_bookmark(ArgLead, CmdLine, CursorPos)
     if !filereadable($HOME . "/.vimbookmarks")
         return
     endif
+    source ~/.vimbookmarks
+
     let entries = keys(g:bookmarks)
     call filter(entries, 'v:val =~ "^" . a:ArgLead')
     call sort(entries)
