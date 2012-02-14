@@ -88,7 +88,7 @@ set display=lastline
 
 set expandtab
 
-function! Adjust_tablen(len)
+function! b:Adjust_tablen(len)
     let &tabstop     = a:len
     " Make backspace behave as if real tabs were used
     let &softtabstop = a:len
@@ -96,7 +96,7 @@ function! Adjust_tablen(len)
     retab
 endfunction
 
-command! -nargs=1 Tab call Adjust_tablen(<f-args>)
+command! -nargs=1 Tab call b:Adjust_tablen(<f-args>)
 
 " Default
 Tab 4
@@ -118,7 +118,7 @@ nnoremap <s-right> :cn<CR>
 
 " Bookmarks
 
-function! GoFn(where)
+function! b:GoFn(where)
     if !filereadable($HOME . "/.vimbookmarks")
         echoerr "Could not read ~/.vimbookmarks"
         return
@@ -156,7 +156,7 @@ function! Complete_bookmark(ArgLead, CmdLine, CursorPos)
     return entries
 endfunction
 
-command! -nargs=1 -complete=customlist,Complete_bookmark Go call GoFn(<f-args>)
+command! -nargs=1 -complete=customlist,Complete_bookmark Go call b:GoFn(<f-args>)
 
 " }}}
 " Windows and tab pages {{{
@@ -182,7 +182,7 @@ set tags=tags;
 
 " Rebuilding tags
 
-function! Rebuild_tags()
+function! b:Rebuild_tags()
     if filereadable("maketags")
         !./maketags
     else
@@ -191,7 +191,7 @@ function! Rebuild_tags()
     endif
 endfunction
 
-command! Ctags call Rebuild_tags()
+command! Ctags call b:Rebuild_tags()
 
 " Jumping to tags
 
