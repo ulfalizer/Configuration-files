@@ -1,6 +1,3 @@
-" Avoid problems when reloading .vimrc
-au!
-
 set nocompatible
 
 let mapleader=","
