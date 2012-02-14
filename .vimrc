@@ -121,28 +121,40 @@ nnoremap <s-right> :cn<CR>
 
 " Bookmarks
 
-if filereadable($HOME . "/.vimbookmarks")
-    source $HOME/.vimbookmarks
+function! GoFn(where)
+    if !filereadable($HOME . "/.vimbookmarks")
+        return
+    endif
+    source ~/.vimbookmarks
 
-    for key in keys(bookmarks)
-        unlet! location file search_pattern
+    if !has_key(g:bookmarks, a:where)
+        return
+    endif
+    let location = g:bookmarks[a:where]
+    if type(location) == type("")
+        let file = location
+    else
+        let [file, search_pattern] = location
+    endif
 
-        let location = bookmarks[key]
-        if type(location) == type("")
-            let file = location
-        else
-            let [file, search_pattern] = location
-        endif
+    exec "edit " . file
+    call cursor(1, 1)
+    if exists("search_pattern")
+        call search(search_pattern, "c")
+    endif
+endfunction
 
-        let cmd = "command! " . key . " :e " . file . " | call cursor(1,1)"
+function! Complete_bookmark(ArgLead, CmdLine, CursorPos)
+    if !filereadable($HOME . "/.vimbookmarks")
+        return
+    endif
+    let entries = keys(g:bookmarks)
+    call filter(entries, 'v:val =~ "^" . a:ArgLead')
+    call sort(entries)
+    return entries
+endfunction
 
-        if exists("search_pattern")
-            let cmd .= ' | call search("' . search_pattern . '", "c")'
-        endif
-
-        exec cmd
-    endfor
-endif
+command! -nargs=1 -complete=customlist,Complete_bookmark Go call GoFn(<f-args>)
 
 " }}}
 " Windows and tab pages {{{
