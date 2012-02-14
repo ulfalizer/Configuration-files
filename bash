@@ -161,6 +161,7 @@ armasmnothumb() {
 
 alias ga="git add -u"
 alias gl="git log"
+alias glp="git log -p"
 alias gs="git status -s"
 
 alias discard="git reset --hard HEAD"
