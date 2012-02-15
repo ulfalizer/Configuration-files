@@ -118,7 +118,7 @@ nnoremap <s-right> :cn<CR>
 
 " Bookmarks
 
-function! b:GoFn(where)
+function! b:GoFn(where, has_exclamation)
     if !filereadable($HOME . "/.vimbookmarks")
         echoerr "Could not read ~/.vimbookmarks"
         return
@@ -136,7 +136,11 @@ function! b:GoFn(where)
         let [file, search_pattern] = location
     endif
 
-    exec "edit " . file
+    if a:has_exclamation == 1
+        exec "edit! " . file
+    else
+        exec "edit " . file
+    end
     call cursor(1, 1)
     if exists("search_pattern")
         call search(search_pattern, "c")
@@ -156,7 +160,7 @@ function! Complete_bookmark(ArgLead, CmdLine, CursorPos)
     return entries
 endfunction
 
-command! -nargs=1 -complete=customlist,Complete_bookmark Go call b:GoFn(<f-args>)
+command! -nargs=1 -complete=customlist,Complete_bookmark -bang Go call b:GoFn(<f-args>, <bang>0)
 
 " }}}
 " Windows and tab pages {{{
