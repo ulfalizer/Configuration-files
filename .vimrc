@@ -284,11 +284,6 @@ if has("autocmd")
 endif
 
 " }}}
-" .vimrc reloading {{{
-
-command! Reload source $MYVIMRC
-
-" }}}
 " Site-specific settings {{{
 
 if filereadable($HOME . "/conf/vimlocal")
@@ -296,8 +291,13 @@ if filereadable($HOME . "/conf/vimlocal")
 endif
 
 " }}}
+" .vimrc reloading {{{
+
+command! Reload source $MYVIMRC
 
 " Reload .vimrc automatically when saved
 if has("autocmd")
     au user bufwritepost .vimrc,_vimrc source $MYVIMRC
 endif
+
+" }}}
