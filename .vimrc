@@ -1,3 +1,11 @@
+" We put our own autocommands into the "user" group, which is cleared each time
+" .vimrc/_vimrc is reloaded. This avoids defining autocommands multiple times.
+if has("autocmd")
+    augroup user
+    au! user
+    augroup end
+endif
+
 set nocompatible
 
 let mapleader=","
@@ -270,18 +278,15 @@ nnoremap <silent> <F2> :TlistToggle<CR>
 " }}}
 " Project-specific settings {{{
 
-au BufNewFile,BufReadPost */core-2-gogi/* setlocal noexpandtab
-au BufNewFile,BufReadPost */core-2-gogi/modules/webgl/* setlocal expandtab
+if has("autocmd")
+    au user BufNewFile,BufReadPost */core-2-gogi/* setlocal noexpandtab
+    au user BufNewFile,BufReadPost */core-2-gogi/modules/webgl/* setlocal expandtab
+endif
 
 " }}}
 " .vimrc reloading {{{
 
 command! Reload source $MYVIMRC
-
-" Reload .vimrc automatically when saved
-if has("autocmd")
-    autocmd bufwritepost .vimrc,_vimrc source $MYVIMRC
-endif
 
 " }}}
 " Site-specific settings {{{
@@ -291,3 +296,8 @@ if filereadable($HOME . "/conf/vimlocal")
 endif
 
 " }}}
+
+" Reload .vimrc automatically when saved
+if has("autocmd")
+    au user bufwritepost .vimrc,_vimrc source $MYVIMRC
+endif
