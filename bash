@@ -151,6 +151,7 @@ alias gc="git checkout"
 alias gd="git diff"
 alias gl="git log"
 alias glp="git log -p"
+alias gp="git pull --rebase"
 alias gs="git status -s"
 
 alias discard="git reset --hard HEAD"
