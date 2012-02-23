@@ -147,6 +147,7 @@ armasmnothumb() {
 # Git {{{
 
 alias ga="git add -u"
+alias gc="git checkout"
 alias gd="git diff"
 alias gl="git log"
 alias glp="git log -p"
