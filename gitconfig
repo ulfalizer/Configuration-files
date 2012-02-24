@@ -3,14 +3,9 @@ git config --global push.default tracking
 
 git config --global branch.autosetuprebase always
 
-git config --global merge.conflictstyle diff3
-
 git config --global core.editor vim
 git config --global merge.tool vimdiff
 git config --global diff.tool vimdiff
-
-git config --global advice.statusHints false
-git config --global advice.detachedHead false
 
 git config --global color.ui auto
 
