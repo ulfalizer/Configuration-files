@@ -23,6 +23,7 @@ set send_charset = utf-8
 bind index j next-entry
 bind index k previous-entry
 bind index J next-thread
+bind index b next-thread
 bind index K previous-thread
 
 bind index / search
