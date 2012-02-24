@@ -39,6 +39,7 @@ bind index \Cu half-up
 bind index z collapse-thread
 bind index v collapse-thread
 bind index l collapse-thread
+bind index h collapse-thread
 bind index Z collapse-all
 bind index V collapse-all
 
