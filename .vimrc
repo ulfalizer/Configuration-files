@@ -138,7 +138,7 @@ func! b:GoFn(where, has_exclamation)
         echoerr "Could not read ~/.vimbookmarks"
         return
     endif
-    source ~/.vimbookmarks
+    so ~/.vimbookmarks
 
     if !has_key(g:bookmarks, a:where)
         echoerr "The bookmark '" . a:where . "' is not defined"
@@ -167,7 +167,7 @@ func! Complete_bookmark(ArgLead, CmdLine, CursorPos)
         echoerr "Could not read ~/.vimbookmarks"
         return
     endif
-    source ~/.vimbookmarks
+    so ~/.vimbookmarks
 
     let entries = keys(g:bookmarks)
     call filter(entries, 'v:val =~ "^" . a:ArgLead')
@@ -294,17 +294,17 @@ endif
 " Site-specific settings {{{
 
 if filereadable($HOME . "/conf/vimlocal")
-    so $HOME/conf/vimlocal
+    so ~/conf/vimlocal
 endif
 
 " }}}
 " .vimrc reloading {{{
 
-com! Reload source $MYVIMRC
+com! Reload so $MYVIMRC
 
 " Reload .vimrc automatically when saved
 if has("autocmd")
-    au user bufwritepost .vimrc,_vimrc source $MYVIMRC
+    au user bufwritepost .vimrc,_vimrc so $MYVIMRC
 endif
 
 " }}}
