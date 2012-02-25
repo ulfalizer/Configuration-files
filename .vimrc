@@ -96,15 +96,15 @@ set display=lastline
 
 set expandtab
 
-function! b:Adjust_tablen(len)
+func! b:Adjust_tablen(len)
     let &tabstop     = a:len
     " Make backspace behave as if real tabs were used
     let &softtabstop = a:len
     let &shiftwidth  = a:len
     retab
-endfunction
+endfunc
 
-command! -nargs=1 Tab call b:Adjust_tablen(<f-args>)
+com! -nargs=1 Tab call b:Adjust_tablen(<f-args>)
 
 " Default
 Tab 4
@@ -126,7 +126,7 @@ nnoremap <s-right> :cn<CR>
 
 " Bookmarks
 
-function! b:GoFn(where, has_exclamation)
+func! b:GoFn(where, has_exclamation)
     if !filereadable($HOME . "/.vimbookmarks")
         echoerr "Could not read ~/.vimbookmarks"
         return
@@ -153,9 +153,9 @@ function! b:GoFn(where, has_exclamation)
     if exists("search_pattern")
         call search(search_pattern, "c")
     endif
-endfunction
+endfunc
 
-function! Complete_bookmark(ArgLead, CmdLine, CursorPos)
+func! Complete_bookmark(ArgLead, CmdLine, CursorPos)
     if !filereadable($HOME . "/.vimbookmarks")
         echoerr "Could not read ~/.vimbookmarks"
         return
@@ -166,9 +166,9 @@ function! Complete_bookmark(ArgLead, CmdLine, CursorPos)
     call filter(entries, 'v:val =~ "^" . a:ArgLead')
     call sort(entries)
     return entries
-endfunction
+endfunc
 
-command! -nargs=1 -complete=customlist,Complete_bookmark -bang Go call b:GoFn(<f-args>, <bang>0)
+com! -nargs=1 -complete=customlist,Complete_bookmark -bang Go call b:GoFn(<f-args>, <bang>0)
 
 " }}}
 " Windows and tab pages {{{
@@ -194,16 +194,16 @@ set tags=tags;
 
 " Rebuilding tags
 
-function! b:Rebuild_tags()
+func! b:Rebuild_tags()
     if filereadable("maketags")
         !./maketags
     else
         !ctags --languages=C,C++,Make --langmap=C++:+.inl
              \ --extra=fq --c-kinds=+p --c++-kinds=+p -R .
     endif
-endfunction
+endfunc
 
-command! Ctags call b:Rebuild_tags()
+com! Ctags call b:Rebuild_tags()
 
 " Jumping to tags
 
@@ -279,8 +279,8 @@ nnoremap <silent> <F2> :TlistToggle<CR>
 " Project-specific settings {{{
 
 if has("autocmd")
-    au user BufNewFile,BufReadPost */core-2-gogi/* setlocal noexpandtab
-    au user BufNewFile,BufReadPost */core-2-gogi/modules/webgl/* setlocal expandtab
+    au user BufNewFile,BufReadPost */core-2-gogi/* setl noexpandtab
+    au user BufNewFile,BufReadPost */core-2-gogi/modules/webgl/* setl expandtab
 endif
 
 " }}}
@@ -293,7 +293,7 @@ endif
 " }}}
 " .vimrc reloading {{{
 
-command! Reload source $MYVIMRC
+com! Reload source $MYVIMRC
 
 " Reload .vimrc automatically when saved
 if has("autocmd")
