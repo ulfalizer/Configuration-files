@@ -118,6 +118,9 @@ set foldmethod=marker
 if has("autocmd")
     au user BufNewFile,BufReadPost * setl foldlevel=100
 endif
+" Use right mouse button to open/close folds in the GUI
+nnoremap <RightMouse> <LeftMouse>za
+nnoremap <2-RightMouse> za
 
 set scrolloff=5
 
