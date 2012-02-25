@@ -148,7 +148,7 @@ alias gd="git diff"
 alias gl="git log"
 alias glp="git log -p"
 alias gp="git pull --rebase"
-alias gs="git status -s"
+alias gs="git status"
 
 alias discard="git reset --hard HEAD"
 
