@@ -114,6 +114,8 @@ Tab 4
 
 " Fold at blocks delimited by {{{ and }}}
 set foldmethod=marker
+" Start with all folds expanded
+au user BufNewFile,BufReadPost * setl foldlevel=100
 
 set scrolloff=5
 
