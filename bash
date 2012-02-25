@@ -4,10 +4,6 @@
 
 alias ll="ls -l"
 
-alias vimrc="vim ~/.vimrc"
-alias bashrc="vim ~/conf/bash"
-alias gitconfig="vim ~/conf/gitconfig"
-
 # Safe rm command with trash directory
 
 export trash_dir=/tmp/trash
