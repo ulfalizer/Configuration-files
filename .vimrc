@@ -128,8 +128,8 @@ set nostartofline
 
 " Quickfix
 
-nnoremap <s-left> :cp<CR>
-nnoremap <s-right> :cn<CR>
+nnoremap <silent> <s-left> :cp<CR>
+nnoremap <silent> <s-right> :cn<CR>
 
 " Bookmarks
 
@@ -215,11 +215,11 @@ com! Ctags call b:Rebuild_tags()
 " Jumping to tags
 
 nnoremap <space> <C-]>
-nnoremap <2-LeftMouse> :tag <C-R>=expand("<cword>")<CR><CR>
-nnoremap <MiddleMouse> :pop<CR>
+nnoremap <silent> <2-LeftMouse> :tag <C-R>=expand("<cword>")<CR><CR>
+nnoremap <silent> <MiddleMouse> :pop<CR>
 
-nnoremap <left> :silent tp<CR>
-nnoremap <right> :silent tn<CR>
+nnoremap <silent> <left> :silent tp<CR>
+nnoremap <silent> <right> :silent tn<CR>
 
 " }}}
 " GUI settings {{{
@@ -276,7 +276,7 @@ let g:SuperTabDefaultCompletionType = "context"
 " Tabular
 
 " Aligning assignments
-noremap <leader>t :Tabularize /=<CR>
+noremap <silent> <leader>t :Tabularize /=<CR>
 
 " Taglist
 
