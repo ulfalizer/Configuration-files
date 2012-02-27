@@ -154,7 +154,7 @@ alias discard="git reset --hard HEAD"
 
 # Checks if a file is in the repository
 
-function i {
+i() {
 	if git ls-files --error-unmatch "$1" &>/dev/null; then
 		echo yes
 	else
@@ -164,7 +164,7 @@ function i {
 
 # Display the current git branch in the Bash prompt
 
-function where {
+where() {
 	branch=$(git symbolic-ref HEAD 2>/dev/null)
 	if [[ $? != 0 ]]; then
 		return
