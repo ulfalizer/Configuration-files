@@ -165,10 +165,7 @@ i() {
 # Display the current git branch in the Bash prompt
 
 where() {
-	branch=$(git symbolic-ref HEAD 2>/dev/null)
-	if [[ $? != 0 ]]; then
-		return
-	fi
+	branch=$(git symbolic-ref HEAD 2>/dev/null) || return
 	echo -n "(${branch#refs/heads/})"
 }
 
