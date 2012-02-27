@@ -162,6 +162,24 @@ i() {
 	fi
 }
 
+# Print the branch tracked by a branch. Without arguments, defaults to the
+# current branch.
+
+upstream() {
+    if [[ -z $1 ]]; then
+        branch=$(git symbolic-ref HEAD 2>/dev/null)
+    else
+        branch=$1
+    fi
+    branch=${branch#refs/heads/}
+
+    remote=$(git config "branch.$branch.remote") || remote="(no remote)"
+    remote_branch=$(git config "branch.$branch.merge") || remote_branch="(no upstream)"
+    remote_branch=${remote_branch#refs/heads/}
+
+    echo $remote_branch @ $remote
+}
+
 # Display the current git branch in the Bash prompt
 
 where() {
