@@ -114,7 +114,8 @@ asm_() {
     prefix="$1"
     options="$2"
     file="$3"
-    ofile="/tmp/${1%.cpp}.o"
+
+    ofile="/tmp/${file%.cpp}.o"
 
     if [[ ! -e "$file" ]]; then
         echo "'$file' does not exist" 1>&2
