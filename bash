@@ -122,7 +122,7 @@ asm_() {
         return 1
     fi
 
-    ${prefix}g++ $options "$file" -c -o "$ofile"
+    ${prefix}g++ $options "$file" -c -o "$ofile" || return $?
     ${prefix}objdump -d "$ofile"
     command rm "$ofile"
 }
