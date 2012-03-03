@@ -16,6 +16,11 @@ set editor = vim
 set charset      = utf-8
 set send_charset = utf-8
 
+# Caching
+
+set header_cache     = ~/.mutt_cache
+set message_cachedir = ~/.mutt_cache
+
 # Vim-like keybindings
 
 # Index
