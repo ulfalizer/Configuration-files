@@ -28,7 +28,6 @@ set message_cachedir = ~/.mutt_cache
 bind index j next-entry
 bind index k previous-entry
 bind index J next-thread
-bind index b next-thread
 bind index K previous-thread
 
 bind index / search
@@ -42,12 +41,8 @@ bind index G last-entry
 bind index \Cd half-down
 bind index \Cu half-up
 
-bind index z collapse-thread
-bind index v collapse-thread
 bind index l collapse-thread
-bind index h collapse-thread
-bind index Z collapse-all
-bind index V collapse-all
+bind index z collapse-all
 
 bind index r reply
 bind index a group-reply
