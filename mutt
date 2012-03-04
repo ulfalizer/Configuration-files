@@ -62,6 +62,11 @@ push <collapse-all><last-entry>
 bind pager j next-line
 bind pager k previous-line
 
+# The mouse wheel seems to send <up><up><up>/<down><down><down> by default with
+# GNOME Terminal. Use it to scroll through messages.
+bind pager <down> next-line
+bind pager <up>   previous-line
+
 bind pager / search
 bind pager ? search-reverse
 bind pager n search-next
