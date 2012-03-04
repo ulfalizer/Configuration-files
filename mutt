@@ -5,7 +5,8 @@
 set sort     = threads
 set sort_aux = last-date-received
 
-set index_format = "%[%b %d %H:%M]   %-15.15L   %?M?<%03M> &      ?%s"
+set index_format  = "%[%b %d %H:%M]   %-15.15L   %?M?<%03M> &      ?%s"
+set status_format = "%f (%s) (%?V?limited to '%V'&no limit pattern?) (%P)"
 
 set menu_scroll
 
