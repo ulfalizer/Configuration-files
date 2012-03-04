@@ -52,8 +52,7 @@ bind index L list-reply
 bind index \Ch help
 
 # Always start with threads collapsed and with the most recent thread selected
-push <collapse-all>
-push <last-entry>
+push <collapse-all><last-entry>
 
 # Pager
 
