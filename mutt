@@ -49,6 +49,8 @@ bind index r reply
 bind index a group-reply
 bind index L list-reply
 
+bind index h limit
+
 # '?' is used for search-opposite
 bind index \Ch help
 
