@@ -159,10 +159,12 @@ alias discard="git reset --hard HEAD"
 
 i() {
 	if git ls-files --error-unmatch "$1" &>/dev/null; then
-		echo yes
+		echo -n yes
 	else
-		echo no
+		echo -n no
 	fi
+    [[ ! -e $1 ]] && echo -n " (non-existent)"
+    echo
 }
 
 # Print the branch tracked by a branch. Without arguments, defaults to the
