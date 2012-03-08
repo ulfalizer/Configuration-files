@@ -89,7 +89,7 @@ gr() {
     shift
     includes=("${@/#/--include=}")
 
-    grep -Iinr --exclude-dir=.git "${includes[@]}" "$pattern" .
+    grep -Iinr --exclude-dir=.git "${includes[@]}" -- "$pattern" .
 }
 
 # Share history between sessions
