@@ -180,7 +180,7 @@ alias discard="git reset --hard HEAD"
 # Checks if a file is in the repository
 
 i() {
-    if git ls-files --error-unmatch "$1" &>/dev/null; then
+    if git ls-files --error-unmatch -- "$1" &>/dev/null; then
         echo -n yes
     else
         echo -n no
