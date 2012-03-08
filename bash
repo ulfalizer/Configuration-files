@@ -148,6 +148,7 @@ armasmnothumb() {
 alias ga="git add -u"
 alias gc="git checkout"
 alias gd="git diff"
+alias gdc="git diff --cached"
 alias gl="git log"
 alias glp="git log -p"
 alias gp="git pull --rebase"
