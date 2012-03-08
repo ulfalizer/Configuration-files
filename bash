@@ -32,20 +32,20 @@ rm_fn() {
     done
 
     if [[ -e $trash_dir && ! -d $trash_dir ]]; then
-        echo "$trash_dir is not a directory" 1>&2
+        echo "'$trash_dir' is not a directory" 1>&2
         return 1
     fi
 
     mkdir -p -- "$trash_dir"
     if [[ ! -e $trash_dir ]]; then
-        echo "Failed to create $trash_dir" 1>&2
+        echo "Failed to create '$trash_dir'" 1>&2
         return 1
     fi
 
     mv --backup=numbered -- "$@" "$trash_dir"
     error=$?
     if [[ $error -ne 0 ]]; then
-        echo "Failed to move files into $trash_dir" 1>&2
+        echo "Failed to move files into '$trash_dir'" 1>&2
         return $error
     fi
 }
@@ -59,14 +59,14 @@ empty_trash() {
     [[ ! -e $trash_dir ]] && return
 
     if [[ ! -d $trash_dir ]]; then
-        echo "$trash_dir is not a directory" 1>&2
+        echo "'$trash_dir' is not a directory" 1>&2
         return 1
     fi
 
     command rm -rf -- "$trash_dir"
     error=$?
     if [[ $error -ne 0 ]]; then
-        echo "Failed to remove $trash_dir" 1>&2
+        echo "Failed to remove '$trash_dir'" 1>&2
         return $error
     fi
 }
@@ -93,7 +93,7 @@ e() {
 
 f() {
     if [[ $# -ne 1 ]]; then
-        echo "usage: f <filename>"
+        echo "usage: f <filename>" 1>&2
         return 1
     fi
 
