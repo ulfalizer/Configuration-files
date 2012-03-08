@@ -158,11 +158,11 @@ alias discard="git reset --hard HEAD"
 # Checks if a file is in the repository
 
 i() {
-	if git ls-files --error-unmatch "$1" &>/dev/null; then
-		echo -n yes
-	else
-		echo -n no
-	fi
+    if git ls-files --error-unmatch "$1" &>/dev/null; then
+        echo -n yes
+    else
+        echo -n no
+    fi
     [[ ! -e $1 ]] && echo -n " (non-existent)"
     echo
 }
@@ -193,8 +193,8 @@ upstream() {
 # Display the current git branch in the Bash prompt
 
 where() {
-	branch=$(git symbolic-ref HEAD 2>/dev/null) || return
-	echo -n "(${branch#refs/heads/})"
+    branch=$(git symbolic-ref HEAD 2>/dev/null) || return
+    echo -n "(${branch#refs/heads/})"
 }
 
 # Requires a color terminal
