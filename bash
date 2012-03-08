@@ -88,7 +88,7 @@ e() {
         return 1
     fi
 
-    vim "${files[@]}"
+    vim -- "${files[@]}"
 }
 
 f() {
