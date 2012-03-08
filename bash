@@ -84,7 +84,7 @@ e() {
     done < <(find . -type f -iname "$1" -print0)
 
     if [[ ${#files[@]} -eq 0 ]]; then
-        echo \'$1\' not found 1>&2
+        echo "'$1' not found" 1>&2
         return 1
     fi
 
