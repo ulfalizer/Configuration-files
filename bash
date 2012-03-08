@@ -200,7 +200,7 @@ upstream() {
     fi
     branch=${branch#refs/heads/}
 
-    if ! git show-ref --verify -q -- "refs/heads/$branch"; then
+    if ! git show-ref --verify -q "refs/heads/$branch"; then
         echo "No branch named '$branch'" 1>&2
         return 1
     fi
