@@ -71,7 +71,25 @@ empty_trash() {
     fi
 }
 
-e() { vim $(find . -iname "$1"); }
+e() {
+    if [[ $# -ne 1 ]]; then
+        echo "usage: e <filename>" 1>&2
+        return 1
+    fi
+
+    # Read filenames into array (http://mywiki.wooledge.org/BashFAQ/020)
+    unset files i
+    while IFS= read -r -d $'\0' file; do
+        files[i++]="$file"
+    done < <(find . -type f -iname "$1" -print0)
+
+    if [[ ${#files[@]} -eq 0 ]]; then
+        echo \'$1\' not found 1>&2
+        return 1
+    fi
+
+    vim "${files[@]}"
+}
 
 f() {
     if [[ $# -ne 1 ]]; then
