@@ -205,6 +205,10 @@ upstream() {
 
     if [[ -z $1 ]]; then
         branch=$(git symbolic-ref HEAD 2>/dev/null)
+        if [[ $? -ne 0 ]]; then
+            echo "Failed to get branch for HEAD (detached?)" 1>&2
+            return 1
+        fi
     else
         branch=$1
     fi
