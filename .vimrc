@@ -254,7 +254,7 @@ set shortmess+=I
 " Man pages {{{
 
 runtime! ftplugin/man.vim
-                        
+
 " }}}
 " Plugins {{{
 
