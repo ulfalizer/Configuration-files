@@ -75,6 +75,8 @@ empty_trash() {
     fi
 }
 
+# Searches recursively for files with a given name and opens them for editing
+
 e() {
     local files i
 
@@ -96,6 +98,9 @@ e() {
     vim -- "${files[@]}"
 }
 
+# Searches recursively for files whose name contains a given pattern and lists
+# them
+
 f() {
     if [[ $# -ne 1 ]]; then
         echo "usage: f <filename>" 1>&2
@@ -104,6 +109,10 @@ f() {
 
     find . -iname "*$1*"
 }
+
+# Searches recursively in files for lines that match a given pattern and lists
+# them. Optionally limits the search to files whose names match any of a number
+# of given patterns. Excludes .git folders.
 
 gr() {
     local pattern includes
@@ -246,7 +255,7 @@ upstream() {
     echo $remote_branch @ ${remote}$remote_url
 }
 
-# Display the current git branch in the Bash prompt
+# Display the current Git branch in the Bash prompt
 
 where() {
     local branch
