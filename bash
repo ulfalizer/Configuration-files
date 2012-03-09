@@ -219,11 +219,18 @@ upstream() {
         return 1
     fi
 
-    remote=$(git config "branch.$branch.remote") || remote="(no remote)"
     remote_branch=$(git config "branch.$branch.merge") || remote_branch="(no upstream)"
     remote_branch=${remote_branch#refs/heads/}
+    if remote=$(git config "branch.$branch.remote"); then
+        remote_url=" ($(git config "remote.$remote.url"))" || \
+            remote_url=" (could not get the remote's URL)"
+    else
+        remote="(no remote)"
+        remote_url=
+    fi
 
-    echo $remote_branch @ $remote
+    # Avoid printing any unnecessary extra spaces
+    echo $remote_branch @ ${remote}$remote_url
 }
 
 # Display the current git branch in the Bash prompt
