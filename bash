@@ -194,8 +194,8 @@ i() {
     echo
 }
 
-# Print the branch tracked by a branch. Without arguments, defaults to the
-# current branch.
+# Prints the branch tracked by a branch together with the remote and its URL.
+# Without arguments, defaults to the current branch.
 
 upstream() {
     if [[ $# -gt 1 ]]; then
