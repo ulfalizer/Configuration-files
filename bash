@@ -198,6 +198,11 @@ i() {
 # current branch.
 
 upstream() {
+    if ! git rev-parse --git-dir &>/dev/null; then
+        echo "Not inside a Git repository" 1>&2
+        return 1
+    fi
+
     if [[ -z $1 ]]; then
         branch=$(git symbolic-ref HEAD 2>/dev/null)
     else
