@@ -14,6 +14,8 @@ export trash_dir=/tmp/trash
 alias rm=rm_fn
 
 rm_fn() {
+    local error
+
     if [[ $# -eq 0 ]]; then
         echo "usage: rm <file> [<file> ...]" 1>&2
         return 1
@@ -51,6 +53,8 @@ rm_fn() {
 }
 
 empty_trash() {
+    local error
+
     if [[ -z $trash_dir ]]; then
         echo "trash_dir not set" 1>&2
         return 1
@@ -72,13 +76,14 @@ empty_trash() {
 }
 
 e() {
+    local files i
+
     if [[ $# -ne 1 ]]; then
         echo "usage: e <filename>" 1>&2
         return 1
     fi
 
     # Read filenames into array (http://mywiki.wooledge.org/BashFAQ/020)
-    unset files i
     while IFS= read -r -d $'\0' file; do
         files[i++]="$file"
     done < <(find . -type f -iname "$1" -print0)
@@ -101,6 +106,8 @@ f() {
 }
 
 gr() {
+    local pattern includes
+
     if [[ $# -eq 0 ]]; then
         echo "usage: gr <pattern> [<file pattern> ...] " 1>&2
         return 1
@@ -132,11 +139,11 @@ export EDITOR=vim
 # Helper functions for inspecting compiler output
 
 asm_() {
-    prefix="$1"
-    options="$2"
-    file="$3"
+    local prefix="$1"
+    local options="$2"
+    local file="$3"
 
-    ofile="/tmp/${file%.cpp}.o"
+    local ofile="/tmp/${file%.cpp}.o"
 
     if [[ ! -e $file ]]; then
         echo "'$file' does not exist" 1>&2
@@ -198,6 +205,8 @@ i() {
 # Without arguments, defaults to the current branch.
 
 upstream() {
+    local branch remote_branch remote remote_url
+
     if [[ $# -gt 1 ]]; then
         echo "usage: upstream [<branch>] (defaults to current branch)" 1>&2
         return 1
@@ -240,6 +249,7 @@ upstream() {
 # Display the current git branch in the Bash prompt
 
 where() {
+    local branch
     branch=$(git symbolic-ref HEAD 2>/dev/null) || return
     echo -n "(${branch#refs/heads/})"
 }
