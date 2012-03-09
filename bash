@@ -198,6 +198,11 @@ i() {
 # current branch.
 
 upstream() {
+    if [[ $# -gt 1 ]]; then
+        echo "usage: upstream [<branch>] (defaults to current branch)" 1>&2
+        return 1
+    fi
+
     if ! git rev-parse --git-dir &>/dev/null; then
         echo "Not inside a Git repository" 1>&2
         return 1
