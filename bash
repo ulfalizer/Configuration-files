@@ -180,6 +180,32 @@ armasmnothumb() {
     asm_ "arm-none-eabi-" "-O3 -mcpu=cortex-a8 -fomit-frame-pointer" "$1"
 }
 
+# Trace file access by a program
+
+files() {
+    local tracefile
+
+    if [[ $# -eq 0 ]]; then
+        echo "usage: files <program> [<argument> ...]" 1>&2
+        return 1
+    fi
+
+    tracefile=$(mktemp)
+    strace -e trace=file -f -o $tracefile -- "$@"
+
+    # Print the trace output after the regular output and remove some common
+    # clutter
+    echo -e "\nTrace:\n"
+    egrep -v                     \
+          -e '/etc/ld\.so'       \
+          -e '/lib/'             \
+          -e '/proc/filesystems' \
+          -e '/usr/share/locale' \
+          -e 'statfs.*selinux' < $tracefile
+
+    command rm $tracefile
+}
+
 # Git {{{
 
 alias ga="git add -u"
