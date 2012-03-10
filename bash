@@ -255,18 +255,27 @@ upstream() {
     echo $remote_branch @ ${remote}$remote_url
 }
 
-# Display the current Git branch in the Bash prompt
+# Helper for displaying the current Git branch in the Bash prompt
 
 where() {
     local branch
     branch=$(git symbolic-ref HEAD 2>/dev/null) || return
-    echo -n "(${branch#refs/heads/})"
+    echo -n "${branch#refs/heads/} "
 }
 
-# Requires a color terminal
-PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;32m\]$(where)\[\033[00m\]\$ '
-
 # }}}
+
+# Prompt
+# Requires a 256-color capable terminal. See the following for reference:
+# http://lucentbeing.com/blog/that-256-color-thing/
+# http://jimlund.org/blog/?p=130
+
+# Changes the foreground color
+C() { echo -n '\[\033[38;05;'${1}m'\]'; }
+# Resets all color settings
+R='\[\033[0m\]'
+
+PS1="$(C 46)\u $(C 214)\h $(C 39)\w$(C 46) \$(where)$R$ "
 
 # Site-specific settings
 
