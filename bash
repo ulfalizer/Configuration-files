@@ -301,7 +301,7 @@ C() { echo -n '\[\033[38;05;'${1}m'\]'; }
 # Resets all color settings
 R='\[\033[0m\]'
 
-PS1="$(C 46)\u $(C 214)\h $(C 39)\w$(C 46) \$(where)$R$ "
+PS1="$(C 46)\u $(C 214)\h $(C 39)\w $(C 46)\$(where)$R$ "
 
 # Site-specific settings
 
