@@ -142,7 +142,7 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 LESS=-
 LESS+=F # Do not use pager if output fits on screen
-LESS+=i # Case-insensitive search when only lower-case characters are used
+LESS+=i # Case-insensitive search when only lowercase characters are used
 LESS+=M # Be verbose (show percentage, etc.)
 LESS+=R # Show ANSI colors
 # Do not send termcap initialization/deinitialization codes. Fixes background
