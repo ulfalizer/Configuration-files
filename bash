@@ -291,17 +291,28 @@ where() {
 
 # }}}
 
-# Prompt
-# Requires a 256-color capable terminal. See the following for reference:
-# http://lucentbeing.com/blog/that-256-color-thing/
-# http://jimlund.org/blog/?p=130
+# Colors and prompts
 
-# Changes the foreground color
-C() { echo -n '\[\033[38;05;'${1}m'\]'; }
-# Resets all color settings
-R='\[\033[0m\]'
+# Assume that all terminals that identify themselves as either "xterm" or
+# "xterm-256color" support 256 colors. This could be refined.
+if [[ $TERM = xterm || $TERM = xterm-256color ]]; then
+    # Some terminal apps (e.g. Vim) check for this
+    export TERM=xterm-256color
 
-PS1="$(C 46)\u $(C 214)\h $(C 39)\w $(C 46)\$(where)$R$ "
+    # See the following for reference:
+    # http://lucentbeing.com/blog/that-256-color-thing/
+    # http://jimlund.org/blog/?p=130
+
+    # Changes the foreground color
+    C() { echo -n '\[\033[38;05;'${1}m'\]'; }
+    # Resets all color settings
+    R='\[\033[0m\]'
+
+    PS1="$(C 46)\u $(C 214)\h $(C 39)\w $(C 46)\$(where)$R$ "
+else
+    # TODO: This could use 8 colors
+    PS1='\u \h \w $(where)$ '
+fi
 
 # Site-specific settings
 
