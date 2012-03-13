@@ -26,7 +26,7 @@ let g:is_bash = 1
 " Color scheme
 
 if has("gui_running")
-    colorscheme oceandeep
+    silent! colorscheme oceandeep
 endif
 
 " }}}
