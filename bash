@@ -31,6 +31,10 @@ rm_fn() {
             echo "'$f' does not exist" 1>&2
             return 1
         fi
+        if [[ ! -w $(dirname "$f") ]]; then
+            echo "Cannot remove '$f': No write permissions for containing directory" 1>&2
+            return 1
+        fi
     done
 
     if [[ -e $trash_dir && ! -d $trash_dir ]]; then
@@ -44,7 +48,7 @@ rm_fn() {
         return 1
     fi
 
-    mv --backup=numbered -- "$@" "$trash_dir"
+    mv -f --backup=numbered -- "$@" "$trash_dir"
     error=$?
     if [[ $error -ne 0 ]]; then
         echo "Failed to move files into '$trash_dir'" 1>&2
@@ -64,6 +68,11 @@ empty_trash() {
 
     if [[ ! -d $trash_dir ]]; then
         echo "'$trash_dir' is not a directory" 1>&2
+        return 1
+    fi
+
+    if [[ ! -w $(dirname "$trash_dir") ]]; then
+        echo "Cannot remove '$trash_dir': No write permissions for containing directory" 1>&2
         return 1
     fi
 
