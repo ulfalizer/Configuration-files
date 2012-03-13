@@ -27,6 +27,8 @@ let g:is_bash = 1
 
 if has("gui_running")
     silent! colorscheme oceandeep
+else
+    silent! colorscheme molokai
 endif
 
 " }}}
