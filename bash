@@ -302,12 +302,23 @@ where() {
 
 # Colors and prompts
 
-# Assume that all terminals that identify themselves as either "xterm" or
-# "xterm-256color" support 256 colors. This could be refined.
-if [[ $TERM = xterm || $TERM = xterm-256color ]]; then
-    # Some terminal apps (e.g. Vim) check for this
-    export TERM=xterm-256color
+# Use the true/false shell builtins to create booleans
+has_256_colors=false
 
+case $TERM in
+    # Assume that all terminals that identify themselves as either "xterm" or
+    # "xterm-256color" support 256 colors. This could be refined.
+    xterm | xterm-256color )
+        # Some terminal apps (e.g. Vim) check for this
+        export TERM=xterm-256color
+        has_256_colors=true
+        ;;
+    rxvt-*256color )
+        has_256_colors=true
+        ;;
+esac
+
+if $has_256_colors; then
     # See the following for reference:
     # http://lucentbeing.com/blog/that-256-color-thing/
     # http://jimlund.org/blog/?p=130
