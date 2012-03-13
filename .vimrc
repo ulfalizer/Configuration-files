@@ -27,7 +27,7 @@ let g:is_bash = 1
 
 if has("gui_running")
     silent! colorscheme oceandeep
-else
+elseif &t_Co >= 256
     silent! colorscheme molokai
 endif
 
