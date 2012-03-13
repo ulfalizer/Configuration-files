@@ -140,8 +140,17 @@ shopt -s histappend                      # append to history, don't overwrite it
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
-# Make searches in 'less' case-insensitive and enable color output
-export LESS=-iRMx4
+LESS=-
+LESS+=F # Do not use pager if output fits on screen
+LESS+=i # Case-insensitive search when only lower-case characters are used
+LESS+=M # Be verbose (show percentage, etc.)
+LESS+=R # Show ANSI colors
+# Do not send termcap initialization/deinitialization codes. Fixes background
+# screwiness in 'less' after using 256-color color schemes in Vim for some
+# reason.
+LESS+=X
+LESS+=x4 # Display tabs as 4 spaces
+export LESS
 
 export EDITOR=vim
 
