@@ -299,6 +299,37 @@ upstream() {
     echo $remote_branch @ ${remote}$remote_url
 }
 
+# Fetches a single branch and its objects from a remote and sets it up as a
+# tracking branch. With no name given, uses the name of the remote branch for
+# the local branch.
+
+fetch() {
+    local remote remote_branch local_branch error
+
+    if [[ $# -eq 0 || $# -gt 3 ]]; then
+        echo "usage: fetch <remote> <remote branch> [<local branch>]" 1>&2
+        return 1
+    fi
+
+    remote=$1
+    remote_branch=$2
+    local_branch=${3:-$remote_branch}
+    local_branch=${local_branch##*/}
+
+    git fetch "$remote" "+$remote_branch:$local_branch" || return $?
+    if ! git show-ref --verify -q "refs/heads/$local_branch"; then
+        echo "No local branch '$local_branch' was created" 1>&2
+        return 1
+    fi
+
+    git branch --set-upstream "$local_branch" "remotes/$remote/$remote_branch"
+    error=$?
+    if [[ $error -ne 0 ]]; then
+        echo "Failed to set '$remote_branch' on '$remote' as the upstream of '$local_branch'"
+        return $error
+    fi
+}
+
 # Helper for displaying the current Git branch in the Bash prompt
 
 where() {
