@@ -237,6 +237,9 @@ alias gs="git status"
 
 alias discard="git reset --hard HEAD"
 
+# Adds changes to tracked files to the branch's tip commit
+alias fixup="git commit -a --amend -C HEAD"
+
 # Checks if a file is in the repository
 
 i() {
