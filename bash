@@ -313,8 +313,7 @@ fetch() {
 
     remote=$1
     remote_branch=$2
-    local_branch=${3:-$remote_branch}
-    local_branch=${local_branch##*/}
+    local_branch=${3-$remote_branch}
 
     git fetch "$remote" "+$remote_branch:$local_branch" || return $?
     if ! git show-ref --verify -q "refs/heads/$local_branch"; then
