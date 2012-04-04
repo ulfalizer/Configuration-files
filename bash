@@ -229,9 +229,12 @@ files() {
 alias ga="git add -u"
 alias gc="git checkout"
 alias gd="git diff"
+alias gds="git diff --stat"
 alias gdc="git diff --cached"
+alias gdcs="git diff --cached --stat"
 alias gl="git log"
 alias glp="git log -p"
+alias gls="git log --stat"
 alias gp="git pull --rebase"
 alias gs="git status"
 
