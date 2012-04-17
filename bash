@@ -240,6 +240,7 @@ alias gs="git status"
 
 alias discard="git reset --hard HEAD"
 
+alias amend="git commit --amend"
 # Adds changes to tracked files to the branch's tip commit
 alias fixup="git commit -a --amend -C HEAD"
 
