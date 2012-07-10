@@ -1,0 +1,10 @@
+Personal configuration files. (Who'd use someone else's configuration anyway?)
+
+ - Safe 'rm' command with trash directory.
+ - Shared history between Bash sessions (thanks Stack Overflow!).
+ - Simple bookmarking system for Vim.
+   * Supports 'foo' -> <file>:<pattern> mappings such
+     that ':Go foo' jumps to the first line matching <pattern> in <file>.
+ - Lots of Git helpers.
+ - Helpers for inspecting compiler output and tracing file access.
+ - Vim-like bindings and a simple, clean index for Mutt.
