@@ -349,6 +349,7 @@ where() {
 # Colors and prompts
 
 # Use the true/false shell builtins to create booleans
+is_xterm=false
 has_256_colors=false
 
 case $TERM in
@@ -357,6 +358,7 @@ case $TERM in
     xterm | xterm-256color )
         # Some terminal apps (e.g. Vim) check for this
         export TERM=xterm-256color
+        is_xterm=true
         has_256_colors=true
         ;;
     rxvt-*256color )
@@ -378,6 +380,12 @@ if $has_256_colors; then
 else
     # TODO: This could use 8 colors
     PS1='\u \h \w $(where)$ '
+fi
+
+# For xterm, display the current working directory and username/host in the
+# window title bar
+if $is_xterm; then
+    PS1="\[\033]0;\w   \u \h\007\]$PS1"
 fi
 
 # Site-specific settings
