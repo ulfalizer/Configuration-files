@@ -10,6 +10,7 @@ alias r=". ~/conf/bash"
 # General shell options
 
 if (( ${BASH_VERSINFO[0]} >= 4 )); then
+    shopt -s autocd
     shopt -s globstar
 fi
 
