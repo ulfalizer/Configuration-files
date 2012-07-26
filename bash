@@ -7,6 +7,12 @@ alias ll="ls -l"
 # Reload configuration
 alias r=". ~/conf/bash"
 
+# General shell options
+
+if (( ${BASH_VERSINFO[0]} >= 4 )); then
+    shopt -s globstar
+fi
+
 # Safe rm command with trash directory
 
 export trash_dir=/tmp/trash
