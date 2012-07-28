@@ -91,46 +91,101 @@ empty_trash() {
     fi
 }
 
-# Searches recursively for files with a given name and opens them for editing
+# Helper function. Expands a list of strings such as 'foo', 'bar', 'baz' into
+# the glob pattern **/*foo*/**/*bar*/**/*baz*, meaning it would match e.g.
+# afoo/d/bara/baz, and stores the matching file names in the array g_files. If
+# no files match, g_files becomes empty. If no arguments are supplied, **/* is
+# used as the pattern.
 
-e() {
-    local files i
+_super_glob() {
+    local pattern
 
-    if [[ $# -ne 1 ]]; then
-        echo "usage: e <filename>" 1>&2
-        return 1
+    if [[ $# -eq 0 ]]; then
+        pattern=**/*
+    else
+        pattern=**/*$1*
+        shift
+        for p in "$@"; do
+            pattern=$pattern/**/*$p*
+        done
     fi
 
-    # Read filenames into array (http://mywiki.wooledge.org/BashFAQ/020)
-    while IFS= read -r -d $'\0' file; do
-        files[i++]="$file"
-    done < <(find . -type f -iname "$1" -print0)
-
-    if [[ ${#files[@]} -eq 0 ]]; then
-        echo "'$1' not found" 1>&2
-        return 1
-    fi
-
-    vim -- "${files[@]}"
+    IFS=
+    shopt -s nocaseglob nullglob
+    g_files=($pattern)
+    shopt -u nocaseglob nullglob
+    unset IFS
 }
 
-# Searches recursively for files whose name contains a given pattern and lists
-# them
+# Helper function. Passes its second to last argument to _super_glob() and lets
+# the user pick a file with a 'select' if many files match (otherwise, picks
+# the single matching file). The first argument is the select prompt to use.
+# The choosen file is returned in g_selected_file, which is unset if no files
+# match.
 
-f() {
-    if [[ $# -ne 1 ]]; then
-        echo "usage: f <filename>" 1>&2
-        return 1
+_super_glob_select_file() {
+    local prompt="$1"
+    shift
+
+    unset g_selected_file
+
+    _super_glob "$@"
+
+    [[ ${#g_files[@]} -eq 0 ]] && return
+
+    if [[ ${#g_files[@]} -eq 1 ]]; then
+        g_selected_file=${g_files[0]}
+    else
+        PS3=$prompt
+        # The while loop keeps us going while the user presses Ctrl-D, making
+        # sure we get a selection.
+        while [[ -z $g_selected_file ]]; do
+            select g_selected_file in "${g_files[@]}"; do
+                if [[ -z $g_selected_file ]]; then
+                    echo "Invalid choice" 2>&1
+                else
+                    break
+                fi
+            done
+        done
+        unset PS3
+    fi
+}
+
+# Searches for files matching a _super_glob() pattern and opens the selected
+# file for editing.
+
+e() {
+    _super_glob_select_file "File to edit: " "$@"
+
+    if [[ -z $g_selected_file ]]; then
+        echo "no files found" 1>&2
+        return
     fi
 
-    find . -iname "*$1*"
+    vim -- "$file"
+}
+
+# Lists files matching a _super_glob() pattern.
+
+f() {
+    _super_glob "$@"
+
+    if [[ ${#g_files[@]} -eq 0 ]]; then
+        echo "no files found" 1>&2
+        return
+    fi
+
+    for f in "${g_files[@]}"; do
+        echo $f
+    done
 }
 
 # Searches recursively in files for lines that match a given pattern and lists
 # them. Optionally limits the search to files whose names match any of a number
 # of given patterns. Excludes .git folders.
 
-gr() {
+g() {
     local pattern includes
 
     if [[ $# -eq 0 ]]; then
@@ -143,6 +198,27 @@ gr() {
     includes=("${@/#/--include=}")
 
     grep -Iinr --exclude-dir=.git "${includes[@]}" -- "$pattern" .
+}
+
+# Jumps to a file matching a _super_glob() pattern. (For directories, cd's to
+# the directory. For ordinary files, cd's to the containing directory.)
+
+j() {
+    _super_glob_select_file "Where to jump: " "$@"
+
+    if [[ -z $g_selected_file ]]; then
+        echo "no files found" 1>&2
+        return
+    fi
+
+    # If $file is a directory, jump to it. Otherwise, jump to the directory
+    # containing $file.
+
+    if [[ -d $g_selected_file ]]; then
+        cd "$g_selected_file"
+    else
+        [[ $g_selected_file == */* ]] && cd "${g_selected_file%/*}"
+    fi
 }
 
 # Share history between sessions
