@@ -52,7 +52,7 @@ rm_fn() {
             echo "'$f' does not exist" 1>&2
             return 1
         fi
-        if [[ ! -w $(dirname "$f") ]]; then
+        if [[ ! -w $(dirname -- "$f") ]]; then
             echo "Cannot remove '$f': No write permissions for containing directory" 1>&2
             return 1
         fi
@@ -229,9 +229,9 @@ j() {
     # containing $file.
 
     if [[ -d $g_selected_file ]]; then
-        cd "$g_selected_file"
+        cd -- "$g_selected_file"
     else
-        [[ $g_selected_file == */* ]] && cd "${g_selected_file%/*}"
+        cd -- "$(dirname -- "$g_selected_file")"
     fi
 }
 
