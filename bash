@@ -142,7 +142,7 @@ _super_glob_select_file() {
         while [[ -z $g_selected_file ]]; do
             select g_selected_file in "${g_files[@]}"; do
                 if [[ -z $g_selected_file ]]; then
-                    echo "Invalid choice" 2>&1
+                    echo "Invalid choice" 1>&2
                 else
                     break
                 fi
