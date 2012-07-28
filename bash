@@ -163,7 +163,7 @@ e() {
         return
     fi
 
-    vim -- "$file"
+    vim -- "$g_selected_file"
 }
 
 # Lists files matching a _super_glob() pattern.
