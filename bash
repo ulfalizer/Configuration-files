@@ -138,7 +138,7 @@ _super_glob() {
 # match.
 
 _super_glob_select_file() {
-    local prompt="$1"
+    local prompt=$1
     shift
 
     unset g_selected_file
@@ -151,8 +151,8 @@ _super_glob_select_file() {
         g_selected_file=${g_files[0]}
     else
         PS3=$prompt
-        # The while loop keeps us going while the user presses Ctrl-D, making
-        # sure we get a selection.
+        # The while loop keeps us going while the user presses enter or Ctrl-D,
+        # making sure we get a selection.
         while [[ -z $g_selected_file ]]; do
             select g_selected_file in "${g_files[@]}"; do
                 if [[ -z $g_selected_file ]]; then
@@ -207,7 +207,7 @@ g() {
         return 1
     fi
 
-    pattern="$1"
+    pattern=$1
     shift
     includes=("${@/#/--include=}")
 
@@ -261,11 +261,11 @@ export LESS
 # Helper functions for inspecting compiler output
 
 asm_() {
-    local prefix="$1"
-    local options="$2"
-    local file="$3"
+    local prefix=$1
+    local options=$2
+    local file=$3
 
-    local ofile="/tmp/${file%.cpp}.o"
+    local ofile=/tmp/${file%.cpp}.o
 
     if [[ ! -e $file ]]; then
         echo "'$file' does not exist" 1>&2
