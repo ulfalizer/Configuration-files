@@ -16,7 +16,7 @@ fi
 
 # Safe rm command with trash directory
 
-export trash_dir=/tmp/trash
+trash_dir=/tmp/trash
 
 alias rm=rm_fn
 
