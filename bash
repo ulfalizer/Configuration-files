@@ -17,6 +17,10 @@ alias .....="cd ../../../.."
 
 alias ll="ls -l"
 
+# Preference variables
+
+export EDITOR=vim
+
 # General shell options
 
 if (( ${BASH_VERSINFO[0]} >= 4 )); then
@@ -173,7 +177,7 @@ e() {
         return
     fi
 
-    vim -- "$g_selected_file"
+    $EDITOR -- "$g_selected_file"
 }
 
 # Lists files matching a _super_glob() pattern.
@@ -253,8 +257,6 @@ LESS+=R # Show ANSI colors
 LESS+=X
 LESS+=x4 # Display tabs as 4 spaces
 export LESS
-
-export EDITOR=vim
 
 # Helper functions for inspecting compiler output
 
