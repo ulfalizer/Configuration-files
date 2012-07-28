@@ -5,6 +5,9 @@ Personal configuration files. (Who'd use someone else's configuration anyway?)
  - Simple bookmarking system for Vim.
    * Supports 'foo' -> <file>:<pattern> mappings such
      that ':Go foo' jumps to the first line matching <pattern> in <file>.
+ - Nifty "super globbing" Bash functions that let you type e.g.
+   $ j foo bar baz
+   to cd into foobo/d/bar/abaz, with menu selection if many files match.
  - Lots of Git helpers.
  - Helpers for inspecting compiler output and tracing file access.
  - Vim-like bindings and a simple, clean index for Mutt.
