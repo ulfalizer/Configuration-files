@@ -426,7 +426,7 @@ fetch() {
     git branch --set-upstream "$local_branch" "remotes/$remote/$remote_branch"
     error=$?
     if [[ $error -ne 0 ]]; then
-        echo "Failed to set '$remote_branch' on '$remote' as the upstream of '$local_branch'"
+        echo "Failed to set '$remote_branch' on '$remote' as the upstream of '$local_branch'" 1>&2
         return $error
     fi
 }
