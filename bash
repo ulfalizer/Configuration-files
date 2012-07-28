@@ -51,6 +51,27 @@ trash_dir=/tmp/trash
 
 alias rm=safe_rm
 
+# Helper function. Checks that trash_dir can be safely used.
+
+_trash_dir_is_ok() {
+    if [[ -z $trash_dir ]]; then
+        _err_name "trash_dir is not set" 2
+        return 1
+    fi
+
+    if [[ $trash_dir != /* ]]; then
+        _err_name "trash_dir (set to '$trash_dir') is not an absolute path" 2
+        return 1
+    fi
+
+    if [[ -e $trash_dir && ! -d $trash_dir ]]; then
+        _err_name "trash_dir (set to '$trash_dir') is not a directory" 2
+        return 1
+    fi
+
+    return 0
+}
+
 safe_rm() {
     # The usage and error helpers will say "safe_rm" instead of "rm", but
     # that's probably ok since it reminds us that we're dealing with a function
@@ -62,10 +83,7 @@ safe_rm() {
         return 1
     fi
 
-    if [[ -z $trash_dir ]]; then
-        _err_name "trash_dir not set"
-        return 1
-    fi
+    ! _trash_dir_is_ok && return 1
 
     for f in "$@"; do
         if [[ ! -e $f && ! -h $f ]]; then
@@ -78,14 +96,9 @@ safe_rm() {
         fi
     done
 
-    if [[ -e $trash_dir && ! -d $trash_dir ]]; then
-        _err_name "trash_dir (set to '$trash_dir') is not a directory"
-        return 1
-    fi
-
     mkdir -p -- "$trash_dir"
     if [[ ! -e $trash_dir ]]; then
-        _err_name "failed to create '$trash_dir'"
+        _err_name "failed to create trash_dir (set to '$trash_dir')"
         return 1
     fi
 
@@ -105,17 +118,9 @@ empty_trash() {
         return 1
     fi
 
-    if [[ -z $trash_dir ]]; then
-        _err_name "trash_dir not set"
-        return 1
-    fi
+    ! _trash_dir_is_ok && return 1
 
     [[ ! -e $trash_dir ]] && return
-
-    if [[ ! -d $trash_dir ]]; then
-        _err_name "'$trash_dir' is not a directory"
-        return 1
-    fi
 
     if [[ ! -w $(dirname -- "$trash_dir") ]]; then
         _err_name "cannot remove '$trash_dir': No write permissions for containing directory"
