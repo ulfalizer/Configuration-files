@@ -2,10 +2,20 @@
 
 # This file is meant to be included from the main Bash configuration file
 
-alias ll="ls -l"
-
 # Reload configuration
 alias r=". ~/conf/bash"
+
+# Misc. aliases
+
+alias -- -="cd - >/dev/null"
+# autocd would also take care of '..', but the alias avoids the annoying
+# "cd .." printout
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+alias ll="ls -l"
 
 # General shell options
 
