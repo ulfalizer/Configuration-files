@@ -291,6 +291,11 @@ export LESS
 # Functions for inspecting compiler output
 
 _asm() {
+    if [[ $# -ne 3 ]]; then
+        _usage "<filename>" 2
+        return 1
+    fi
+
     local prefix=$1
     local options=$2
     local file=$3
@@ -312,15 +317,15 @@ _asm() {
 }
 
 asm() {
-    _asm "" "-O3 -fomit-frame-pointer" "$1"
+    _asm "" "-O3 -fomit-frame-pointer" "$@"
 }
 
 armasm() {
-    _asm "arm-none-eabi-" "-O3 -mthumb -mcpu=cortex-a8 -fomit-frame-pointer" "$1"
+    _asm "arm-none-eabi-" "-O3 -mthumb -mcpu=cortex-a8 -fomit-frame-pointer" "$@"
 }
 
 armasmnothumb() {
-    _asm "arm-none-eabi-" "-O3 -mcpu=cortex-a8 -fomit-frame-pointer" "$1"
+    _asm "arm-none-eabi-" "-O3 -mcpu=cortex-a8 -fomit-frame-pointer" "$@"
 }
 
 # Trace file access by a program
