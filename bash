@@ -92,7 +92,7 @@ empty_trash() {
         return 1
     fi
 
-    if [[ ! -w $(dirname "$trash_dir") ]]; then
+    if [[ ! -w $(dirname -- "$trash_dir") ]]; then
         echo "Cannot remove '$trash_dir': No write permissions for containing directory" 1>&2
         return 1
     fi
