@@ -120,7 +120,7 @@ empty_trash() {
 
     ! _trash_dir_is_ok && return 1
 
-    [[ ! -e $trash_dir ]] && return
+    [[ ! -e $trash_dir ]] && return 0
 
     if [[ ! -w $(dirname -- "$trash_dir") ]]; then
         _err_name "cannot remove '$trash_dir': No write permissions for containing directory"
@@ -204,7 +204,7 @@ e() {
 
     if [[ -z $g_selected_file ]]; then
         _err_name "no files found"
-        return
+        return 1
     fi
 
     $EDITOR -- "$g_selected_file"
@@ -217,7 +217,7 @@ f() {
 
     if [[ ${#g_files[@]} -eq 0 ]]; then
         _err_name "no files found"
-        return
+        return 1
     fi
 
     for f in "${g_files[@]}"; do
@@ -252,7 +252,7 @@ j() {
 
     if [[ -z $g_selected_file ]]; then
         _err_name "no files found"
-        return
+        return 1
     fi
 
     # If $file is a directory, jump to it. Otherwise, jump to the directory
