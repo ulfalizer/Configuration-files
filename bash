@@ -514,12 +514,10 @@ fi
 
 # For xterm, display the current working directory and username/host in the
 # window title bar
-if $is_xterm; then
-    PS1="\[\033]0;\w   \u \h\007\]$PS1"
-fi
+$is_xterm && PS1="\[\033]0;\w   \u \h\007\]$PS1"
 
 # Site-specific settings
 
-if [[ -e ~/conf/bashlocal ]]; then
-    . ~/conf/bashlocal
-fi
+_local_settings_file=~/conf/bashlocal
+
+[[ -e $_local_settings_file ]] && . "$_local_settings_file"
