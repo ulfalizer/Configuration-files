@@ -10,4 +10,6 @@ Personal configuration files. (Who'd use someone else's configuration anyway?)
    to cd into foobo/d/bar/abaz, with menu selection if many files match.
  - Lots of Git helpers.
  - Helpers for inspecting compiler output and tracing file access.
+ - All Bash functions should handle filenames that contain spaces and/or start
+   with '-' correctly.
  - Vim-like bindings and a simple, clean index for Mutt.
