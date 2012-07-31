@@ -466,55 +466,59 @@ fetch() {
     fi
 }
 
-# Helper for displaying the current Git branch in the Bash prompt
-
-where() {
-    local branch
-    branch=$(git symbolic-ref HEAD 2>/dev/null) || return
-    echo -n "${branch#refs/heads/} "
-}
-
 # }}}
 
-# Colors and prompts
+# Terminals, prompts and colors
 
-# Use the true/false shell builtins to create booleans
-is_xterm=false
-has_256_colors=false
+_init_terminals_and_prompts_and_colors() {
+    # Use the true/false shell builtins to create booleans
+    local is_xterm=false
+    local has_256_colors=false
 
-case $TERM in
-    # Assume that all terminals that identify themselves as either "xterm" or
-    # "xterm-256color" support 256 colors. This could be refined.
-    xterm | xterm-256color )
-        # Some terminal apps (e.g. Vim) check for this
-        export TERM=xterm-256color
-        is_xterm=true
-        has_256_colors=true
-        ;;
-    rxvt-*256color )
-        has_256_colors=true
-        ;;
-esac
+    case $TERM in
+        # Assume that all terminals that identify themselves as either "xterm"
+        # or "xterm-256color" support 256 colors. This could be refined.
+        xterm | xterm-256color )
+            # Some terminal apps (e.g. Vim) check for this
+            export TERM=xterm-256color
+            is_xterm=true
+            has_256_colors=true
+            ;;
+        rxvt-*256color )
+            has_256_colors=true
+            ;;
+    esac
 
-if $has_256_colors; then
-    # See the following for reference:
-    # http://lucentbeing.com/blog/that-256-color-thing/
-    # http://jimlund.org/blog/?p=130
+    # Helper function for displaying the current Git branch in the Bash prompt
 
-    # Changes the foreground color
-    C() { echo -n '\[\033[38;05;'${1}m'\]'; }
-    # Resets all color settings
-    R='\[\033[0m\]'
+    _where() {
+        local branch
+        branch=$(git symbolic-ref HEAD 2>/dev/null) || return
+        echo -n "${branch#refs/heads/} "
+    }
 
-    PS1="$(C 46)\u $(C 214)\h $(C 39)\w $(C 46)\$(where)$R$ "
-else
-    # TODO: This could use 8 colors
-    PS1='\u \h \w $(where)$ '
-fi
+    if $has_256_colors; then
+        # See the following for reference:
+        # http://lucentbeing.com/blog/that-256-color-thing/
+        # http://jimlund.org/blog/?p=130
 
-# For xterm, display the current working directory and username/host in the
-# window title bar
-$is_xterm && PS1="\[\033]0;\w   \u \h\007\]$PS1"
+        # Changes the foreground color
+        _c() { echo -n '\[\033[38;05;'${1}m'\]'; }
+        # Resets all color settings
+        local r='\[\033[0m\]'
+
+        PS1="$(_c 46)\u $(_c 214)\h $(_c 39)\w $(_c 46)\$(_where)$r$ "
+    else
+        # TODO: This could use 8 colors
+        PS1='\u \h \w $(_where)$ '
+    fi
+
+    # For xterm, display the current working directory and username/host in the
+    # window title bar
+    $is_xterm && PS1="\[\033]0;\w   \u \h\007\]$PS1"
+}
+
+_init_terminals_and_prompts_and_colors
 
 # Site-specific settings
 
