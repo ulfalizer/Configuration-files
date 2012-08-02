@@ -185,11 +185,8 @@ _super_glob_select_file() {
         # making sure we get a selection.
         while [[ -z $g_selected_file ]]; do
             select g_selected_file in "${g_files[@]}"; do
-                if [[ -z $g_selected_file ]]; then
-                    echo "invalid choice" 1>&2
-                else
-                    break
-                fi
+                [[ -n $g_selected_file ]] && break
+                _err "invalid choice"
             done
         done
         unset PS3
