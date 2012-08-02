@@ -45,7 +45,18 @@ _usage() {
     _err "usage: ${FUNCNAME[$stack_index]} $1";
 }
 
-# Safe rm command with trash directory
+# Safe rm command with trash directory.
+#
+# usage: rm <file> [<file> ...]
+#
+# Removes directories as well as files. Removed files are stored in $trash_dir,
+# which is emptied by running
+#
+# $ empty_trash
+#
+# Handles filenames that contain spaces and/or start with '-' gracefully.
+# Creates backups when deleting identically-named files so that no files are
+# permanently removed until 'empty_trash' is run.
 
 trash_dir=/tmp/trash
 
@@ -86,6 +97,7 @@ safe_rm() {
     ! _trash_dir_is_ok && return 1
 
     for f in "$@"; do
+        # -e is false for broken symbolic links; hence the -h test
         if [[ ! -e $f && ! -h $f ]]; then
             _err_name "'$f' does not exist"
             return 1
