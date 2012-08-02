@@ -54,9 +54,9 @@ _usage() {
 #
 # $ empty_trash
 #
-# Handles filenames that contain spaces and/or start with '-' gracefully.
-# Creates backups when deleting identically-named files so that no files are
-# permanently removed until 'empty_trash' is run.
+# Handles filenames and paths that contain spaces and/or start with '-'
+# gracefully. Creates backups when deleting identically-named files so that no
+# files are permanently removed until 'empty_trash' is run.
 
 trash_dir=/tmp/trash
 
