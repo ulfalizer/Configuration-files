@@ -370,6 +370,28 @@ files() {
     command rm $tracefile
 }
 
+# Show where a shell function is defined. 'declare -F' can be used to list
+# functions.
+
+floc() {
+    local error
+
+    if [[ $# -ne 1 ]]; then
+        _usage "<function name>"
+        return 1
+    fi
+
+    shopt -s extdebug
+    declare -F "$1"
+    error=$?
+    [[ $error -ne 0 ]] && _err_name "no function called '$1' defined"
+    shopt -u extdebug
+    return $error
+}
+
+
+complete -A function floc
+
 # Git {{{
 
 alias ga="git add -u"
