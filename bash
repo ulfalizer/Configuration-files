@@ -187,7 +187,7 @@ _super_glob() {
 # Helper function. Passes its second to last argument to _super_glob() and lets
 # the user pick a file with a 'select' if many files match (otherwise, picks
 # the single matching file). The first argument is the select prompt to use.
-# The choosen file is returned in g_selected_file, which is unset if no files
+# The chosen file is returned in g_selected_file, which is unset if no files
 # match.
 
 _super_glob_select_file() {
