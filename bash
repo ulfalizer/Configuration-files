@@ -89,13 +89,6 @@ safe_rm() {
 
     local error
 
-    # Use the system's rm if we're running from an interactively source'd
-    # script or from another function
-    if [[ ${#FUNCNAME[@]} -gt 1 ]]; then
-        command rm "$@"
-        return $?
-    fi
-
     if [[ $# -eq 0 ]]; then
         _usage "<file> [<file> ...]"
         return 1
