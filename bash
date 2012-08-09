@@ -154,6 +154,17 @@ empty_trash() {
     fi
 }
 
+# Helper function. For files, cd's to the directory. For ordinary files, cd's
+# to the containing directory.
+
+_cd_to() {
+    if [[ -d $1 ]]; then
+        cd -- "$1"
+    else
+        cd -- "$(dirname -- "$1")"
+    fi
+}
+
 # Helper function. Expands a list of strings such as 'foo', 'bar', 'baz' into
 # the glob pattern **/*foo*/**/*bar*/**/*baz*, meaning it would match e.g.
 # afoo/d/bara/baz, and stores the matching file names in the array g_files. If
@@ -260,8 +271,8 @@ g() {
     grep -Iinr --exclude-dir=.git "${includes[@]}" -- "$pattern" .
 }
 
-# Jumps to a file matching a _super_glob() pattern. (For directories, cd's to
-# the directory. For ordinary files, cd's to the containing directory.)
+# Jumps to a file matching a _super_glob() pattern. For directories, cd's to
+# the directory. For ordinary files, cd's to the containing directory.
 
 j() {
     _super_glob_select_file "Where to jump: " "$@"
@@ -271,14 +282,22 @@ j() {
         return 1
     fi
 
-    # If $file is a directory, jump to it. Otherwise, jump to the directory
-    # containing $file.
+    _cd_to "$g_selected_file"
+}
 
-    if [[ -d $g_selected_file ]]; then
-        cd -- "$g_selected_file"
-    else
-        cd -- "$(dirname -- "$g_selected_file")"
+# Searches for files matching a _super_glob() pattern, jumps to the directory
+# (like for j()), and then opens the file for editing.
+
+je() {
+    _super_glob_select_file "File to jump to and edit: " "$@"
+
+    if [[ -z $g_selected_file ]]; then
+        _err_name "no files found"
+        return 1
     fi
+
+    _cd_to "$g_selected_file"
+    "$EDITOR" -- "$(basename -- "$g_selected_file")"
 }
 
 # Share history between sessions
