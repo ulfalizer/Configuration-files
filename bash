@@ -223,7 +223,7 @@ e() {
         return 1
     fi
 
-    $EDITOR -- "$g_selected_file"
+    "$EDITOR" -- "$g_selected_file"
 }
 
 # Lists files matching a _super_glob() pattern.
