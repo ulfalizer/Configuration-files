@@ -117,7 +117,7 @@ safe_rm() {
     mv -f --backup=numbered -- "$@" "$trash_dir"
     error=$?
     if [[ $error -ne 0 ]]; then
-        _err_name "failed to move files into '$trash_dir'"
+        _err_name "failed to move files into trash_dir (set to '$trash_dir')"
         return $error
     fi
 }
