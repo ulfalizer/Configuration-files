@@ -97,7 +97,7 @@ safe_rm() {
         return 1
     fi
 
-    ! _trash_dir_is_ok && return 1
+    _trash_dir_is_ok || return 1
 
     for f in "$@"; do
         # -e is false for broken symbolic links; hence the -h test
@@ -133,9 +133,9 @@ empty_trash() {
         return 1
     fi
 
-    ! _trash_dir_is_ok && return 1
+    _trash_dir_is_ok || return 1
 
-    [[ ! -e $trash_dir ]] && return 0
+    [[ -e $trash_dir ]] || return 0
 
     if [[ ! -w $(dirname -- "$trash_dir") ]]; then
         _err_name "cannot remove '$trash_dir': No write permissions for containing directory"
@@ -445,7 +445,7 @@ i() {
     else
         echo -n no
     fi
-    [[ ! -e $1 ]] && echo -n " (non-existent)"
+    [[ -e $1 ]] || echo -n " (non-existent)"
     echo
 }
 
