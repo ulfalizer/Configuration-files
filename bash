@@ -45,6 +45,9 @@ _usage() {
     _err "usage: ${FUNCNAME[$stack_index]} $1";
 }
 
+# Helper function. Checks if a program exists in the search path.
+_prg_exists() { hash -- "$1" 2>/dev/null; }
+
 # Safe rm command with trash directory.
 #
 # usage: rm <file> [<file> ...]
@@ -366,8 +369,13 @@ files() {
         return 1
     fi
 
+    if ! _prg_exists "$1"; then
+        _err_name "found no program called '$1'"
+        return 1
+    fi
+
     tracefile=$(mktemp)
-    strace -e trace=file -f -o $tracefile -- "$@"
+    strace -e trace=file -f -o "$tracefile" -- "$@"
 
     # Print the trace output after the regular output and remove some common
     # clutter
@@ -377,9 +385,9 @@ files() {
           -e '/lib/'             \
           -e '/proc/filesystems' \
           -e '/usr/share/locale' \
-          -e 'statfs.*selinux' < $tracefile
+          -e 'statfs.*selinux' < "$tracefile"
 
-    command rm $tracefile
+    command rm "$tracefile"
 }
 
 # Show where a shell function is defined. 'declare -F' can be used to list
