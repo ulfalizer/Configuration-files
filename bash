@@ -344,7 +344,7 @@ _asm() {
         return 1
     fi
     "$prefix"objdump -d "$ofile"
-    command rm "$ofile"
+    command rm -- "$ofile"
 }
 
 asm() {
@@ -387,7 +387,7 @@ files() {
           -e '/usr/share/locale' \
           -e 'statfs.*selinux' < "$tracefile"
 
-    command rm "$tracefile"
+    command rm -- "$tracefile"
 }
 
 # Show where a shell function is defined. 'declare -F' can be used to list
