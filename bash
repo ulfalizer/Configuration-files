@@ -413,7 +413,6 @@ floc() {
     return $error
 }
 
-
 complete -A function floc
 
 # Git {{{
