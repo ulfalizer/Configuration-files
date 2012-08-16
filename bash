@@ -35,14 +35,14 @@ _err() { echo "$1" 1>&2; }
 # (defaults to 1) is how far to look up the call stack for the name.
 _err_name() {
     local stack_index=${2-1}
-    _err "${FUNCNAME[$stack_index]}: $1";
+    _err "${FUNCNAME[$stack_index]}: $1"
 }
 
 # Helper function for printing a usage string. Second argument like for
 # _err_name().
 _usage() {
     local stack_index=${2-1}
-    _err "usage: ${FUNCNAME[$stack_index]} $1";
+    _err "usage: ${FUNCNAME[$stack_index]} $1"
 }
 
 # Helper function. Checks if a program exists in the search path.
