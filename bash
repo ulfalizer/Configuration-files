@@ -362,7 +362,8 @@ armasmnothumb() {
     _asm "arm-none-eabi-" "-O3 -mcpu=cortex-a8 -fomit-frame-pointer" "$@"
 }
 
-# Trace file access by a program
+# Trace file access by a program. Prints the trace separately after the
+# program's output once it has terminated.
 
 files() {
     local tracefile
