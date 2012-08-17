@@ -46,10 +46,7 @@ _usage() {
 }
 
 # Helper function. Checks if a program exists in the search path.
-_prg_exists() {
-    # Without the 'hash -t' check shell functions would be included
-    { hash -- "$1" && hash -t -- "$1"; } &>/dev/null
-}
+_prg_exists() { type -P -- "$1" >/dev/null; }
 
 # Safe rm command with trash directory.
 #
