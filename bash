@@ -296,6 +296,96 @@ je() {
     "$EDITOR" -- "$(basename -- "$g_selected_file")"
 }
 
+# Compiles a C/++ program from a single file using helpful (though perhaps
+# excessive for non-experimental stuff) GCC flags. Produces an optimized
+# executable with an _opt suffix and a debugging executable with no suffix.
+
+c() {
+    local c_warnings common_warnings compiler cpp_warnings file flags is_cpp
+    local c_opts cpp_opts
+
+    if [[ $# -ne 1 ]]; then
+        _usage "<source file>"
+        return 1
+    fi
+    file=$1
+    if [[ ! -e $file ]]; then
+        _err_name "'$file' does not exist"
+        return 1
+    fi
+
+    case $file in
+        *.cpp ) is_cpp=true ;;
+        *.c   ) is_cpp=false ;;
+        *     )
+            _err_name "unknown language for '$file'"
+            return 1
+            ;;
+    esac
+
+    # Warnings
+
+    common_warnings=(-Wall
+                     -Wconversion
+                     -Wdisabled-optimization
+                     -Wextra
+                     -Wformat=2
+                     -Winline
+                     -Wlogical-op
+                     -Wmissing-format-attribute
+                     -Wmissing-include-dirs
+                     -Wpacked
+                     -Wpadded
+                     -Winvalid-pch
+                     -Wredundant-decls
+                     -Wshadow
+                     -Wsuggest-attribute=const
+                     -Wsuggest-attribute=pure
+                     -Wsuggest-attribute=noreturn
+                     -Wundef
+                     -Wunused-parameter
+                     -Wwrite-strings)
+
+    c_warnings=("${common_warnings[@]}"
+                -Wjump-misses-init
+                -Wnested-externs)
+
+    cpp_warnings=("${common_warnings[@]}"
+                  -Woverloaded-virtual)
+
+    # Optimizations and code generation
+
+    c_opts=(-O3
+            # Assume loops terminate
+            -funsafe-loop-optimizations
+            # Allowable instruction set. Implies -mtune=i686.
+            -march=i686
+            -mssse3)
+
+    cpp_opts=("${c_opts[@]}"
+              # Assume enum types always have one of the enum values
+              # (roughly)
+              -fstrict-enums)
+
+    # Compilation
+
+    if $is_cpp; then
+        compiler=g++
+        flags=("${cpp_opts[@]}" "${cpp_warnings[@]}")
+    else
+        compiler=gcc
+        flags=("${c_opts[@]}" "${c_warnings[@]}")
+    fi
+
+    echo -en "Compiling '$file' with warnings and optimizations...\n\n" 1>&2
+    if ! "$compiler" -o "${file%.*}_opt" "${flags[@]}" "$file"; then
+        echo -en "\nCompilation of '$file' failed. Aborting.\n" 1>&2
+        return 1
+    fi
+    echo -en "\nCompiling '$file' with debugging information...\n\n" 1>&2
+    "$compiler" -o "${file%.*}" -ggdb3 "$file"
+}
+
 # Share history between sessions
 # (http://stackoverflow.com/questions/103944/real-time-history-export-amongst-bash-terminal-windows)
 
