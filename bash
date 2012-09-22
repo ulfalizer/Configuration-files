@@ -16,6 +16,8 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 alias ll="ls -l"
+# Lists most recently modified files last
+alias new="ls -lrt"
 
 # Preference variables
 
