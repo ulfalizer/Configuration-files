@@ -298,6 +298,17 @@ je() {
     "$EDITOR" -- "$(basename -- "$g_selected_file")"
 }
 
+# Creates a directory if it does not exist and jumps to it.
+
+mcd() {
+    if [[ $# -ne 1 ]]; then
+        _usage "<dir>"
+        return 1
+    fi
+
+    mkdir -p -- "$1" && cd -- "$1"
+}
+
 # Compiles a C/++ program from a single file using helpful (though perhaps
 # excessive for non-experimental stuff) GCC flags. Produces an optimized
 # executable with an _opt suffix and a debugging executable with no suffix.
