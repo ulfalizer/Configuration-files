@@ -469,6 +469,10 @@ asm() {
     _asm "" "-O3 -fomit-frame-pointer" "$@"
 }
 
+asm_noopt() {
+    _asm "" "-O0" "$@"
+}
+
 armasm() {
     _asm "arm-none-eabi-" "-O3 -mthumb -mcpu=cortex-a8 -fomit-frame-pointer" "$@"
 }
