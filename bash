@@ -316,7 +316,7 @@ mcd() {
 # TODO: Factor out compiler determination.
 
 c() {
-    local compiler file is_cpp
+    local compiler file
 
     if [[ $# -ne 1 ]]; then
         _usage "<source file>"
@@ -345,7 +345,7 @@ c() {
 # and runs it.
 
 r() {
-    local compiler file is_cpp
+    local compiler file
 
     if [[ $# -ne 1 ]]; then
         _usage "<source file>"
