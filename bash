@@ -313,6 +313,8 @@ mcd() {
 # executable with no suffix and an optimized -O3 executable with an _opt
 # suffix.
 
+# TODO: Factor out compiler determination.
+
 c() {
     local compiler file is_cpp
 
@@ -337,6 +339,35 @@ c() {
 
     "$compiler" -o "${file%.*}" -ggdb3 -Wall "$file" || return $?
     "$compiler" -o "${file%.*}_opt" -O3 -Wall "$file"
+}
+
+# Compiles a C/++ program debugging executable from a single file with -Wall
+# and runs it.
+
+r() {
+    local compiler file is_cpp
+
+    if [[ $# -ne 1 ]]; then
+        _usage "<source file>"
+        return 1
+    fi
+    file=$1
+    if [[ ! -e $file ]]; then
+        _err_name "'$file' does not exist"
+        return 1
+    fi
+
+    case $file in
+        *.cpp ) compiler=g++ ;;
+        *.c   ) compiler=gcc ;;
+        *     )
+            _err_name "unknown language for '$file'"
+            return 1
+            ;;
+    esac
+
+    "$compiler" -o "${file%.*}" -ggdb3 -Wall "$file" || return $?
+    ./"${file%.*}"
 }
 
 # Share history between sessions
