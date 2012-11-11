@@ -337,8 +337,8 @@ c() {
             ;;
     esac
 
-    "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" || return $?
-    "$compiler" -o "${file%.*}_opt" -O3 -Wall -Wno-unused-variable "$file"
+    "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" && \
+      "$compiler" -o "${file%.*}_opt" -O3 -Wall -Wno-unused-variable "$file"
 }
 
 # Compiles a C/++ program debugging executable from a single file with -Wall
@@ -367,7 +367,7 @@ r() {
     esac
 
     "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" && \
-        ./"${file%.*}"
+      ./"${file%.*}"
 }
 
 # Share history between sessions
