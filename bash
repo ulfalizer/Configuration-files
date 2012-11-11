@@ -3,7 +3,7 @@
 # This file is meant to be included from the main Bash configuration file
 
 # Reload configuration
-alias r=". ~/conf/bash"
+alias reload=". ~/conf/bash"
 
 # Misc. aliases
 
