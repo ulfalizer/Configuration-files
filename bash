@@ -337,8 +337,8 @@ c() {
             ;;
     esac
 
-    "$compiler" -o "${file%.*}" -ggdb3 -Wall "$file" || return $?
-    "$compiler" -o "${file%.*}_opt" -O3 -Wall "$file"
+    "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" || return $?
+    "$compiler" -o "${file%.*}_opt" -O3 -Wall -Wno-unused-variable "$file"
 }
 
 # Compiles a C/++ program debugging executable from a single file with -Wall
@@ -366,7 +366,7 @@ r() {
             ;;
     esac
 
-    "$compiler" -o "${file%.*}" -ggdb3 -Wall "$file" || return $?
+    "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" || return $?
     ./"${file%.*}"
 }
 
