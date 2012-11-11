@@ -384,12 +384,8 @@ _asm() {
     fi
 
     case $file in
-        *.cpp )
-            compiler=g++
-            ;;
-        *.c   )
-            compiler=gcc
-            ;;
+        *.cpp ) compiler=g++ ;;
+        *.c   ) compiler=gcc ;;
         *     )
             _err_name "unknown language for '$file'" 2
             return 1
