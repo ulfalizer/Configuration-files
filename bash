@@ -366,8 +366,8 @@ r() {
             ;;
     esac
 
-    "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" || return $?
-    ./"${file%.*}"
+    "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" && \
+        ./"${file%.*}"
 }
 
 # Share history between sessions
