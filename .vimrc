@@ -285,14 +285,6 @@ noremap <silent> <leader>t :Tabularize /=<CR>
 nnoremap <silent> <F2> :TlistToggle<CR>
 
 " }}}
-" Project-specific settings {{{
-
-if has("autocmd")
-    au user BufNewFile,BufReadPost */core-2-gogi/* setl noexpandtab
-    au user BufNewFile,BufReadPost */core-2-gogi/modules/webgl/* setl expandtab
-endif
-
-" }}}
 " Site-specific settings {{{
 
 if filereadable($HOME . "/conf/vimlocal")
