@@ -180,6 +180,43 @@ endfunc
 com! -nargs=1 -complete=customlist,s:Complete_bookmark -bang Go call s:GoFn(<f-args>, <bang>0)
 
 " }}}
+" Compiling and running C/C++ programs {{{
+
+" Compiles a single-file C/++ program, optionally running it if no errors are
+" produced (run), and optionally using Clang (use_clang)
+
+func! Compile(run, use_clang)
+    let f = expand("%")
+    if empty(f)
+        echoerr "No file bound to buffer"
+        return
+    endif
+    if &ft == "cpp"
+        let compiler = a:use_clang ? "clang++" : "g++"
+    elseif &ft == "c"
+        let compiler = a:use_clang ? "clang" : "gcc"
+    else
+        echoerr "Unknown language for '" . f . "'"
+        return
+    endif
+    let old_makeprg = &makeprg
+    let &makeprg = compiler . ' -o "%:r" -ggdb3 -Wall "%"'
+    make
+    let &makeprg = old_makeprg
+    if a:run && empty(getqflist())
+        !./"%:r"
+    endif
+    return
+endfunc
+
+" Compile using GCC and run
+nnoremap <F5> :call Compile(1, 0)<CR>
+" Compile using GCC
+nnoremap <F6> :call Compile(0, 0)<CR>
+" Compile using Clang
+nnoremap <F7> :call Compile(0, 1)<CR>
+
+" }}}
 " Windows and tab pages {{{
 
 set splitbelow
