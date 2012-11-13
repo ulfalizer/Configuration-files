@@ -200,7 +200,7 @@ func! Compile(run, use_clang)
         return
     endif
     let old_makeprg = &makeprg
-    let &makeprg = compiler . ' -o "%:r" -ggdb3 -Wall "%"'
+    let &makeprg = compiler . ' -o "%:r" -ggdb3 -Wall -Wno-unused-variable -Wno-unused-but-set-variable "%"'
     make
     let &makeprg = old_makeprg
     if a:run && empty(getqflist())

@@ -316,7 +316,7 @@ mcd() {
 # TODO: Factor out compiler determination.
 
 c() {
-    local compiler file
+    local compiler file warn_opts
 
     if [[ $# -ne 1 ]]; then
         _usage "<source file>"
@@ -337,8 +337,10 @@ c() {
             ;;
     esac
 
-    "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" && \
-      "$compiler" -o "${file%.*}_opt" -O3 -Wall -Wno-unused-variable "$file"
+    warn_opts="-Wall -Wno-unused-variable -Wno-unused-but-set-variable"
+
+    "$compiler" -o "${file%.*}" -ggdb3 $warn_opts "$file" && \
+      "$compiler" -o "${file%.*}_opt" -O3 $warn_opts "$file"
 }
 
 # Compiles a C/++ program debugging executable from a single file with -Wall
