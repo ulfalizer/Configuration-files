@@ -182,39 +182,52 @@ com! -nargs=1 -complete=customlist,s:Complete_bookmark -bang Go call s:GoFn(<f-a
 " }}}
 " Compiling and running C/C++ programs {{{
 
-" Compiles a single-file C/++ program, optionally running it if no errors are
-" produced (run), and optionally using Clang (use_clang)
+" Compiles a single-file C/C++ program, optionally running it if compilation
+" succeeds (run), and optionally using Clang (use_clang). Opens the quickfix
+" window and jumps to the first error or warning, if any.
 
 func! Compile(run, use_clang)
     let f = expand("%")
+    let f_esc = shellescape(f)
+    let f_root_esc = shellescape(expand("%:r"))
     if empty(f)
         echoerr "No file bound to buffer"
         return
     endif
+    " Determine compiler to use
     if &ft == "cpp"
         let compiler = a:use_clang ? "clang++" : "g++"
     elseif &ft == "c"
         let compiler = a:use_clang ? "clang" : "gcc"
     else
-        echoerr "Unknown language for '" . f . "'"
+        echoerr "Unknown language for '".f."'"
         return
     endif
-    let old_makeprg = &makeprg
-    let &makeprg = compiler . ' -o "%:r" -ggdb3 -Wall -Wno-unused-variable -Wno-unused-but-set-variable "%"'
-    make
-    let &makeprg = old_makeprg
-    if a:run && empty(getqflist())
-        !./"%:r"
+    " Always write before compiling
+    w
+    " Compile and create quickfix list of errors and warnings
+    cexpr system(compiler." -o ".f_root_esc.
+               \ " -ggdb3 -Wall -Wno-unused-variable -Wno-unused-but-set-variable ".
+               \ f_esc)
+    " Run the program if the compilation succeeded
+    if a:run && v:shell_error == 0
+        exec "!./".f_root_esc
     endif
-    return
+    " Open the quickfix window if there are errors or warnings. Close it
+    " otherwise.
+    cw
+    " If we are in the quickfix window, press enter to jump to the first error
+    if &buftype == "quickfix"
+        exec "normal \<CR>"
+    endif
 endfunc
 
 " Compile using GCC and run
-nnoremap <F5> :call Compile(1, 0)<CR>
+nnoremap <silent> <F5> :call Compile(1, 0)<CR>
 " Compile using GCC
-nnoremap <F6> :call Compile(0, 0)<CR>
+nnoremap <silent> <F6> :call Compile(0, 0)<CR>
 " Compile using Clang
-nnoremap <F7> :call Compile(0, 1)<CR>
+nnoremap <silent> <F7> :call Compile(0, 1)<CR>
 
 " }}}
 " Windows and tab pages {{{
