@@ -224,10 +224,12 @@ endfunc
 
 " Compile using GCC and run
 nnoremap <silent> <F5> :call Compile(1, 0)<CR>
+" Compile using Clang and run
+nnoremap <silent> <F6> :call Compile(1, 1)<CR>
 " Compile using GCC
-nnoremap <silent> <F6> :call Compile(0, 0)<CR>
+nnoremap <silent> <F7> :call Compile(0, 0)<CR>
 " Compile using Clang
-nnoremap <silent> <F7> :call Compile(0, 1)<CR>
+nnoremap <silent> <F8> :call Compile(0, 1)<CR>
 
 " }}}
 " Windows and tab pages {{{
