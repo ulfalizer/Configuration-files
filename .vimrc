@@ -206,9 +206,9 @@ func! Compile(run, use_clang)
     " Always write before compiling
     w
     " Compile and create quickfix list of errors and warnings
-    cexpr system(compiler." -o ".f_root_esc.
-               \ " -ggdb3 -Wall -Wno-unused-variable -Wno-unused-but-set-variable ".
-               \ f_esc)
+    silent cexpr system(compiler." -o ".f_root_esc.
+      \ " -ggdb3 -Wall -Wno-unused-variable -Wno-unused-but-set-variable ".
+      \ f_esc)
     " Run the program if the compilation succeeded
     if a:run && v:shell_error == 0
         exec "!./".f_root_esc
