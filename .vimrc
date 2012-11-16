@@ -223,13 +223,19 @@ func! Compile(run, use_clang)
 endfunc
 
 " Compile using GCC and run
-nnoremap <silent> <F5> :call Compile(1, 0)<CR>
+noremap <silent> <special> <F5> :call Compile(1, 0)<CR>
 " Compile using Clang and run
-nnoremap <silent> <F6> :call Compile(1, 1)<CR>
+noremap <silent> <special> <F6> :call Compile(1, 1)<CR>
 " Compile using GCC
-nnoremap <silent> <F7> :call Compile(0, 0)<CR>
+noremap <silent> <special> <F7> :call Compile(0, 0)<CR>
 " Compile using Clang
-nnoremap <silent> <F8> :call Compile(0, 1)<CR>
+noremap <silent> <special> <F8> :call Compile(0, 1)<CR>
+
+" Allow the same mappings to be used in insert mode
+imap <special> <F5> <ESC><F5>
+imap <special> <F6> <ESC><F6>
+imap <special> <F7> <ESC><F7>
+imap <special> <F8> <ESC><F8>
 
 " }}}
 " Windows and tab pages {{{
