@@ -372,6 +372,25 @@ r() {
       ./"${file%.*}"
 }
 
+# Creates a tags file in the current directory for the standard include
+# directories
+
+make_include_tags() {
+    if [[ $# -gt 0 ]]; then
+        _usage "(no arguments)"
+        return 1
+    fi
+
+    # Include filenames, qualified names, and declarations. Treat filenames with
+    # no extension as C++ headers. Exclude C++ stuff from old libstdc++
+    # versions. Use line numbers (-n) as system headers seldom change.
+    ctags --langmap=c++:+. -h+. \
+          --extra=fq --c++-kinds=+p \
+          -I_GLIBCXX_VISIBILITY+ \
+          -n --links=no --exclude='*c++/4.5*' -R \
+          /usr/include /usr/local/include
+}
+
 # Share history between sessions
 # (http://stackoverflow.com/questions/103944/real-time-history-export-amongst-bash-terminal-windows)
 
