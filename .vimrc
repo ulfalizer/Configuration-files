@@ -57,8 +57,6 @@ endif
 " No annoying beeps
 set vb t_vb=
 
-set completeopt-=menu
-
 set autoread
 
 " }}}
@@ -83,7 +81,6 @@ set fileencodings=utf-8
 " Line length, wrapping, etc. {{{
 
 set wrap
-set textwidth=0
 set linebreak
 
 " Avoid J and gq inserting two spaces after .
@@ -326,17 +323,6 @@ let g:alternateNoDefaultAlternate = 1
 
 " Include branch name in status line
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-
-" NERD commenter
-
-" Supertab
-
-let g:SuperTabDefaultCompletionType = "context"
-
-" Tabular
-
-" Aligning assignments
-noremap <silent> <leader>t :Tabularize /=<CR>
 
 " Taglist
 
