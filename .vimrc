@@ -6,34 +6,14 @@ if has("autocmd")
     augroup end
 endif
 
+filetype plugin indent on
 set nocompatible
 
-let mapleader=","
+" Generic settings {{{
+" Editing {{{
 
-" Syntax highlighting and file type plugins {{{
-
-syntax enable
-filetype plugin indent on
-
-" Highlight space errors
-
-let c_space_errors = 1
-let python_space_error_highlight = 1
-
-" Default to highlighting sh scripts as Bash
-let g:is_bash = 1
-
-" Color scheme
-
-if has("gui_running")
-    silent! colorscheme oceandeep
-elseif &t_Co >= 256
-    silent! colorscheme molokai
-endif
-
-" }}}
-" Indentation {{{
-
+set autoread
+set backspace=indent,eol,start
 " C++ access specifiers in first column
 set cinoptions+=g0
 " Line up expressions/declarations with parenthesis split across multiple lines
@@ -41,46 +21,21 @@ set cinoptions+=g0
 set cinoptions+=(0
 " Do not indent 'case' inside of switch statements
 set cinoptions+=:0
-
-" }}}
-" Editing {{{
-
-set autoread
-set backspace=indent,eol,start
-" Remember undo history when switching between files
+set encoding=utf-8
+set fileencodings=utf-8
+set history=100
+let mapleader=","
+set mouse=a
+" Avoid J and gq inserting two spaces after .
+set nojoinspaces
 if v:version > 702
+    " Remember undo history when switching between files
     set undofile
 endif
 " No annoying beeps
 set vb t_vb=
 
-" }}}
-" Searching {{{
-
-set hlsearch
-set ignorecase
-set incsearch
-set smartcase
-set wrapscan
-
-" }}}
-" Encoding and file formats {{{
-
-set encoding=utf-8
-set fileencodings=utf-8
-
-" }}}
-" Line length, wrapping, etc. {{{
-
-set display=lastline
-set linebreak
-" Avoid J and gq inserting two spaces after .
-set nojoinspaces
-set showbreak=_
-set wrap
-
-" }}}
-" Tab settings {{{
+" Tab settings
 
 set expandtab
 
@@ -100,6 +55,19 @@ Tab 4
 " }}}
 " Navigation {{{
 
+set nostartofline
+set scrolloff=5
+
+" Searching
+
+set hlsearch
+set ignorecase
+set incsearch
+set smartcase
+set wrapscan
+
+" Folding
+
 " Fold at blocks delimited by {{{ and }}}
 set foldmethod=marker
 " Start with all folds expanded
@@ -109,9 +77,6 @@ endif
 " Use right mouse button to open/close folds in the GUI
 nnoremap <special> <RightMouse> <LeftMouse>za
 nnoremap <special> <2-RightMouse> za
-
-set nostartofline
-set scrolloff=5
 
 " Quickfix
 
@@ -164,8 +129,89 @@ endfunc
 
 com! -nargs=1 -complete=customlist,s:Complete_bookmark -bang Go call s:GoFn(<f-args>, <bang>0)
 
+" Tags
+
+" Search upwards for a file called 'tags'
+set tags=tags;
+
+func! s:Rebuild_tags()
+    if filereadable("maketags")
+        !./maketags
+    else
+        !ctags --languages=C,C++,Make --langmap=C++:+.inl
+             \ --extra=fq --c-kinds=+p --c++-kinds=+p -R .
+    endif
+endfunc
+
+com! Ctags call s:Rebuild_tags()
+
+nnoremap <special> <space> <C-]>
+nnoremap <silent> <special> <2-LeftMouse> :tag <C-R>=expand("<cword>")<CR><CR>
+nnoremap <silent> <special> <MiddleMouse> :pop<CR>
+
+nnoremap <silent> <special> <left> :silent tp<CR>
+nnoremap <silent> <special> <right> :silent tn<CR>
+
+" Always display the status line
+set laststatus=2
+set splitbelow
+set splitright
+
+" Quickly jump between windows
+
+noremap <special> <c-j> <c-w><c-j>
+noremap <special> <c-k> <c-w><c-k>
+noremap <special> <c-h> <c-w><c-h>
+noremap <special> <c-l> <c-w><c-l>
+
 " }}}
-" Compiling and running C/C++ programs {{{
+" Presentation {{{
+
+" Syntax highlighting
+
+syntax enable
+
+" Color scheme
+
+if has("gui_running")
+    silent! colorscheme oceandeep
+elseif &t_Co >= 256
+    silent! colorscheme molokai
+endif
+
+" Highlight space errors
+
+let c_space_errors = 1
+let python_space_error_highlight = 1
+
+" Default to highlighting sh scripts as Bash
+let g:is_bash = 1
+
+" Line wrapping
+
+set display=lastline
+set linebreak
+set showbreak=_
+set wrap
+
+" Remove menubar, toolbar, and scrollbars in GUI
+
+set guioptions-=m
+set guioptions-=T
+set guioptions-=r
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
+set guioptions-=b
+set guitablabel=%f
+
+set fillchars=vert:\ ,fold:\ 
+set shortmess+=I
+set showcmd
+
+" }}}
+" }}}
+" Development {{{
 
 " Compiles a single-file C/C++ program, optionally running it if compilation
 " succeeds (run), and optionally using Clang (use_clang). Opens the quickfix
@@ -223,78 +269,9 @@ imap <special> <F7> <ESC><F7>
 imap <special> <F8> <ESC><F8>
 
 " }}}
-" Windows and tab pages {{{
-
-" Always display the status line
-set laststatus=2
-set splitbelow
-set splitright
-
-" Quickly jump between windows
-
-noremap <special> <c-j> <c-w><c-j>
-noremap <special> <c-k> <c-w><c-k>
-noremap <special> <c-h> <c-w><c-h>
-noremap <special> <c-l> <c-w><c-l>
-
-" }}}
-" Tags {{{
-
-" Search upwards for a file called 'tags'
-set tags=tags;
-
-" Rebuilding tags
-
-func! s:Rebuild_tags()
-    if filereadable("maketags")
-        !./maketags
-    else
-        !ctags --languages=C,C++,Make --langmap=C++:+.inl
-             \ --extra=fq --c-kinds=+p --c++-kinds=+p -R .
-    endif
-endfunc
-
-com! Ctags call s:Rebuild_tags()
-
-" Jumping to tags
-
-nnoremap <special> <space> <C-]>
-nnoremap <silent> <special> <2-LeftMouse> :tag <C-R>=expand("<cword>")<CR><CR>
-nnoremap <silent> <special> <MiddleMouse> :pop<CR>
-
-nnoremap <silent> <special> <left> :silent tp<CR>
-nnoremap <silent> <special> <right> :silent tn<CR>
-
-" }}}
-" GUI settings {{{
-
-" Remove menubar, toolbar, and scrollbars
-
-set guioptions-=m
-set guioptions-=T
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
-set guioptions-=b
-set guitablabel=%f
-
-" }}}
-" Misc settings {{{
-
-set fillchars=vert:\ ,fold:\ 
-set history=100
-set mouse=a
-set shortmess+=I
-set showcmd
-
-" }}}
-" Man pages {{{
+" Plugins {{{
 
 runtime! ftplugin/man.vim
-
-" }}}
-" Plugins {{{
 
 " Alternate
 
@@ -310,14 +287,14 @@ set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 nnoremap <silent> <special> <F2> :TlistToggle<CR>
 
 " }}}
-" Site-specific settings {{{
+
+" Site-specific settings
 
 if filereadable($HOME . "/conf/vimlocal")
     so ~/conf/vimlocal
 endif
 
-" }}}
-" .vimrc reloading {{{
+" .vimrc reloading
 
 com! Reload so $MYVIMRC
 
@@ -325,5 +302,3 @@ com! Reload so $MYVIMRC
 if has("autocmd")
     au user bufwritepost .vimrc,_vimrc so $MYVIMRC
 endif
-
-" }}}
