@@ -36,40 +36,32 @@ endif
 
 " C++ access specifiers in first column
 set cinoptions+=g0
-
 " Line up expressions/declarations with parenthesis split across multiple lines
 " nicely
 set cinoptions+=(0
-
 " Do not indent 'case' inside of switch statements
 set cinoptions+=:0
 
 " }}}
 " Editing {{{
 
+set autoread
 set backspace=indent,eol,start
-
 " Remember undo history when switching between files
 if v:version > 702
     set undofile
 endif
-
 " No annoying beeps
 set vb t_vb=
-
-set autoread
 
 " }}}
 " Searching {{{
 
-set wrapscan
-
-set incsearch
-
 set hlsearch
-
 set ignorecase
+set incsearch
 set smartcase
+set wrapscan
 
 " }}}
 " Encoding and file formats {{{
@@ -80,15 +72,12 @@ set fileencodings=utf-8
 " }}}
 " Line length, wrapping, etc. {{{
 
-set wrap
+set display=lastline
 set linebreak
-
 " Avoid J and gq inserting two spaces after .
 set nojoinspaces
-
 set showbreak=_
-
-set display=lastline
+set wrap
 
 " }}}
 " Tab settings {{{
@@ -121,9 +110,8 @@ endif
 nnoremap <RightMouse> <LeftMouse>za
 nnoremap <2-RightMouse> za
 
-set scrolloff=5
-
 set nostartofline
+set scrolloff=5
 
 " Quickfix
 
@@ -237,6 +225,8 @@ imap <special> <F8> <ESC><F8>
 " }}}
 " Windows and tab pages {{{
 
+" Always display the status line
+set laststatus=2
 set splitbelow
 set splitright
 
@@ -246,9 +236,6 @@ nnoremap <c-j> <c-w><c-j>
 nnoremap <c-k> <c-w><c-k>
 nnoremap <c-h> <c-w><c-h>
 nnoremap <c-l> <c-w><c-l>
-
-" Always display the status line
-set laststatus=2
 
 " }}}
 " Tags {{{
@@ -285,27 +272,21 @@ nnoremap <silent> <right> :silent tn<CR>
 
 set guioptions-=m
 set guioptions-=T
-
 set guioptions-=r
 set guioptions-=R
 set guioptions-=l
 set guioptions-=L
 set guioptions-=b
-
 set guitablabel=%f
 
 " }}}
 " Misc settings {{{
 
-set mouse=a
-
-set showcmd
-
 set fillchars=vert:\ ,fold:\ 
-
 set history=100
-
+set mouse=a
 set shortmess+=I
+set showcmd
 
 " }}}
 " Man pages {{{
