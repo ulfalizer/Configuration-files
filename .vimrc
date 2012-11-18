@@ -50,7 +50,7 @@ endfunc
 com! -nargs=1 Tab call s:Adjust_tablen(<f-args>)
 
 " Default
-Tab 4
+au user BufNewFile,BufReadPre * Tab 4
 
 " }}}
 " Navigation {{{
@@ -263,10 +263,15 @@ noremap <silent> <special> <F7> :call Compile(0, 0)<CR>
 noremap <silent> <special> <F8> :call Compile(0, 1)<CR>
 
 " Allow the same mappings to be used in insert mode
+
 imap <special> <F5> <ESC><F5>
 imap <special> <F6> <ESC><F6>
 imap <special> <F7> <ESC><F7>
 imap <special> <F8> <ESC><F8>
+
+" Format settings for system headers
+
+au user BufReadPre /usr/include/*,/usr/local/include Tab 8
 
 " }}}
 " Plugins {{{
@@ -300,5 +305,5 @@ com! Reload so $MYVIMRC
 
 " Reload .vimrc automatically when saved
 if has("autocmd")
-    au user bufwritepost .vimrc,_vimrc so $MYVIMRC
+    au user BufWritePost .vimrc,_vimrc so $MYVIMRC
 endif
