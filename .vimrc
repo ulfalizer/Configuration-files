@@ -82,7 +82,20 @@ nnoremap <special> <2-RightMouse> za
 nnoremap <silent> <special> <s-left> :cp<CR>
 nnoremap <silent> <special> <s-right> :cn<CR>
 
-" Bookmarks
+" Simple bookmarking system. Reads a dictionary of bookmarks 'bookmarks' from
+" ~/.vimbookmarks . The key of each dictionary entry is the bookmark name. The
+" corresponding value specifies a location for the bookmark and takes one of
+" two forms:
+"
+" 1) A filename as a string. In this case the bookmark is for the beginning of
+"    the file.
+"
+" 2) A list containing a filename and a search pattern as strings. In this
+"    case the bookmark is for the first line in the file containing the search
+"    pattern.
+"
+" The interface is the ':Go <bookmark>' command, which supports completion on
+" bookmarks.
 
 func! s:GoFn(where, has_exclamation)
     if !filereadable($HOME . "/.vimbookmarks")
@@ -270,6 +283,8 @@ imap <special> <F8> <ESC><F8>
 
 " Format settings for system headers
 
+" Disable highlighting for space errors in system headers, as they are very
+" common. :/
 au user BufReadPre /usr/include/*,/usr/local/include/*
   \ Tab 8 |
   \ hi! link cSpaceError NONE
