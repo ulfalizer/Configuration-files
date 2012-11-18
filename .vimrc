@@ -107,16 +107,16 @@ if has("autocmd")
     au user BufNewFile,BufReadPost * setl foldlevel=100
 endif
 " Use right mouse button to open/close folds in the GUI
-nnoremap <RightMouse> <LeftMouse>za
-nnoremap <2-RightMouse> za
+nnoremap <special> <RightMouse> <LeftMouse>za
+nnoremap <special> <2-RightMouse> za
 
 set nostartofline
 set scrolloff=5
 
 " Quickfix
 
-nnoremap <silent> <s-left> :cp<CR>
-nnoremap <silent> <s-right> :cn<CR>
+nnoremap <silent> <special> <s-left> :cp<CR>
+nnoremap <silent> <special> <s-right> :cn<CR>
 
 " Bookmarks
 
@@ -232,10 +232,10 @@ set splitright
 
 " Quickly jump between windows
 
-nnoremap <c-j> <c-w><c-j>
-nnoremap <c-k> <c-w><c-k>
-nnoremap <c-h> <c-w><c-h>
-nnoremap <c-l> <c-w><c-l>
+noremap <special> <c-j> <c-w><c-j>
+noremap <special> <c-k> <c-w><c-k>
+noremap <special> <c-h> <c-w><c-h>
+noremap <special> <c-l> <c-w><c-l>
 
 " }}}
 " Tags {{{
@@ -258,12 +258,12 @@ com! Ctags call s:Rebuild_tags()
 
 " Jumping to tags
 
-nnoremap <space> <C-]>
-nnoremap <silent> <2-LeftMouse> :tag <C-R>=expand("<cword>")<CR><CR>
-nnoremap <silent> <MiddleMouse> :pop<CR>
+nnoremap <special> <space> <C-]>
+nnoremap <silent> <special> <2-LeftMouse> :tag <C-R>=expand("<cword>")<CR><CR>
+nnoremap <silent> <special> <MiddleMouse> :pop<CR>
 
-nnoremap <silent> <left> :silent tp<CR>
-nnoremap <silent> <right> :silent tn<CR>
+nnoremap <silent> <special> <left> :silent tp<CR>
+nnoremap <silent> <special> <right> :silent tn<CR>
 
 " }}}
 " GUI settings {{{
@@ -307,7 +307,7 @@ set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 " Taglist
 
-nnoremap <silent> <F2> :TlistToggle<CR>
+nnoremap <silent> <special> <F2> :TlistToggle<CR>
 
 " }}}
 " Site-specific settings {{{
