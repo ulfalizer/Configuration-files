@@ -44,7 +44,6 @@ func! s:Adjust_tablen(len)
     " Make backspace behave as if real tabs were used
     let &softtabstop = a:len
     let &shiftwidth  = a:len
-    retab
 endfunc
 
 com! -nargs=1 Tab call s:Adjust_tablen(<f-args>)
