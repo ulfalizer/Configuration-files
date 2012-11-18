@@ -271,7 +271,7 @@ imap <special> <F8> <ESC><F8>
 
 " Format settings for system headers
 
-au user BufReadPre /usr/include/*,/usr/local/include Tab 8
+au user BufReadPre /usr/include/*,/usr/local/include/* Tab 8
 
 " }}}
 " Plugins {{{
