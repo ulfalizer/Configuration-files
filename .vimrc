@@ -285,9 +285,10 @@ imap <special> <F8> <ESC><F8>
 
 " Disable highlighting for space errors in system headers, as they are very
 " common. :/
-au user BufReadPre /usr/include/*,/usr/local/include/*
+au user BufReadPost /usr/include/*,/usr/local/include/*
   \ Tab 8 |
-  \ hi! link cSpaceError NONE
+  \ hi! link cSpaceError NONE |
+  \ if expand("%") =~ '\w+' | set ft=cpp | endif
 
 " }}}
 " Plugins {{{
