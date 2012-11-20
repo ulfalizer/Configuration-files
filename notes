@@ -18,3 +18,5 @@ libstdc++ debug info on Ubuntu 12.04 i386:
  * Need to map paths in libstdc++6-4.6-dbg's debug info to the source directory.
    Absolute paths can be fixed with 'set substitute-path'. How do you deal with
    relative paths?
+
+   - Relative paths use per-object-file directory (DW_AT_comp_dir).
