@@ -1,0 +1,20 @@
+libstdc++ debug info on Ubuntu 12.04 i386:
+
+ * /usr/share/gcc-4.6/python or equivalent needs to be added to PYTHONPATH to
+   get STL debugging working.
+
+ * libstdc++6-4.6-dbg only includes debug info and not the libstdc++ sources.
+   Might need to get those from gcc-4.6.3.
+
+   - Need to build libstdc++ to get source files in the right locations (in the
+     build directory). The layout differs from that in the gcc source dir, and
+     perhaps files are generated as well.
+
+   - Install gcc-4.6.3 dependencies:
+     $ sudo apt-get install libgmp3c2 libmpfr-dev libmpc-dev libc6-dev flex bison
+
+   - Look into 'apt-get source' as an alternative. Might include patches, etc.
+
+ * Need to map paths in libstdc++6-4.6-dbg's debug info to the source directory.
+   Absolute paths can be fixed with 'set substitute-path'. How do you deal with
+   relative paths?
