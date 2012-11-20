@@ -19,4 +19,4 @@ libstdc++ debug info on Ubuntu 12.04 i386:
    Absolute paths can be fixed with 'set substitute-path'. How do you deal with
    relative paths?
 
-   - Relative paths use per-object-file directory (DW_AT_comp_dir).
+   - Relative paths use per-object-file directory (DW_AT_comp_dir; see also DW_AT_name).
