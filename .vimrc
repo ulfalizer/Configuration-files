@@ -316,6 +316,10 @@ if filereadable($HOME . "/conf/vimlocal")
     so ~/conf/vimlocal
 endif
 
+au user BufReadPost ~/conf/bashlocal set ft=sh
+au user BufReadPost ~/conf/gdblocal set ft=gdb
+au user BufReadPost ~/conf/vimlocal set ft=vim
+
 " .vimrc reloading
 
 com! Reload so $MYVIMRC
