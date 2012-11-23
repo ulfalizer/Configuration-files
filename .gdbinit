@@ -11,3 +11,7 @@ end
 set print object
 set print pretty
 set print vtbl
+
+# Site-specific settings
+
+source ~/conf/gdblocal
