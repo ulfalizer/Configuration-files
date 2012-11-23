@@ -1,4 +1,5 @@
 Personal configuration files. (Who'd use someone else's configuration anyway?)
+Assumes installation in ~/conf, with links from e.g. ~/.vimrc to ~/conf/.vimrc .
 
  - Safe 'rm' command with trash directory.
  - Shared history between Bash sessions (thanks Stack Overflow!).
