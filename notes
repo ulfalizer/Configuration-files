@@ -20,3 +20,11 @@ libstdc++ debug info on Ubuntu 12.04 i386:
    relative paths?
 
    - Relative paths use per-object-file directory (DW_AT_comp_dir; see also DW_AT_name).
+
+Debug info on Gentoo:
+
+ * http://www.gentoo.org/proj/en/qa/backtraces.xml
+ * installsources, splitdebug
+ * FEATURES=installsources, FEATURES=nostrip
+ * /usr/debug
+ * debugedit fixes up paths
