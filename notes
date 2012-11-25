@@ -28,3 +28,7 @@ Debug info on Gentoo:
  * FEATURES=installsources, FEATURES=nostrip
  * /usr/debug
  * debugedit fixes up paths
+
+File I/O optimization:
+
+ * posix_fadvice and linked man pages
