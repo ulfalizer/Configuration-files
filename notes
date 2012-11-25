@@ -32,3 +32,8 @@ Debug info on Gentoo:
 File I/O optimization:
 
  * posix_fadvice and linked man pages
+
+C89 spec:
+
+ * http://flash-gordon.me.uk/ansi.c.txt
+ * http://web.archive.org/web/20050207005628/http://dev.unicals.com/papers/c89-draft.html
