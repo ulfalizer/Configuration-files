@@ -382,14 +382,15 @@ make_include_tags() {
     fi
 
     # Include filenames, qualified names, and declarations. Treat filenames
-    # with no extension or a .tcc extension as C++ headers. Exclude C++ stuff
-    # from old libstdc++ versions. Use line numbers (-n) as system headers
-    # seldom change.
+    # with no extension or a .tcc extension as C++ headers. Exclude Qt stuff
+    # and C++ stuff from old libstdc++ versions. Use line numbers (-n) as
+    # system headers seldom change.
     ctags --langmap=c++:+..tcc -h+..tcc \
           --extra=fq --c++-kinds=+p \
           -I_GLIBCXX_VISIBILITY+ \
-          -n --links=no --exclude='*c++/4.5*' -R \
-          /usr/include /usr/local/include
+          -n --links=no \
+          --exclude='*c++/4.5*' --exclude='*/qt4/*' \
+          -R /usr/include /usr/local/include
 }
 
 # Share history between sessions
