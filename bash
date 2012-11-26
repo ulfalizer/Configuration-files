@@ -349,8 +349,8 @@ c() {
 r() {
     local compiler file
 
-    if [[ $# -ne 1 ]]; then
-        _usage "<source file>"
+    if [[ $# -eq 0 ]]; then
+        _usage "<source file> [<argument> ...]"
         return 1
     fi
     file=$1
@@ -369,7 +369,7 @@ r() {
     esac
 
     "$compiler" -o "${file%.*}" -ggdb3 -Wall -Wno-unused-variable "$file" && \
-      ./"${file%.*}"
+      ./"${file%.*}" "${@:2}"
 }
 
 # Creates a tags file in the current directory for the standard include
