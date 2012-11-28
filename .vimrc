@@ -322,6 +322,7 @@ func! s:DebugFn(enable)
     " Always close a previous session
     nbclose
     silent! unmap b
+    silent! unmap B
     silent! unmap c
     silent! unmap f
     silent! unmap G
