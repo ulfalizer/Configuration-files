@@ -227,7 +227,8 @@ set showcmd
 
 " Compiles a single-file C/C++ program, optionally running it if compilation
 " succeeds (run), and optionally using Clang (use_clang). Opens the quickfix
-" window and jumps to the first error or warning, if any.
+" window and jumps to the first error or warning, if any. Returns 1 if the
+" compilation succeeded; otherwise returns 0.
 
 func! Compile(run, use_clang)
     let f = expand("%")
@@ -235,7 +236,7 @@ func! Compile(run, use_clang)
     let f_root_esc = shellescape(expand("%:r"))
     if empty(f)
         echoerr "No file bound to buffer"
-        return
+        return 0
     endif
     " Determine compiler to use
     if &ft == "cpp"
@@ -244,7 +245,7 @@ func! Compile(run, use_clang)
         let compiler = a:use_clang ? "clang" : "gcc"
     else
         echoerr "Unknown language for '".f."'"
-        return
+        return 0
     endif
     " Always write before compiling
     w
@@ -252,8 +253,9 @@ func! Compile(run, use_clang)
     silent cexpr system(compiler." -o ".f_root_esc.
       \ " -ggdb3 -Wall -Wno-unused-variable -Wno-unused-but-set-variable ".
       \ f_esc)
+    let comp_successful = (v:shell_error == 0)
     " Run the program if the compilation succeeded
-    if a:run && v:shell_error == 0
+    if a:run && comp_successful
         exec "!./".f_root_esc
     endif
     " Open the quickfix window if there are errors or warnings. Close it
@@ -263,6 +265,7 @@ func! Compile(run, use_clang)
     if &buftype == "quickfix"
         exec "normal \<CR>"
     endif
+    return comp_successful
 endfunc
 
 " Compile using GCC and run
@@ -303,6 +306,66 @@ let g:alternateNoDefaultAlternate = 1
 
 " Include branch name in status line
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+
+" Pyclewn
+
+let g:pyclewn_args = "--args=-q --gdb=async --terminal=gnome-terminal,-x --window=bottom"
+" Uncomment for debugging:
+"let g:pyclewn_args .= " --file=pyclewnlog"
+"let g:pyclewn_args .= " -ldebug"
+
+" Starts debugging the current file with pyclewn. If compilation fails, acts
+" like Compile(). Debugging files with special characters seems to be broken,
+" but it's probably pyclewn's fault.
+
+func! s:DebugFn(enable)
+    " Always close a previous session
+    nbclose
+    silent! unmap b
+    silent! unmap c
+    silent! unmap f
+    silent! unmap G
+    silent! unmap m
+    silent! unmap r
+    silent! unmap s
+    silent! unmap S
+    silent! unmap <special> <up>
+    silent! unmap <special> <down>
+    if !a:enable
+        return
+    endif
+
+    " Compile with GCC without running
+    if !Compile(0, 0)
+        " Do not start pyclewn if compilation failed
+        return
+    endif
+    " Start pyclewn, load debug symbols, and set up mappings
+    Pyclewn
+    exe "Cfile " . fnameescape(expand("%:r"))
+
+    noremap <silent> <special> b :exe "Cbreak ".fnameescape(expand("%:p")).":".line(".")<CR>
+    noremap <silent> <special> B :exe "Cclear ".fnameescape(expand("%:p")).":".line(".")<CR>
+    noremap <silent> <special> c :Ccontinue<CR>
+    noremap <silent> <special> f :Cfinish<CR>
+    " Mnemonic: goto
+    noremap <silent> <special> G :exe "Cuntil ".fnameescape(expand("%:p")).":".line(".")<CR>
+    " Mnemonic: main
+    noremap <silent> <special> m :Cstart<CR>
+    noremap <silent> <special> r :Crun<CR>
+    noremap <silent> <special> s :Cnext<CR>
+    noremap <silent> <special> S :Cstep<CR>
+    noremap <silent> <special> <up> :Cup<CR>
+    noremap <silent> <special> <down> :Cdown<CR>
+    " We could do a 'start' here to be a bit more convenient, but for some
+    " reason it will sometimes execute before the 'file'. Sleeping for a while
+    " seems to fix it but is annoying.
+endfunc
+
+com! Debug call s:DebugFn(1)
+com! Nodebug call s:DebugFn(0)
+noremap <silent> <special> <F9> :Debug<CR>
+noremap <silent> <special> <F10> :Nodebug<CR>
 
 " Taglist
 
