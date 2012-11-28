@@ -375,6 +375,7 @@ r() {
 # Suppress the GDB introductory and copyright message
 
 alias gdb="gdb -q"
+alias cgdb="cgdb -q"
 
 # Creates a tags file in the current directory for the standard include
 # directories
