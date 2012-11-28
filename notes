@@ -1,7 +1,7 @@
 libstdc++ debug info on Ubuntu 12.04 i386:
 
  * /usr/share/gcc-4.6/python or equivalent needs to be added to PYTHONPATH to
-   get STL debugging working.
+   get STL debugging working. Should be added to .profile so gVim picks it up.
 
  * libstdc++6-4.6-dbg only includes debug info and not the libstdc++ sources.
    Might need to get those from gcc-4.6.3.
