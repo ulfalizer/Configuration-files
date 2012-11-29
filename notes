@@ -61,3 +61,11 @@ iostream types:
 
  * streamsize and streamoff can be converted to each other. pos_type and
    off_type can be converted to each other.
+
+ * "Stream operations that return a value type traits::pos_type return
+   P(O(-1)) [fpos<mbstate_t>(streamoff(-1))] as an invalid value
+   to signal an error."
+
+   - Okay to compare against -1 to check for error, since
+     fpos<mbstate_t>(streamoff(-1)) is guaranteed to be convert to a streamoff
+     with the value -1 (27.4.3.2).
