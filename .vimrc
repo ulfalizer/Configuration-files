@@ -14,13 +14,13 @@ set nocompatible
 
 set autoread
 set backspace=indent,eol,start
-" C++ access specifiers in first column
-set cinoptions+=g0
-" Line up expressions/declarations with parenthesis split across multiple lines
-" nicely
-set cinoptions+=(0
-" Do not indent 'case' inside of switch statements
+" Do not indent case labels and C++ access specifiers
 set cinoptions+=:0
+set cinoptions+=g0
+" Use a constant indent for continuation lines by default. (Gives nice diffs.)
+set cinoptions+=+0.5s " Continuation line
+set cinoptions+=(0.5s " Continuation line in parentheses
+set cinoptions+=u0 " Do not let additional parentheses influence the indent
 set encoding=utf-8
 set fileencodings=utf-8
 set history=100
