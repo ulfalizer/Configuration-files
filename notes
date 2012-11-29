@@ -37,3 +37,27 @@ C89 spec:
 
  * http://flash-gordon.me.uk/ansi.c.txt
  * http://web.archive.org/web/20050207005628/http://dev.unicals.com/papers/c89-draft.html
+
+iostream types:
+
+ * off_type is streamoff for char/wchar_t specializations. For example,
+   basic_istream<char/wchar_t>::off_type =
+     traits::off_type                    =
+     char_traits<char/wchar_t>::off_type =
+     streamoff
+
+ * pos_type is either streampos or wstreampos by the same logic, but these
+   are guaranteed to be the same by 27.2:
+
+   - streampos = fpos<char_traits<char>::state_type> = fpos<mbstate_t>
+   - wstreampos = fpos<char_traits<wchar_t>::state_type> = fpos<mbstate_t>
+
+  Therefore, pos_type is fpos<mbstate_t>.
+
+ * streamsize is basically ssize_t.
+
+ * pos_type (fpos<mbstate_t>) can be offset by a streamoff (27.4.3.2). Two
+   pos_type objects can be subtracted to get a streamoff.
+
+ * streamsize and streamoff can be converted to each other. pos_type and
+   off_type can be converted to each other.
