@@ -156,3 +156,56 @@ printf cheat sheet:
           of type determined by length modifier
     m   - (Glibc extension) strerror(errno). Takes no argument.
     %   - Literal '%'
+
+scanf cheat sheet:
+
+ * Returns EOF on eof and error, and the number of input items successfully
+   matched and assigned (i.e., not including suppressed assignments) otherwise.
+   It's sketchy whether a matched %n increments the count; it's probably wiser
+   to check if variable values changed after the scanf.
+
+ * A sequence of whitespace characters (isspace()) matches any amount of
+   whitespace.
+
+ * (non-C99) %n$ can be used to specify the position of the argument to write
+   into.
+
+   - "%2$5[0-9]%1$d" reads at most five digit characters + null into the second
+     argument and an integer into the first.
+
+ * Conversion specification format:
+   % <* (suppress assignment)> <a/m (non-c99 - allocate buffer)>
+     <maximum field width> <type modifier> <conversion specifier>
+
+   - (non-C99) With 'a' or 'm', address of pointer expected and buffer
+     dynamically allocated. Only for 's' and '[' (and, for 'm', with 'c' with
+     some versions). Must be free()d later.
+
+   - The maximum field width specifies the maximum number of characters to read.
+     Does not count discarded initial whitespace. The terminating null stored in the
+     result is not included in the maximum field width for strings.
+
+   - Type modifiers are mostly like for printf, but L can be used for long long.
+
+   - conversion specifier:
+     %              - Literal '%'. Discards initial whitespace.
+     d              - Reads integer into int
+     i              - Reads integer into int, interpreting initial 0x/0X as hex
+                      and 0 as oct
+     o              - Reads octal integer into int
+     u              - Reads integer into unsigned int
+     x/X            - Reads hex integer into unsigned int
+     a(C99)/f/e/g/E - Reads floating-point number into float
+     s              - Reads string + null into char[]. Stops at whitespace.
+     c              - Reads <maximum field width> (default 1) characters into
+                      char[]. No null is appended. Does not skip leading
+                      whitespace.
+     [<chars>]      - Reads nonempty sequence of characters from <chars> into
+                      char[]. Adds a terminating null. Does not skip leading
+                      whitespace. Exclusive if first character is ^. To include
+                      literal ']', make it first character after [ or initial
+                      ^. Hyphen can be used for range; make last character to
+                      include literally.
+     p              - Reads void pointer as printed by printf with same
+                      conversion specifier
+     n              - Writes the number of characters consumed so far into int
