@@ -67,5 +67,92 @@ iostream types:
    to signal an error."
 
    - Okay to compare against -1 to check for error, since
-     fpos<mbstate_t>(streamoff(-1)) is guaranteed to be convert to a streamoff
+     fpos<mbstate_t>(streamoff(-1)) is guaranteed to be convertible to a streamoff
      with the value -1 (27.4.3.2).
+
+printf cheat sheet:
+
+ * Non-'n' versions return the number of characters written excluding the
+   terminating null character.
+
+ * 'n' versions return number of characters that would have been written,
+   excluding the terminating null character.
+
+ * A negative value is returned upon failure.
+
+ * printf and wprintf can both print wide characters. With printf, %ls is
+   used.
+
+ * (non-C99) %n$ and *n$ can be used to specify that argument n should be
+   used for the value.
+
+   - printf("%3$*2$.*1$d", 3, 5, 7) prints 7 with field width 5 and precision 3
+
+ * Conversion specification format:
+   % <flags> <field width> <precision> <length modifier> <conversion specificer>
+
+   - flags:
+     #   - Use alternate form: 0 added for 'o'; "0x"/"0X" added for 'x'/'X';
+           decimal point always displayed for floating-point numbers; and
+           trailing zeros not removed for g/G
+     0   - Zero-pad numbers on the left. Ignored if precision is specified.
+     -   - Left-justify within field. Overrides 0.
+     ' ' - Put blank before positive numbers
+     +   - Put '+' before positive numbers. Overrides ' '.
+     '   - (non-C99) Use locale's thousand's grouping character (LC_NUMERIC
+           category)
+     I   - (non-C99) Use locale-specific digits
+
+  - field width:
+    - If the output has fewer characters than the field width, it is padded on
+      the left with either spaces or 0's (for numbers). For left-justification,
+      it is always padded with spaces.
+    - Never truncates
+    - '*' fetches value from next argument, which must be int
+
+  - precision:
+    - '.' followed by decimal digits
+    - For integers, minimum number of digits to write
+    - For floating-point numbers, significant digits to write with g/G,
+      and digits to write after the radix character for other
+      conversion specifiers
+    - For strings, maximum number of characters to write
+    - If missing or negative, taken to be zero
+    - '*' fetches value from next argument, which must be int
+
+  - length modifier:
+    - Specifies length for following conversion specifier.
+    hh - Signed/unsigned char  for integer conversion, signed char  for 'n'
+    h  - Signed/unsigned short for integer conversion, signed short for 'n'
+    l  - Signed/unsigned long  for integer conversion, signed long  for 'n',
+         wint_t for 'c', wchar_t* for 's'
+    ll - Signed/unsigned long long for integer conversion, signed long long for
+         'n'
+    L  - Long double for floating-point number
+    j  - (u)intmax_t for following integer conversion
+    z  - (s)size_t   for following integer conversion
+    t  - ptrdiff_t   for following integer conversion
+
+  - conversion specifier:
+    - If integer 0 printed with precision 0, output is empty.
+    d/i - int
+    o   - unsigned int as octal
+    u   - unsigned int as decimal
+    x/X - unsigned int as hex with lower/uppercase characters
+    e/E - double as [-]d.ddde+/-dd. Defaults to precision 6.
+          e/E determines case of 'e'. Exponent has at least two
+          digits.
+    f/F - double without scientific notation. Defaults to precision
+          6. No decimal point with precision 0. f/F determines case
+          for infinity and NaN.
+    g/G - double with fancy formatting. (Like either 'e' or 'f'.)
+    a/A - double as hex with lower/uppercase characters
+    c   - int as character. With 'l', wint_t as character
+    s   - const char*. Writes at most 'precision' characters.
+          With 'l', expects const wchar_t*, and precision is the
+          maximum number of _bytes_ to write.
+    p   - void* as if by %#<length>x
+    n   - Number of characters written so far, stored into pointer location
+          of type determined by length modifier
+    m   - (Glibc extension) strerror(errno). Takes no argument.
+    %   - Literal '%'
