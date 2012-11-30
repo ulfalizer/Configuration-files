@@ -32,6 +32,8 @@ if v:version > 702
     " Remember undo history when switching between files
     set undofile
 endif
+" Time out quickly on key codes. This makes e.g. <esc>O work more reliably.
+set ttimeoutlen=100
 " No annoying beeps
 set vb t_vb=
 
