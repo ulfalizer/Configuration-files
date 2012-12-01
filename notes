@@ -262,5 +262,8 @@ GCC and Windows:
     - A Crash Course on the Depths of Win32 Structured Exception Handling
       http://www.microsoft.com/msj/0197/exception/exception.aspx
 
+    - TDM-GCC (Based on MinGW/MinGW-w64)
+      http://tdm-gcc.tdragon.net/
+
   * libstdc++ in MinGW calls through to MSVCRT on Windows. Cygwin uses Newlib on top of
     their syscall emulation.
