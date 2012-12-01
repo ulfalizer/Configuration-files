@@ -311,3 +311,41 @@ GCC and Windows:
   * Programs might link statically against libc on Windows, and there are
     multiple versions of the DLLs:
     http://stackoverflow.com/questions/2766233/what-is-the-c-runtime-library
+
+C and C++ type sizes in the standards:
+
+  * The (minimum) number of bytes in the object representation of different
+    types is not explicitly defined. (It wouldn't make much sense since the
+    byte size isn't defined.) It can be inferred from the ranges required to be
+    supported.
+
+  * numeric_limits<> (<limits>) refers to <climits> macros.
+
+  * Inferred sizes for integer types (C99, 5.2.4.2.1):
+
+    - char     : 1+ ((U/S)CHAR_MIN/MAX)
+    - short    : 2+ ((U)SHRT_MIN/MAX)
+    - int      : 2+ ((U)INT_MIN/MAX)
+    - long     : 4+ ((U)LONG_MIN/MAX)
+    - long long: 8+ ((U)LLONG_MIN/MAX)
+
+  * Misc. <climits> macros
+
+    CHAR_BIT   - Bits in char
+    MB_LEN_MAX - Maximum number of bytes in multibyte character for any
+                 supported locale
+
+  * Test if char is signed:
+    #include <limits.h>
+
+    #if CHAR_MAX == SCHAR_MAX
+    /* signed */
+    #else
+    /* unsigned */
+    #endif
+
+  * De facto standards:
+
+    32-bit *nix/Windows: 32-bit int, 32-bit long
+    64-bit *nix        : 32-bit int, 64-bit long
+    64-bit Windows     : 32-bit int, 32-bit long
