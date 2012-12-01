@@ -209,3 +209,58 @@ scanf cheat sheet:
      p              - Reads void pointer as printed by printf with same
                       conversion specifier
      n              - Writes the number of characters consumed so far into int
+
+GCC and Windows:
+
+  * GCC supports two exception handling models: DW2 (dwarf2, table-based) and
+    SJLJ (longjmp-based). The exception model to use is picked when building
+    GCC (--enable-sjlj-exception, the absence of which seems to imply DW2);
+    there are no runtime flags to pick one.
+
+  * DW2 exceptions can't propagate through foreign code. Throwing an
+    exception from a callback called from foreign code and attempting to catch
+    it at the point of passing the callback's address would be broken for
+    example. DW2 exceptions can cross executable boundaries as long as both
+    executables use DW2 however.
+
+  * MinGW has been forked into two releases: the mingw.org releases and
+    mingw-w64. The mingw.org releases use DW2 and are win32 only; mingw-w64
+    uses SJLJ and supports both win32 and win64.
+
+  * Exception notes from #mingw on Freenode:
+
+    jon_y: dw2 can cross boundaries, only if you used the libstdc++
+           and libgcc dll
+
+    jon_y: SEH is still waiting for patent to end in 2014
+    jon_y: there is some SEH support in win64
+    ...
+    jon_y: patent covers only 32bit implementation
+
+    Ulfalizer: is there something inherent about win64 that makes dw2 difficult
+               to port, or has it just not been done?
+    jon_y: I think win64 stores exception tables in xdata or pdata sections
+    jon_y: something like that
+    jon_y: you'll need to ask ktietz in #mingw-w64 at irc.oftc.net
+
+    jon_y: afaik, SEH is supposed to be zero cost like dw2, but works through foreign code
+
+  * Links (mostly exception-related):
+
+    - Why doesn't mingw-w64 gcc support Dwarf-2 Exception Handling?
+      http://sourceforge.net/apps/trac/mingw-w64/wiki/Exception%20Handling
+
+    - GCC and exceptions on Windows
+      http://gcc.gnu.org/wiki/WindowsGCCImprovements
+
+    - General GCC configuration options (--enable-sjlj-exception)
+      http://gcc.gnu.org/install/configure.html
+
+    - libstdc++ configuration
+      http://gcc.gnu.org/onlinedocs/libstdc++/manual/configure.html
+
+    - A Crash Course on the Depths of Win32 Structured Exception Handling
+      http://www.microsoft.com/msj/0197/exception/exception.aspx
+
+  * libstdc++ in MinGW calls through to MSVCRT on Windows. Cygwin uses Newlib on top of
+    their syscall emulation.
