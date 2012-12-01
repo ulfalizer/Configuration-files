@@ -12,6 +12,8 @@ set nocompatible
 " Generic settings {{{
 " Editing {{{
 
+" Make text formatting (e.g. gq) use the indent of the first line
+set autoindent
 set autoread
 set backspace=indent,eol,start
 " Do not indent case labels and C++ access specifiers
