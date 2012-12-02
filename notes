@@ -349,3 +349,31 @@ C and C++ type sizes in the standards:
     32-bit *nix/Windows: 32-bit int, 32-bit long
     64-bit *nix        : 32-bit int, 64-bit long
     64-bit Windows     : 32-bit int, 32-bit long
+
+stdint.h types and macros (C99):
+
+  * (u)int_leastN_t - Smallest type of width at least N
+    (u)int_fastN_t - ~Fastest type of width at least N
+    N = 8, 16, 32, 64 required for both
+
+  * (u)intptr_t - Convertible from/to *void. Enables arithmetic. 2+ bytes.
+
+  * (u)intmax_t - Can hold any (un)signed value representible by other
+                  types. 8+ bytes.
+
+  * Limit macros (C++ (only 03?) requires __STDC_LIMIT_MACROS to be defined
+    before stdint.h is included for these):
+    - (U)INT<N>_MIN/MAX - Constant across implementations. Assumes 2's
+                          complement.
+    - (U)INT_LEAST<N>_MIN/MAX
+    - (U)INT_FAST<N>_MIN/MAX
+    - (U)INTPTR_MIN/MAX
+    - (U)INTMAX_MIN
+    - PTRDIFF_MIN/MAX (implies ptrdiff_t is 2+ bytes)
+    - SIG_ATOMIC_MIN/MAX
+    - SIZE_MAX (implies size_t is 2+ bytes)
+
+  * Constant macros (C++ (only 03?) requires __STDC_CONSTANT_MACROS to be defined
+    before stdint.h is included for these):
+    - (U)INT<N>_C(value) expands to literal of type (u)int_least<N>_t
+    - (U)INTMAX_C(value) expands to literal of type (u)intmax_t
