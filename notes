@@ -377,3 +377,9 @@ stdint.h types and macros (C99):
     before stdint.h is included for these):
     - (U)INT<N>_C(value) expands to literal of type (u)int_least<N>_t
     - (U)INTMAX_C(value) expands to literal of type (u)intmax_t
+
+Github:
+
+  * Pull requests are available as refs (that aren't fetched automatically) on
+    the repo on which the pull request is made. To get them, you can do e.g.
+    'git fetch origin refs/pull/4/head'.
