@@ -383,3 +383,10 @@ Github:
   * Pull requests are available as refs (that aren't fetched automatically) on
     the repo on which the pull request is made. To get them, you can do e.g.
     'git fetch origin refs/pull/4/head'.
+
+GDB:
+
+  * Attaching to process that is not a direct parent of the current process
+    requires 'echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope' on
+    Ubuntu:
+    http://askubuntu.com/questions/143561/why-wont-strace-gdb-attach-to-a-process-even-though-im-root
