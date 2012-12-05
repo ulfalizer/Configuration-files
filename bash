@@ -246,15 +246,11 @@ e() {
 
 f() {
     _super_glob "$@"
-
     if [[ ${#g_files[@]} -eq 0 ]]; then
         _err_name "no files found"
         return 1
     fi
-
-    for f in "${g_files[@]}"; do
-        echo "$f"
-    done
+    printf "%s\n" "${g_files[@]}"
 }
 
 # Searches recursively in files for lines that match a given pattern and lists
