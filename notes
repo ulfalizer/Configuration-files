@@ -390,3 +390,7 @@ GDB:
     requires 'echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope' on
     Ubuntu:
     http://askubuntu.com/questions/143561/why-wont-strace-gdb-attach-to-a-process-even-though-im-root
+
+Python:
+
+  * __pypy__.builders.{String,Unicode}Builder
