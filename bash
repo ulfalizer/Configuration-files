@@ -675,20 +675,25 @@ _init_terminals_and_prompts_and_colors() {
         echo -n "${branch#refs/heads/} "
     }
 
+    # Resets all color settings
+    local r='\[\033[0m\]'
+
     if $has_256_colors; then
         # See the following for reference:
         # http://lucentbeing.com/blog/that-256-color-thing/
         # http://jimlund.org/blog/?p=130
 
-        # Changes the foreground color
-        _c() { echo -n '\[\033[38;05;'${1}m'\]'; }
-        # Resets all color settings
-        local r='\[\033[0m\]'
+        # Changes the foreground color for 256-color mode
+        _c() { echo -n '\[\033[38;05;'${1}'m\]'; }
 
         PS1="$(_c 46)\u $(_c 214)\h $(_c 39)\w $(_c 46)\$(_where)$r$ "
     else
-        # TODO: This could use 8 colors
-        PS1='\u \h \w $(_where)$ '
+        # Changes the foreground color for 8-color mode; 0-7 corresponds to
+        # black, red, green, yellow, blue, magenta, cyan, and white, in that
+        # order.
+        _c() { echo -n '\[\033[3'${1}'m\]'; }
+
+        PS1="$(_c 2)\u $(_c 3)\h $(_c 4)\w $(_c 2)$(_where)$r$ "
     fi
 
     # For xterm, display the current working directory and username/host in the
