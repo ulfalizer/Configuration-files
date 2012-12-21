@@ -1,4 +1,7 @@
 #!/bin/sh
+git config --global user.name "Ulf Magnusson"
+git config --global user.email ulfalizer@gmail.com
+
 git config --global push.default tracking
 
 git config --global branch.autosetuprebase always
