@@ -684,14 +684,14 @@ _init_terminals_and_prompts_and_colors() {
         # http://jimlund.org/blog/?p=130
 
         # Changes the foreground color for 256-color mode
-        _c() { echo -n '\[\033[38;05;'${1}'m\]'; }
+        _c() { echo -n '\[\033[38;05;'$1'm\]'; }
 
         PS1="$(_c 46)\u $(_c 214)\h $(_c 39)\w $(_c 46)\$(_where)$r$ "
     else
         # Changes the foreground color for 8-color mode; 0-7 corresponds to
         # black, red, green, yellow, blue, magenta, cyan, and white, in that
         # order.
-        _c() { echo -n '\[\033[3'${1}'m\]'; }
+        _c() { echo -n '\[\033[3'$1'm\]'; }
 
         PS1="$(_c 2)\u $(_c 3)\h $(_c 4)\w $(_c 2)$(_where)$r$ "
     fi
