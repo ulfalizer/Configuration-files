@@ -289,7 +289,7 @@ func! <SID>Compile(use_clang)
         endif
 
         if !executable(compiler)
-            echoerr "No executable '".compiler." exists"
+            echoerr "No executable '".compiler."' exists"
             return [0, ""]
         endif
 
