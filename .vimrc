@@ -229,57 +229,117 @@ set showcmd
 " }}}
 " Development {{{
 
-" Compiles a single-file C/C++ program, optionally running it if compilation
-" succeeds (run), and optionally using Clang (use_clang). Opens the quickfix
-" window and jumps to the first error or warning, if any. Returns 1 if the
-" compilation succeeded; otherwise returns 0.
+" Compiles a program. Uses 'make' if 'Makefile' exists in the current
+" directory. Otherwise, the program is assumed to consist of a single
+" translation unit and the language (C or C++) is inferred from the file
+" extension. In this case, clang/clang++ is used if 'use_clang' is 1 and
+" gcc/g++ otherwise.
+"
+" Returns a [succeeded, out_file] tuple, where 'succeeded' is 1 if compilation
+" was successful (an executable was produced) and 0 otherwise, and where
+" 'out_file' is the name of the produced executable. When building with
+" 'make', the executable name is looked up in a dictionary 'proj_exes' that
+" links project directories to executable names.
+func! <SID>Compile(use_clang)
+    if filereadable("Makefile")
+        " If the current directory contains a Makefile, compile using 'make'
 
-func! Compile(run, use_clang)
-    let f = expand("%")
-    let f_esc = shellescape(f)
-    let f_root_esc = shellescape(expand("%:r"))
-    if empty(f)
-        echoerr "No file bound to buffer"
-        return 0
-    endif
-    " Determine compiler to use
-    if &ft == "cpp"
-        let compiler = a:use_clang ? "clang++" : "g++"
-    elseif &ft == "c"
-        let compiler = a:use_clang ? "clang" : "gcc"
+        " If a file is bound to the current buffer, write it first
+        if expand("%") != "" | w | endif
+
+        let messages = system("make")
+        let succeeded = (v:shell_error == 0)
+
+        " Look up the current directory to see if an executable has been
+        " registered for it
+        if !exists("g:proj_exes")
+            echoerr "g:proj_exes does not exist"
+            return [0, ""]
+        endif
+
+        let proj_dir = expand("%:p:h:t")
+        let out_file = get(g:proj_exes, proj_dir, "")
+
+        if !strlen(out_file)
+            echoerr "No executable set for directory '".proj_dir."'"
+            return [0, ""]
+        endif
+
     else
-        echoerr "Unknown language for '".f."'"
-        return 0
+        " If the current directory contains no Makefile, compile just the file
+        " bound to the current buffer
+
+        let f = expand("%")
+        if empty(f)
+            echoerr "No file bound to buffer"
+            return [0, ""]
+        endif
+
+        " Write before compiling
+        w
+
+        " Determine compiler to use
+        if &ft == "cpp"
+            let compiler = a:use_clang ? "clang++" : "g++"
+        elseif &ft == "c"
+            let compiler = a:use_clang ? "clang" : "gcc"
+        else
+            echoerr "Unknown language for '".f."'"
+            return [0, ""]
+        endif
+
+        if !executable(compiler)
+            echoerr "No executable '".compiler." exists"
+            return [0, ""]
+        endif
+
+        let out_file = expand("%:r")
+        let messages = system(compiler." -o ".shellescape(out_file).
+          \ " -ggdb3 -Wall -Wno-unused-variable ".shellescape(f))
+        let succeeded = (v:shell_error == 0)
     endif
-    " Always write before compiling
-    w
-    " Compile and create quickfix list of errors and warnings
-    silent cexpr system(compiler." -o ".f_root_esc.
-      \ " -ggdb3 -Wall -Wno-unused-variable -Wno-unused-but-set-variable ".
-      \ f_esc)
-    let comp_successful = (v:shell_error == 0)
-    " Run the program if the compilation succeeded
-    if a:run && comp_successful
-        exec "!./".f_root_esc
-    endif
-    " Open the quickfix window if there are errors or warnings. Close it
+
+    " Create quickfix list
+    silent cexpr messages
+    " Display the quickfix window if there are warnings or errors; hide it
     " otherwise.
     cw
     " If we are in the quickfix window, press enter to jump to the first error
     if &buftype == "quickfix"
         exec "normal \<CR>"
     endif
-    return comp_successful
+
+    if succeeded && !filereadable(out_file)
+        echoerr "The executable '".out_file."' does not exist even though"
+          \ "compilation was successful"
+        return [0, ""]
+    endif
+
+    return [succeeded, out_file]
 endfunc
 
+" Compiles the current file/project and runs it if compilation succeeds
+func! <SID>Compile_and_run(use_clang)
+    let [succeeded, out_file] = <SID>Compile(a:use_clang)
+
+    if succeeded && strlen(out_file)
+        exec "!./".shellescape(out_file)
+    endif
+endfunc
+
+" Compiles a single-file C/C++ program, optionally running it if compilation
+" succeeds (run), and optionally using Clang (use_clang). Opens the quickfix
+" window and jumps to the first error or warning, if any. Returns 1 if the
+" compilation succeeded; otherwise returns 0.
+
 " Compile using GCC and run
-noremap <silent> <special> <F5> :call Compile(1, 0)<CR>
+noremap <silent> <special> <F5> :call <SID>Compile_and_run(0)<CR>
 " Compile using Clang and run
-noremap <silent> <special> <F6> :call Compile(1, 1)<CR>
+noremap <silent> <special> <F6> :call <SID>Compile_and_run(1)<CR>
 " Compile using GCC
-noremap <silent> <special> <F7> :call Compile(0, 0)<CR>
+noremap <silent> <special> <F7> :call <SID>Compile(0)<CR>
 " Compile using Clang
-noremap <silent> <special> <F8> :call Compile(0, 1)<CR>
+noremap <silent> <special> <F8> :call <SID>Compile(1)<CR>
 
 " Allow the same mappings to be used in insert mode
 
@@ -340,14 +400,16 @@ func! s:DebugFn(enable)
         return
     endif
 
-    " Compile with GCC without running
-    if !Compile(0, 0)
-        " Do not start pyclewn if compilation failed
+    " Compile (using GCC if there's no Makefile)
+    let [succeeded, out_file] = <SID>Compile(0)
+    " Do not start pyclewn if compilation failed or we got no executable name
+    if !succeeded || !strlen(out_file)
         return
     endif
+
     " Start pyclewn, load debug symbols, and set up mappings
     Pyclewn
-    exe "Cfile " . fnameescape(expand("%:r"))
+    exe "Cfile ".fnameescape(out_file)
 
     noremap <silent> <special> b :exe "Cbreak ".fnameescape(expand("%:p")).":".line(".")<CR>
     noremap <silent> <special> B :exe "Cclear ".fnameescape(expand("%:p")).":".line(".")<CR>
