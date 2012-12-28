@@ -301,9 +301,13 @@ func! <SID>Compile(use_clang)
 
     " Create quickfix list
     silent cexpr messages
-    " Display the quickfix window if there are warnings or errors; hide it
-    " otherwise.
-    cw
+    " Display the quickfix window if there are warnings or errors or if the
+    " compilation failed; hide it otherwise.
+    if succeeded
+        cwindow
+    else
+        copen
+    endif
     " If we are in the quickfix window, press enter to jump to the first error
     if &buftype == "quickfix"
         exec "normal \<CR>"
