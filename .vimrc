@@ -208,7 +208,7 @@ let g:is_bash = 1
 set display=lastline
 set linebreak
 set showbreak=_
-set wrap
+set nowrap
 
 " Remove menubar, toolbar, and scrollbars in GUI
 
