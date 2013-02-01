@@ -394,3 +394,7 @@ GDB:
 Python:
 
   * __pypy__.builders.{String,Unicode}Builder
+
+ASM snooper plugin:
+
+  * Use dwarfdump?
