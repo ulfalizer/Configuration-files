@@ -402,3 +402,11 @@ ASM snooper plugin:
 ALSA:
 
   * Seems the File plugin won't work unless the period size is set explicitly.
+
+  * Parameters to plugins (supplied in the device string) can be found in
+    /usr/share/alsa/alsa.conf . Parameters can be named. Examples:
+
+      file:foo,raw
+      file:FILE=foo,FORMAT=raw
+
+    Relevant doc: http://www.alsa-project.org/alsa-doc/alsa-lib/confarg.html
