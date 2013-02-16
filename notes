@@ -398,3 +398,7 @@ Python:
 ASM snooper plugin:
 
   * Use dwarfdump?
+
+ALSA:
+
+  * Seems the File plugin won't work unless the period size is set explicitly.
