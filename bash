@@ -312,6 +312,20 @@ mcd() {
     mkdir -p -- "$1" && cd -- "$1"
 }
 
+# Prints files and directories (non-recursively) in 'directory' (default '.')
+# sorted by size.
+
+big() {
+    if [[ $# -gt 1 ]]; then
+        _usage "[<directory>]"
+        return 1
+    fi
+
+    shopt -s dotglob
+    du -chs -- "${1-.}"/* | sort -h
+    shopt -u dotglob
+}
+
 # Compiles a C/++ program from a single file with -Wall. Produces a debugging
 # executable with no suffix and an optimized -O3 executable with an _opt
 # suffix.
