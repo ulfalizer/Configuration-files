@@ -410,3 +410,7 @@ ALSA:
       file:FILE=foo,FORMAT=raw
 
     Relevant doc: http://www.alsa-project.org/alsa-doc/alsa-lib/confarg.html
+
+Memory dumping:
+
+  * http://serverfault.com/questions/173999/dump-a-linux-processs-memory-to-file
