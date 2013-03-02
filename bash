@@ -312,6 +312,17 @@ mcd() {
     mkdir -p -- "$1" && cd -- "$1"
 }
 
+# Creates a timestamped tar.bz2 archive.
+
+make_archive() {
+    if [[ $# -lt 2 ]]; then
+        _usage "<archive basename> <file> [<file> ...]"
+        return 1
+    fi
+
+    tar cj --force-local --file="$1-$(date +%F-%H-%M-%S).tar.bz2" -- "${@:2}"
+}
+
 # Prints files and directories (non-recursively) in 'directory' (default '.')
 # sorted by size.
 
