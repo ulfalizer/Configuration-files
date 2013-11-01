@@ -414,3 +414,38 @@ ALSA:
 Memory dumping:
 
   * http://serverfault.com/questions/173999/dump-a-linux-processs-memory-to-file
+
+libav:
+
+  * Ubuntu 13.10 uses libav 0.8, corresponding to 4b63cc18bc.
+
+  * Examples: libavcodec/api-example.c, libavformat/output-example.c
+
+  * opt_default() receives codec-specific options such as 'preset' and 'tune'
+    and puts them in a global AVDictionary 'codec_opts'. This is then used to
+    initialize ost->opts, which is passed to avcodec_open2(). avcodec_open2()
+    processes the codec-specific options and passes them to X264_init() in
+    the X264Context instance avctx->priv_data.
+
+  * ffmpeg options without arguments are always booleans.
+
+  * 'formats' lists available container formats, 'codecs' available codecs.
+    'help' lists codec-specific options.
+
+  * The AVCodec struct for x264 is ff_libx264_encoder. Its 'defaults' member
+    is used to initialize the AVCodecContext in
+    avcodec_get_context_defaults3(), which is called from
+    avcodec_alloc_context3(), which is called from avformat_new_stream() if a
+    codec is supplied.
+
+  * Encoding for YouTube:
+
+    - Command: ffmpeg -i input -c:v libx264 -preset slow -crf 18 -c:a copy -pix_fmt yuv420p output.mkv
+
+      - 'codec' and 'c' are synonymous. 'v' is a stream specifier in 'c:v',
+        matching all video streams ('c:v:0' would select only the first video
+        stream).
+
+      - 'preset', 'tune', and 'crf' are codec-specific options - passed in an AVDictionary.
+
+      - 'pix_fmt' is a generic option.
