@@ -23,6 +23,9 @@ alias new="ls -lrt"
 
 export EDITOR=vim
 
+# Default but with system calls before commands
+export MANSECT=2:n:l:8:3:1:3posix:3pm:3perl:5:4:9:6:7
+
 # General shell options
 
 if (( ${BASH_VERSINFO[0]} >= 4 )); then
