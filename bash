@@ -35,13 +35,13 @@ fi
 
 # Prints an error together with the name of the calling function. Second
 # argument (defaults to 1) is how far to look up the call stack for the name.
-_err() { echo "${FUNCNAME[${2-1}]}: $1" >&2 }
+_err() { echo "${FUNCNAME[${2-1}]}: $1" >&2; }
 
 # Helper function for printing a usage string. Second argument like for _err().
-_usage() { echo "usage: ${FUNCNAME[${2-1}]} $1" >&2 }
+_usage() { echo "usage: ${FUNCNAME[${2-1}]} $1" >&2; }
 
 # Helper function. Checks if a program exists in the search path.
-_prg_exists() { type -P -- "$1" >/dev/null }
+_prg_exists() { type -P -- "$1" >/dev/null; }
 
 # Safe rm command with trash directory.
 #
