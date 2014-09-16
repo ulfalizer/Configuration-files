@@ -33,22 +33,12 @@ if (( ${BASH_VERSINFO[0]} >= 4 )); then
     shopt -s globstar
 fi
 
-# Helper function. Prints an error to stderr.
-_err() { echo "$1" 1>&2; }
+# Prints an error together with the name of the calling function. Second
+# argument (defaults to 1) is how far to look up the call stack for the name.
+_err() { echo "${FUNCNAME[${2-1}]}: $1" >&2 }
 
-# Like _err(), but adds the name of the calling function. Second argument
-# (defaults to 1) is how far to look up the call stack for the name.
-_err_name() {
-    local stack_index=${2-1}
-    _err "${FUNCNAME[$stack_index]}: $1"
-}
-
-# Helper function for printing a usage string. Second argument like for
-# _err_name().
-_usage() {
-    local stack_index=${2-1}
-    _err "usage: ${FUNCNAME[$stack_index]} $1"
-}
+# Helper function for printing a usage string. Second argument like for _err().
+_usage() { echo "usage: ${FUNCNAME[${2-1}]} $1" >&2 }
 
 # Helper function. Checks if a program exists in the search path.
 _prg_exists() { type -P -- "$1" >/dev/null; }
@@ -74,17 +64,17 @@ alias rm=safe_rm
 
 _trash_dir_is_ok() {
     if [[ -z $trash_dir ]]; then
-        _err_name "trash_dir is not set" 2
+        _err "trash_dir is not set" 2
         return 1
     fi
 
     if [[ $trash_dir != /* ]]; then
-        _err_name "trash_dir (set to '$trash_dir') is not an absolute path" 2
+        _err "trash_dir (set to '$trash_dir') is not an absolute path" 2
         return 1
     fi
 
     if [[ -e $trash_dir && ! -d $trash_dir ]]; then
-        _err_name "trash_dir (set to '$trash_dir') is not a directory" 2
+        _err "trash_dir (set to '$trash_dir') is not a directory" 2
         return 1
     fi
 
@@ -114,25 +104,25 @@ safe_rm() {
     for f in "$@"; do
         # -e is false for broken symbolic links; hence the -h test
         if [[ ! -e $f && ! -h $f ]]; then
-            _err_name "'$f' does not exist"
+            _err "'$f' does not exist"
             return 1
         fi
         if [[ ! -w $(dirname -- "$f") ]]; then
-            _err_name "cannot remove '$f': No write permissions for containing directory"
+            _err "cannot remove '$f': No write permissions for containing directory"
             return 1
         fi
     done
 
     mkdir -p -- "$trash_dir"
     if [[ ! -e $trash_dir ]]; then
-        _err_name "failed to create trash_dir (set to '$trash_dir')"
+        _err "failed to create trash_dir (set to '$trash_dir')"
         return 1
     fi
 
     mv -f --backup=numbered -- "$@" "$trash_dir"
     error=$?
     if [[ $error -ne 0 ]]; then
-        _err_name "failed to move files into trash_dir (set to '$trash_dir')"
+        _err "failed to move files into trash_dir (set to '$trash_dir')"
         return $error
     fi
 }
@@ -150,14 +140,14 @@ empty_trash() {
     [[ -e $trash_dir ]] || return 0
 
     if [[ ! -w $(dirname -- "$trash_dir") ]]; then
-        _err_name "cannot remove '$trash_dir': No write permissions for containing directory"
+        _err "cannot remove '$trash_dir': No write permissions for containing directory"
         return 1
     fi
 
     command rm -rf -- "$trash_dir"
     error=$?
     if [[ $error -ne 0 ]]; then
-        _err_name "failed to remove '$trash_dir'"
+        _err "failed to remove '$trash_dir'"
         return $error
     fi
 }
@@ -224,7 +214,7 @@ _super_glob_select_file() {
         while [[ -z $g_selected_file ]]; do
             select g_selected_file in "${g_files[@]}"; do
                 [[ -n $g_selected_file ]] && break
-                _err "invalid choice"
+                echo "invalid choice" >&2
             done
         done
         unset PS3
@@ -238,7 +228,7 @@ e() {
     _super_glob_select_file "File to edit: " "$@"
 
     if [[ -z $g_selected_file ]]; then
-        _err_name "no files found"
+        _err "no files found"
         return 1
     fi
 
@@ -250,7 +240,7 @@ e() {
 f() {
     _super_glob "$@"
     if [[ ${#g_files[@]} -eq 0 ]]; then
-        _err_name "no files found"
+        _err "no files found"
         return 1
     fi
     printf "%s\n" "${g_files[@]}"
@@ -282,7 +272,7 @@ j() {
     _super_glob_select_file "Where to jump: " "$@"
 
     if [[ -z $g_selected_file ]]; then
-        _err_name "no files found"
+        _err "no files found"
         return 1
     fi
 
@@ -296,7 +286,7 @@ je() {
     _super_glob_select_file "File to jump to and edit: " "$@"
 
     if [[ -z $g_selected_file ]]; then
-        _err_name "no files found"
+        _err "no files found"
         return 1
     fi
 
@@ -355,7 +345,7 @@ c() {
     fi
     file=$1
     if [[ ! -e $file ]]; then
-        _err_name "'$file' does not exist"
+        _err "'$file' does not exist"
         return 1
     fi
 
@@ -363,7 +353,7 @@ c() {
         *.cpp ) compiler=g++ ;;
         *.c   ) compiler=gcc ;;
         *     )
-            _err_name "unknown language for '$file'"
+            _err "unknown language for '$file'"
             return 1
             ;;
     esac
@@ -386,7 +376,7 @@ r() {
     fi
     file=$1
     if [[ ! -e $file ]]; then
-        _err_name "'$file' does not exist"
+        _err "'$file' does not exist"
         return 1
     fi
 
@@ -394,7 +384,7 @@ r() {
         *.cpp ) compiler=g++ ;;
         *.c   ) compiler=gcc ;;
         *     )
-            _err_name "unknown language for '$file'"
+            _err "unknown language for '$file'"
             return 1
             ;;
     esac
@@ -469,7 +459,7 @@ _asm() {
     local ofile=/tmp/${file%.cpp}.o
 
     if [[ ! -e $file ]]; then
-        _err_name "'$file' does not exist" 2
+        _err "'$file' does not exist" 2
         return 1
     fi
 
@@ -477,14 +467,14 @@ _asm() {
         *.cpp ) compiler=g++ ;;
         *.c   ) compiler=gcc ;;
         *     )
-            _err_name "unknown language for '$file'" 2
+            _err "unknown language for '$file'" 2
             return 1
             ;;
     esac
 
     "$prefix$compiler" -o "$ofile" -c -ggdb3 $options "$file" || return $?
     if [[ ! -e $ofile ]]; then
-        _err_name "no '$ofile' generated by $compiler. Aborting." 2
+        _err "no '$ofile' generated by $compiler. Aborting." 2
         return 1
     fi
     "$prefix"objdump -M intel-mnemonic -Cd "$ofile"
@@ -519,7 +509,7 @@ files() {
     fi
 
     if ! _prg_exists "$1"; then
-        _err_name "found no program called '$1'"
+        _err "found no program called '$1'"
         return 1
     fi
 
@@ -553,7 +543,7 @@ floc() {
     shopt -s extdebug
     declare -F -- "$1"
     error=$?
-    [[ $error -ne 0 ]] && _err_name "no function called '$1' defined"
+    [[ $error -ne 0 ]] && _err "no function called '$1' defined"
     shopt -u extdebug
     return $error
 }
@@ -609,13 +599,13 @@ upstream() {
     fi
 
     if ! git rev-parse --git-dir &>/dev/null; then
-        _err_name "not inside a Git repository"
+        _err "not inside a Git repository"
         return 1
     fi
 
     if [[ -z $1 ]]; then
         if ! branch=$(git symbolic-ref HEAD 2>/dev/null); then
-            _err_name "failed to get branch for HEAD (detached?)"
+            _err "failed to get branch for HEAD (detached?)"
             return 1
         fi
     else
@@ -624,7 +614,7 @@ upstream() {
     branch=${branch#refs/heads/}
 
     if ! git show-ref --verify -q "refs/heads/$branch"; then
-        _err_name "no branch named '$branch'"
+        _err "no branch named '$branch'"
         return 1
     fi
 
@@ -660,14 +650,14 @@ fetch() {
 
     git fetch "$remote" "+$remote_branch:$local_branch" || return $?
     if ! git show-ref --verify -q "refs/heads/$local_branch"; then
-        _err_name "no local branch '$local_branch' was created"
+        _err "no local branch '$local_branch' was created"
         return 1
     fi
 
     git branch --set-upstream "$local_branch" "remotes/$remote/$remote_branch"
     error=$?
     if [[ $error -ne 0 ]]; then
-        _err_name "failed to set '$remote_branch' on '$remote' as the upstream of '$local_branch'"
+        _err "failed to set '$remote_branch' on '$remote' as the upstream of '$local_branch'"
         return $error
     fi
 }
