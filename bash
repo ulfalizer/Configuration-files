@@ -519,12 +519,7 @@ files() {
     # Print the trace output after the regular output and remove some common
     # clutter
     echo -e "\nTrace:\n"
-    egrep -v                     \
-          -e '/etc/ld\.so'       \
-          -e '/lib/'             \
-          -e '/proc/filesystems' \
-          -e '/usr/share/locale' \
-          -e 'statfs.*selinux' < "$tracefile"
+    egrep -v -e /usr/share/locale -e 'statfs.*selinux' < "$tracefile"
 
     command rm -- "$tracefile"
 }
