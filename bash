@@ -221,6 +221,21 @@ _super_glob_select_file() {
     fi
 }
 
+# Edits the first found file matching a filename (locate) pattern
+
+syse() {
+    if [[ $# -eq 0 ]]; then
+        _usage "<file>"
+        return 1
+    fi
+    file=$(locate -b -l1 -- "$1")
+    if [[ $? -ne 0 ]]; then
+        _err "could not find '$1'"
+        return 1
+    fi
+    "$EDITOR" -- "$file"
+}
+
 # Searches for files matching a _super_glob() pattern and opens the selected
 # file for editing.
 
