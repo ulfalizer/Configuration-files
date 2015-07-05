@@ -521,3 +521,60 @@ Modules:
 
         - 'softdep' gives modules to attempt to install or remove before
           inserting the module
+
+Custom Ubuntu kernel:
+
+  * Can use https://wiki.ubuntu.com/KernelTeam/GitKernelBuild to generate
+    .deb packages instead
+
+  * Building and installing:
+
+    - make menuconfig - also pulls in (distribution-provided) defconfig
+
+    - make localmodconfig -- disables modules not currently loaded. Probably
+      only good for reducing the initramfs size.
+
+    - make && make modules_install && make install
+
+      - 'make install' makes use of the distribution-provided installkernel
+        utility, which also builds an initramfs (meaning the modules must
+        already be installed) and adds a Grub menu entry.
+
+  (The steps below are redundant with 'make install', but just for
+  reference.)
+
+  * Creating the initramfs:
+
+    - sudo update-initramfs -c -k 4.1.0-custom
+
+    - Placed in /boot/initrd.img-4.1.0-custom
+
+  * Grub configuration:
+
+    - https://help.ubuntu.com/community/Grub2
+
+    - update-grub uses /etc/default/grub and /etc/grub.d/ to generate
+      /boot/grub/grub.cfg
+
+    - Add a file like /etc/grub.d/11_my_custom_kernel, with contents like
+      the following (derived from the configuration files above):
+
+      #!/bin/sh
+      cat <<END
+      menuentry 'Custom kernel' {
+          recordfail
+          load_video
+          gfxmode \$linux_gfx_mode
+          insmod gzio
+          insmod part_msdos
+          insmod ext2
+          set root='hd0,msdos1'
+          if [ x\$feature_platform_search_hint = xy ]; then
+            search --no-floppy --fs-uuid --set=root --hint-bios=hd0,msdos1 --hint-efi=hd0,msdos1 --hint-baremetal=ahci0,msdos1  506306c8-9bc3-4315-a580-42e51661fcab
+          else
+            search --no-floppy --fs-uuid --set=root $GRUB_DEVICE_UUID
+          fi
+          linux /boot/custom root=UUID=$GRUB_DEVICE_UUID ro \$vt_handoff
+          initrd /boot/initrd.img-4.1.0-custom
+      }
+      END
