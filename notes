@@ -578,3 +578,47 @@ Custom Ubuntu kernel:
           initrd /boot/initrd.img-4.1.0-custom
       }
       END
+
+git format-patch:
+
+  * 'git format-patch -M -n -s -o outgoing origin/master' is the recommended
+    Buildroot format
+
+  * -M: detect renames
+
+  * -n: number patches even if there's only one
+
+  * -s: add Signed-off-by line
+
+  * -o <dir>: add formatted patches to <dir>
+
+  * --in-reply-to=Message-Id: Make the first mail (or all the mails with
+    --no-thread) appear as a reply to the given Message-Id, which avoids
+    breaking threads to provide a new patch series
+
+  * origin/master: add commits from (but not including) the first shared
+    ancestor commit of origin/master and master up to the tip of master
+
+git send-email:
+
+  * sudo apt-get install git-email
+
+  * Can optionally take the same parameters as git format-patch instead of
+    specifying a directory
+
+  * --from=<address>: sendemail.from is used if this isn't specified
+
+  * --to a@a --to b@b
+
+  * --(b)cc a@a --(b)cc b@b
+
+  * --in-reply-to=Message-Id: Send emails as replies to the given Message-Id
+
+  * --compose: add an introductory message for patch series. --subject
+    specifies its subject.
+
+  * [sendemail]
+            smtpencryption = tls
+            smtpserver = smtp.gmail.com
+            smtpuser = yourname@gmail.com
+            smtpserverport = 587
