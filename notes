@@ -622,3 +622,9 @@ git send-email:
             smtpserver = smtp.gmail.com
             smtpuser = yourname@gmail.com
             smtpserverport = 587
+
+email notes:
+
+  * RFCs: http://www.lsoft.com/manuals/Maestro/2.1/Users/WebHelp/Appendix_D_Email_Related_RFCs.htm
+
+  * Header fields: http://ietf.org/rfc/rfc2822.txt
