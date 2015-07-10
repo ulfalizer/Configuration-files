@@ -628,3 +628,13 @@ email notes:
   * RFCs: http://www.lsoft.com/manuals/Maestro/2.1/Users/WebHelp/Appendix_D_Email_Related_RFCs.htm
 
   * Header fields: http://ietf.org/rfc/rfc2822.txt
+
+Kernel web documentation:
+
+  * https://www.kernel.org/doc/
+
+  * https://www.kernel.org/doc/ols/2008/ols2008v2-pages-7-18.pdf
+
+  * http://kerneltrap.org/Linux/Decoding_Oops
+
+  * Full history: http://www.kernel.org/pub/linux/kernel/people/landley/linux-fullhist.tar.bz2
