@@ -352,7 +352,7 @@ imap <special> <F6> <ESC><F6>
 imap <special> <F7> <ESC><F7>
 imap <special> <F8> <ESC><F8>
 
-" Format settings for system headers
+" Project-specific formatting
 
 " Disable highlighting for space errors in system headers, as they are very
 " common. :/
@@ -360,6 +360,9 @@ au user BufReadPost /usr/include/*,/usr/local/include/*
   \ Tab 8 |
   \ hi! link cSpaceError NONE |
   \ if expand("%") =~ '\w+' | set ft=cpp | endif
+
+" Linux kernel
+au user BufNewFile,BufReadPost */linux*/* Tab 8 | setl noexpandtab
 
 " }}}
 " Plugins {{{
