@@ -629,7 +629,7 @@ email notes:
 
   * Header fields: http://ietf.org/rfc/rfc2822.txt
 
-Kernel web documentation:
+Kernel documentation:
 
   * https://www.kernel.org/doc/
 
@@ -638,3 +638,7 @@ Kernel web documentation:
   * http://kerneltrap.org/Linux/Decoding_Oops
 
   * Full history: http://www.kernel.org/pub/linux/kernel/people/landley/linux-fullhist.tar.bz2
+
+  * make htmldocs - Documentation/DocBook/index.html
+
+  * make installmandocs
