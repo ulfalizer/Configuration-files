@@ -365,9 +365,9 @@ c() {
     fi
 
     case $file in
-        *.cpp ) compiler=g++ ;;
-        *.c   ) compiler=gcc ;;
-        *     )
+        *.cpp) compiler=g++ ;;
+        *.c  ) compiler=gcc ;;
+        *    )
             _err "unknown language for '$file'"
             return 1
             ;;
@@ -396,9 +396,9 @@ r() {
     fi
 
     case $file in
-        *.cpp ) compiler=g++ ;;
-        *.c   ) compiler=gcc ;;
-        *     )
+        *.cpp) compiler=g++ ;;
+        *.c  ) compiler=gcc ;;
+        *    )
             _err "unknown language for '$file'"
             return 1
             ;;
@@ -412,6 +412,37 @@ r() {
 
 alias gdb="gdb -q"
 alias cgdb="cgdb -q"
+
+# Configures (-c) a Linux kernel using the distribution defconfig minus
+# non-loaded modules, builds (-b), and/or installs (-i) it
+
+k() {
+    local OPTIND opt
+    while getopts "cbi" opt; do
+        case $opt in
+            c)
+                dist_config=/boot/config-$(uname -r)
+                if [[ ! -f $dist_config ]]; then
+                    _err "'$dist_config' not found or not a regular file"
+                    return 1
+                fi
+                [[ -f .config ]] && cp .config .oldconfig # Make a backup
+                cp "$dist_config" .config
+                # Disable modules not currently loaded. Cuts down on build time
+                # and initramfs size.
+                make localmodconfig
+                ;;
+
+            b)
+                make -j$(($(getconf _NPROCESSORS_ONLN) + 1))
+                ;;
+
+            i)
+                sudo make modules_install install
+                ;;
+        esac
+    done
+}
 
 # Creates a tags file in the current directory for the standard include
 # directories
