@@ -642,3 +642,38 @@ Kernel documentation:
   * make htmldocs - Documentation/DocBook/index.html
 
   * make installmandocs
+
+Kernel debugging:
+
+  * CONFIG_DEBUG_FS
+
+    - Likely to already be compiled in and mounted on /sys/kernel/debug
+
+    - mount -t debugfs none /sys/kernel/debug
+
+    - Documented in  Documentation/DocBook/filesystems/debugfs.html
+
+  * CONFIG_DYNAMIC_DEBUG (dyndbg)
+
+    - Uses debugfs
+
+    - Documentation/dynamic-debug-howto.txt
+
+    - Dynamic control of pr_debug(), dev_dbg(), print_hex_dump_{debug,bytes}()
+
+    - /sys/kernel/debug/dynamic_debug/control
+
+Kernel messages:
+
+  * <linux/printk.h>
+
+    - pr_debug/notice/info/warn/err(), etc.
+
+      - pr_debug() is compiled out unless DEBUG is defined or
+        CONFIG_DYNAMIC_DEBUG set
+
+  * <linux/device.h>
+
+    - dev_err/warn/info/dbg/vdgb(), etc.
+
+      - These also include device-specific information
