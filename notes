@@ -615,7 +615,7 @@ Kernel messages:
 
       - These also include device-specific information
 
-Modules:
+Kernel modules:
 
   * Documentation/kbuild/{modules,makefiles,kbuild}.txt
 
