@@ -263,21 +263,32 @@ f() {
 
 # Searches recursively in files for lines that match a given pattern and lists
 # them. Optionally limits the search to files whose names match any of a number
-# of given patterns. Excludes .git folders.
+# of given patterns. Excludes .git folders. With -c, does a case-sensitive
+# search.
 
 g() {
-    local pattern includes
+    local pattern includes ignore_case=i
 
     if [[ $# -eq 0 ]]; then
-        _usage "<pattern> [<file pattern> ...] "
+        _usage "<pattern> [-c] [<file pattern> ...] "
         return 1
+    fi
+
+    if [[ $1 = -c ]]; then
+        echo lel
+        ignore_case=
+        shift
+        if [[ $# -eq 0 ]]; then
+            _err "missing pattern"
+            return 1
+        fi
     fi
 
     pattern=$1
     shift
     includes=("${@/#/--include=}")
 
-    grep -Iinr --exclude-dir=.git "${includes[@]}" -- "$pattern" .
+    grep -I${ignore_case}nr --exclude-dir=.git "${includes[@]}" -- "$pattern" .
 }
 
 # Jumps to a file matching a _super_glob() pattern. For directories, cd's to
