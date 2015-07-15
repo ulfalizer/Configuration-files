@@ -458,7 +458,7 @@ Linux Standard Base:
 
 Modules:
 
-  * Documentation/kbuild/{modules,kbuild}.txt
+  * Documentation/kbuild/{modules,makefiles,kbuild}.txt
 
   * Installed into /lib/modules/$(KERNELRELEASE)/ by 'make modules_install'.
     $(KERNELRELEASE) matches $(uname -r) when running the kernel.
