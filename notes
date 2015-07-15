@@ -643,6 +643,9 @@ Kernel documentation:
 
   * make installmandocs
 
+  * Documentation/kbuild/makefiles.txt has a step-by-step overview of
+    the build process
+
 Kernel debugging:
 
   * CONFIG_DEBUG_FS
