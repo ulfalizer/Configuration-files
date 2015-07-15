@@ -681,3 +681,13 @@ Kernel modules:
         - 'softdep' gives modules to attempt to install or remove before
           inserting the module
 
+  * Compilation flags
+
+    - Documentation/kbuild/makefiles.txt
+
+    - e.g., 'ccflags-$(DEBUG) := -DDEBUG' and 'make DEBUG=y' to enable
+      pr_debug() output. This applies to all module sources in the directory.
+
+    - The subdir- variants, e.g. subdir-ccflags-y, also apply to subdirectories
+
+    - CFLAGS_foo.o applies to a specific file
