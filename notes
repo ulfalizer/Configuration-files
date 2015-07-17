@@ -691,3 +691,59 @@ Kernel modules:
     - The subdir- variants, e.g. subdir-ccflags-y, also apply to subdirectories
 
     - CFLAGS_foo.o applies to a specific file
+
+USB:
+
+  * Host/device (master/slave) architecture. The host is responsible for all
+    data transfers over the bus. Devices can only signal that they need
+    attention. This allows devices to be kept simple.
+
+  * A single physical device can expose multiple logical devices, called
+    device functions. Such a physical device is called a composite device.
+
+    - A connection from the host to a particular logical device is called a
+      pipe. The logical device is the endpoint. Devices lists their endpoints
+      during enumeration.
+
+    - A message pipe is for control (simple commands, etc.) transfer.
+
+    - A stream pipe is a unidirectional pipe used for data transfers in one
+      of three modes:
+
+      - Isochronous tranfer: fixed rate, possibly lossy
+
+      - Interrupt transfers: quick response, bounded latency, e.g. for input
+        devices
+
+      - Bulk transfer: large reliable transfers with few latency requirements
+
+    - An endpoints is addressed with a (device_address, endpoint_number) tuple.
+      Endpoint 0 is used for for device configuration.
+
+    - To initiate data transfer, the host sends an IN or OUT packet
+      (specializations of a TOKEN packet) with the target's tuple
+
+  * Device classes define the functionality of an USB device. Communicated
+    to the host to load appropriate drivers.
+
+  * A and B connector ends
+
+    - Only A end can provide power. A standard-A plug is usually plugged into
+      the host.
+
+  * Data transfer modes: Low/Full/High/Super/Super+. Super+ is only supported
+    by USB 3.0.
+
+  * USB On-The-Go
+
+    - Can act both as host and device
+
+  * Versions:
+
+    - 1.0 1996 Low Speed (1.5 Mb/s), Full Speed (12 Mb/s)
+    - 1.1 1998
+    - 2.0 2000 High Speed (480 Mbit/s)
+    - 3.0 2008 SuperSpeed (5 Gb/s)
+    - 3.1 2014 SuperSpeed+ (10 Gb/s)
+
+    - USB Type-C (reversible plug)
