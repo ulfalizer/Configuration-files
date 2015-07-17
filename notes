@@ -642,7 +642,7 @@ Kernel modules:
 
     - modules.symbols: symbols provided by modules
 
-  * Utilities:
+  * Utilities (all symlinks to kmod):
 
     - lsmod(8): currently loaded modules (via /proc/modules)
 
