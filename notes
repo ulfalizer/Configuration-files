@@ -766,3 +766,5 @@ udev(7) notes:
     - System-wide: /lib/udev/rules.d
     - Runtime: /run/udev/rules.d
     - Local administration: /etc/udev/rules.d
+
+  * mdev is a lightweight alternative from BusyBox
