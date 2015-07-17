@@ -747,3 +747,22 @@ USB:
     - 3.1 2014 SuperSpeed+ (10 Gb/s)
 
     - USB Type-C (reversible plug)
+
+udev(7) notes:
+
+  * 'u' is for 'userspace', in contrast with devfs, which ran in the kernel.
+
+  * Handles permissions, userspace notification, and persistence (via symlinks,
+    e.g. /dev/disk/by-uuid/*)
+
+  * Actual node creation is handled by devtmpfs these days
+
+  * Now bundled as part of systemd
+
+  * Receives notifications from the kernel via netlink
+
+  * Rules:
+
+    - System-wide: /lib/udev/rules.d
+    - Runtime: /run/udev/rules.d
+    - Local administration: /etc/udev/rules.d
