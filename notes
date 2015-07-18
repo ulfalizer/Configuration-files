@@ -750,6 +750,8 @@ USB:
 
   * Documentation/usb/hotplug.txt
 
+  * Simple USB driver: drivers/usb/misc/usbled.c
+
 udev(7) notes:
 
   * 'u' is for 'userspace', in contrast with devfs, which ran in the kernel
