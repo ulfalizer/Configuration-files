@@ -754,6 +754,9 @@ USB:
 
   * USB keyboard driver: drivers/hid/usbhid/usbkbd.c
 
+  * USBDEVFS_RESET (DocBook/usb/usbfs-ioctl.html) might be able to simulate an
+    unplug/replug
+
 udev(7) notes:
 
   * 'u' is for 'userspace', in contrast with devfs, which ran in the kernel
