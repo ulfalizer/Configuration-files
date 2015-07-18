@@ -750,7 +750,7 @@ USB:
 
 udev(7) notes:
 
-  * 'u' is for 'userspace', in contrast with devfs, which ran in the kernel.
+  * 'u' is for 'userspace', in contrast with devfs, which ran in the kernel
 
   * Handles permissions, userspace notification, and persistence (via symlinks,
     e.g. /dev/disk/by-uuid/*)
@@ -768,3 +768,9 @@ udev(7) notes:
     - Local administration: /etc/udev/rules.d
 
   * mdev is a lightweight alternative from BusyBox
+
+  * Hotplug module loading is probably handled by
+
+    ENV{MODALIAS}=="?*", RUN{builtin}+="kmod load $env{MODALIAS}"
+
+    in /lib/udev/80-drivers.rules
