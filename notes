@@ -748,6 +748,8 @@ USB:
 
     - USB Type-C (reversible plug)
 
+  * Documentation/usb/hotplug.txt
+
 udev(7) notes:
 
   * 'u' is for 'userspace', in contrast with devfs, which ran in the kernel
