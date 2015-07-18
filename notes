@@ -752,6 +752,8 @@ USB:
 
   * Simple USB driver: drivers/usb/misc/usbled.c
 
+  * USB keyboard driver: drivers/hid/usbhid/usbkbd.c
+
 udev(7) notes:
 
   * 'u' is for 'userspace', in contrast with devfs, which ran in the kernel
