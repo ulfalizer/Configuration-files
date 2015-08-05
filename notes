@@ -609,6 +609,8 @@ Kernel messages:
       - pr_debug() is compiled out unless DEBUG is defined or
         CONFIG_DYNAMIC_DEBUG set
 
+    - Documentation/printk-formats.txt
+
   * <linux/device.h>
 
     - dev_err/warn/info/dbg/vdgb(), etc.
