@@ -600,6 +600,17 @@ Kernel debugging:
 
     - /sys/kernel/debug/dynamic_debug/control
 
+  * sparse
+
+    - Documentation/sparse.txt
+
+    - Checks e.g. __user pointer verification
+
+    - Can also do type handling as well as locking checks
+
+    - 'make C=1' runs sparse on recompiled C files, 'make C=2' runs sparse on C
+      files regardless of whether they need to be recompiled or not
+
 Kernel messages:
 
   * <linux/printk.h>
