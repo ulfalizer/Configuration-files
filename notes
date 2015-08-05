@@ -565,6 +565,8 @@ email notes:
 
 Kernel documentation:
 
+  * Documentation/development-process/
+
   * https://www.kernel.org/doc/
 
   * https://www.kernel.org/doc/ols/2008/ols2008v2-pages-7-18.pdf
