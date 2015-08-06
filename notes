@@ -620,6 +620,8 @@ Kernel debugging:
     - 'make C=1' runs sparse on recompiled C files, 'make C=2' runs sparse on C
       files regardless of whether they need to be recompiled or not
 
+  * Documentation/fault-injection/fault-injection.txt
+
 Kernel messages:
 
   * <linux/printk.h>
