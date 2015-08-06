@@ -622,6 +622,12 @@ Kernel debugging:
 
   * Documentation/fault-injection/fault-injection.txt
 
+  * Coccinelle
+
+    - sudo apt-get install coccinelle (suggested by $ spatch)
+
+    - make coccicheck
+
 Kernel messages:
 
   * <linux/printk.h>
