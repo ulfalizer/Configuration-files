@@ -602,6 +602,13 @@ Kernel debugging:
 
     - /sys/kernel/debug/dynamic_debug/control
 
+  * Documentation/development-process/4.Coding has a list of debugging
+    tools and techniques
+
+  * lockdep
+
+    - Kernel hacking -> Lock Debugging
+
   * sparse
 
     - Documentation/sparse.txt
