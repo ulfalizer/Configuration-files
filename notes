@@ -813,3 +813,13 @@ udev(7) notes:
     ENV{MODALIAS}=="?*", RUN{builtin}+="kmod load $env{MODALIAS}"
 
     in /lib/udev/80-drivers.rules
+
+Copying data to/from userspace:
+
+  - include/linux/uaccess.h (u for userspace)
+
+  - copy_from_user() might perform a partial read. See commit d7026e0e43
+    (libfs: make simple_read_from_buffer conventional).
+
+  - access_ok() might only check that the range lies below TASK_SIZE, and the
+    'type' argument (VERIFY_READ/VERIFY_WRITE) seems to be ignored nowadays.
