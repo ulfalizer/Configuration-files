@@ -823,3 +823,39 @@ Copying data to/from userspace:
 
   - access_ok() might only check that the range lies below TASK_SIZE, and the
     'type' argument (VERIFY_READ/VERIFY_WRITE) seems to be ignored nowadays.
+
+Kernel development process:
+
+  - Each major release is followed by a new development cycle that starts out
+    with an approximately two-week merge window during which new patches are
+    integrated into the mainline kernel. Top-level maintainers ask Linus to
+    pull patches during this period.
+
+  - At the end of the merge window, an -rc1 kernel is released. Stabilization
+    work is done from there on with patches that fix problems.
+
+  - A typical series gets up to somewhere between -rc6 and -rc9 before the
+    kernel is considered sufficiently stable and is released. The patch rate
+    slows down over time.
+
+  - Not introducing regressions into new kernel releases is prioritized, though
+    most kernels go out with a handful of known regressions to avoid delaying
+    the release and swamping the next merge window
+
+  - Stable releases are maintained by the "stable team", currently consistent
+    of Greg Kroah-Hartman
+
+  - Significant fixes can be added to stable releases. They are often pulled
+    from the next development cycle. In 3.x.y, y is the stable release number.
+
+  - linux-next (http://www.kernel.org/pub/linux/kernel/next/) is a snapshot of
+    what the kernel is expected to look like after the next merge window.
+
+    * https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+
+      * https://www.kernel.org/doc/man-pages/linux-next.html explains how to
+        add it as a remote tracking branch. A next-master could be added via
+        'git branch next-master linux-next/master'.
+
+  - drivers/staging/ contains drivers and filesystems that are on their way
+    into the kernel but need more work
