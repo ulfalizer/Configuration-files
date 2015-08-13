@@ -557,6 +557,16 @@ git send-email:
             smtpuser = yourname@gmail.com
             smtpserverport = 587
 
+Patch workflow:
+
+  * git format-patch --cover-letter -v2 -s -o patches origin/master
+
+  * git send-email --chain-reply-to --to <foo@bar> --cc <baz@foo> patches
+
+  * Combined version:
+
+    - git send-email --annotate --chain-reply-to --to ... origin/master -v2 -s --cover-letter
+
 email notes:
 
   * RFCs: http://www.lsoft.com/manuals/Maestro/2.1/Users/WebHelp/Appendix_D_Email_Related_RFCs.htm
