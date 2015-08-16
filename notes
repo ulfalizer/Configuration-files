@@ -869,3 +869,54 @@ Kernel development process:
 
   - drivers/staging/ contains drivers and filesystems that are on their way
     into the kernel but need more work
+
+Filesystems:
+
+  - Documentation/filesystems/{Locking,seq_file.txt,vfs.txt}
+
+  - generic_file_read_iter()
+
+    * Uses the page cache
+
+    * Seems to assume address_space_operations::readpage() is set
+
+  - ramfs implementation:
+
+    * init_ramfs_fs() calls register_filesystem(&ramfs_fs_type), where
+      ramfs_fs_type.mount = ramfs_mount
+
+    * ramfs_mount() calls mount_nodev(..., ramfs_fill_super)
+
+    * ramfs_fill_super():
+
+      * Call save_mount_options(), which is required when using
+        generic_show_options()
+
+      * Allocate a ramfs_fs_info and stores it in super_block's s_fs_info.
+        Only seems to hold the default mode, which can be configured via
+        command-line options (ramfs_parse_options()).
+
+      * Initialize various super_block fields, including setting s_op to
+        ramfs_ops
+
+      * Call ramfs_get_inode() to get an inode for the root
+
+        * Create a new inode and initialize it, including setting
+
+            inode->i_mapping->a_ops = &ramfs_aops;
+
+          and
+
+            inode->i_op = &ramfs_file_inode_operations;
+            inode->i_fop = &ramfs_file_operations;
+
+          for regular files and
+
+            inode->i_op = &ramfs_dir_inode_operations;
+            inode->i_fop = &simple_dir_operations
+
+          for directories
+
+Acronyms:
+
+  - GFP: Get Free Page
