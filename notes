@@ -874,6 +874,50 @@ Filesystems:
 
   - Documentation/filesystems/{Locking,seq_file.txt,vfs.txt}
 
+  - Default behavior for different file_operations:
+
+    * llseek: Defaults to no_llseek when NULL, which returns -ESPIPE.
+      noop_llseek can be used instead to let seeks succeed but do nothing.
+      default_llseek updates 'f_pos' as expected. generic_file_lseek is for
+      "normal local filesystems".
+
+    * open: Simply skipped if NULL - opening the file is still possible
+
+  - open()
+
+    * Translate arguments into open_flags via build_open_flags()
+
+      * MAY_WRITE, etc., are particular permission checks that will
+        need to be performed later
+
+    * Create a struct filename from the filename via getname()
+
+    * Allocate a file descriptor with get_unused_fd_flags() (properly read as
+      [get_unused_fd]_flags). The 'flags' argument is only for O_CLOEXEC, which
+      applies to the file descriptor rather than the open file description.
+
+    * Create a struct file (open file description) via do_filp_open()
+
+    * Path to file_operations::open():
+
+      file_operations::open()
+      do_dentry_open()
+      vfs_open()
+      do_last() (-> handle_truncate())
+      path_openat()
+      do_filp_open()
+      do_sys_open()
+      sys_open()
+
+    * handle_truncate to i_size_write():
+
+      i_size_write()
+      truncate_setsize()
+      simple_setattr()
+      notify_change() (protected by i_mutex)
+      do_truncate()
+      handle_truncate()
+
   - generic_file_read_iter()
 
     * Uses the page cache
@@ -917,6 +961,9 @@ Filesystems:
 
           for directories
 
-Acronyms:
+Terms and acronyms:
 
+  - fsnotify: in-kernel backend for (d/i/fa)notify
   - GFP: Get Free Page
+  - LSM: Linux Security Module
+  - namei: sarnold suggested "name to inode"
