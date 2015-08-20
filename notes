@@ -822,7 +822,7 @@ udev(7) notes:
 
     ENV{MODALIAS}=="?*", RUN{builtin}+="kmod load $env{MODALIAS}"
 
-    in /lib/udev/80-drivers.rules
+    in /lib/udev/rules.d/80-drivers.rules
 
 Copying data to/from userspace:
 
