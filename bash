@@ -605,7 +605,7 @@ complete -A function floc
 # Git {{{
 
 alias ga="git add -u"
-alias gc="git checkout"
+alias gc="git commit -v"
 alias gd="git diff"
 alias gds="git diff --stat"
 alias gdc="git diff --cached"
