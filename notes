@@ -682,6 +682,8 @@ Kernel modules:
 
     - modules.symbols: symbols provided by modules
 
+  * EXPORT_SYMBOL_(GPL)() makes a symbol visible to modules
+
   * Utilities (all symlinks to kmod):
 
     - lsmod(8): currently loaded modules (via /proc/modules)
@@ -961,9 +963,152 @@ Filesystems:
 
           for directories
 
+sysfs:
+
+  - Documentation/kobject.txt
+
+  - Documentation/filesystems/sysfs.txt
+
+  - Documentation/sysfs-rules.txt
+
+  - Chapter 17 of Linux Kernel Development
+
+  - Chapter 14 of Linux Device Drivers
+
+  - samples/kobject/{kobject,kset}_example.c
+
+  - Documentation/ABI/**/sysfs-*
+
+  - Kobjects map to directories, 'attribute's to files
+
+  - kobj_type - passed e.g. to kobject_init() - holds default attributes (sysfs
+    files) in its default_attrs field, and attribute operation callbacks in the
+    sysfs_ops field
+
+  - sysfs_create_file(kobj, attr) adds a new attribute to kobj. kobj's
+    sysfs_ops (from its 'kobj_type ktype') must be able to handle the new
+    attribute
+
+  - attribute
+    ---------
+    const char *name
+    umode_t mode
+           .
+          /|\
+           |
+           +-----------------------------------+-------+---- ... (lots more)
+           |                                   |       |
+    kobj_attribute                             | device_attribute
+    --------------                             | ----------------
+    show(kobject, kobj_attribute, buf)         | show(device, device_attribute, buf)
+    store(kobject, kobj_attribute, buf, count) | store(device, device_attribute, buf, count)
+                                               |
+           +-----------------------------------+
+           |                                   |
+           |                              bus_attribute
+    bin_attribute                         -------------
+    -------------                         show(bus, buf)
+    size                                  store(bus, buf, count)
+    private
+    read(file, kobject, bin_attribute, char*, loff_t, size_t)
+    write(file, kobject, bin_attribute, char*, loff_t, size_t)
+    mmap(file, kobject, attr, vma)
+
+  - attribute_group
+    ---------------
+    name
+    is_visible(kobject, attribute, int)
+    attribute *attrs[]
+    bin_attribute *bin_attrs[]
+
+  - samples/kobject/kobject-example.c
+
+    * kobject_create_and_add("kobject_example", kernel_kobj) is short for
+
+      kobj = kobject_create();
+      kobject_add(kobj, kernel_kobj, "%s", "kobject_example");
+      return kobj;
+
+      * kobject_create() is short for
+
+        kobj = kzalloc(sizeof(*kbobj), GFP_KERNEL);
+        kobject_init(kobj, &dynamic_kobj_type);
+        return kobj;
+
+      * kobj_type dynamic_kobj_type = {
+            .release = dynamic_kobj_release,
+            .sysfs_ops = &kobj_sysfs_ops
+        };
+
+      * sysfs_ops kobj_sysfs_ops = {
+            .show = kobj_attr_show,
+            .store = kobj_attr_store
+        };
+
+      * kobj_attr_show(kobject *kobj, attribute *attr, char *buf)
+
+        and
+
+        kobj_attr_store(kobject *kobj, attribute *attr, char *buf, size_t count)
+
+        upcast attr to to kobj_attribute and chain through to the
+        show()/store() method defined there.
+
+    * sysfs_create_group(example_kobj, &attr_group);
+
+      * Loops over each attribute in attr_group.attrs (in create_files()),
+        calling sysfs_add_file_mode_ns() on each
+
+      * Can optionally create a separate directory and specify some visibility
+        stuff and binary attributes, but it's not used here
+
+      * SYSFS_PREALLOC
+
+        * Set by __ATTR_PREALLOC(). Only seems to be used by drivers/md/md.c
+
+        * Sets 'prealloc' in struct kernfs_ops to true
+
+        * fs/kernfs/file.c
+
+  - samples/kobject/kset-example.c
+
+    * kset_create_and_add("kset_example", NULL, kernel_kobj) is short for
+
+      kset = kset_create("kset_example", /* kset_uevent_ops */ NULL, kernel_kobj);
+      kset_register(kset);
+      return kset;
+
+      * kset_create() is short for
+
+        kset = kzalloc(sizeof(*kset), GFP_KERNEL);
+        kobject_set_name(&kset->kobj, "%s", "kset_example");
+        kset->kobj.parent = kernel_kobj;
+        kset->kobj.ktype = &kset_ktype;
+        kset->kobj.kset = NULL;
+        return kset;
+
+      * kset_register(kset) is short for
+
+        kset_init(kset);
+        kobject_add_internal(&kset->kobj);
+        kobject_uevent(&k->kobj, KOBJ_ADD);
+        return 0;
+
+    * create_foo_obj("foo") is short for
+
+      foo = kzalloc(sizeof(*foo), GFP_KERNEL);
+      foo->kobj.kset = example_kset;
+      kobject_init_and_add(&foo->kobj, &foo_ktype, NULL, "%s", "foo");
+      kobject_uevent(&foo->kobj, KOBJ_ADD);
+      return foo;
+
 Terms and acronyms:
 
+  - BW: bandwidth
+  - CFQ: Completely Fair Queuing
   - fsnotify: in-kernel backend for (d/i/fa)notify
   - GFP: Get Free Page
   - LSM: Linux Security Module
   - namei: sarnold suggested "name to inode"
+  - ns: namespace
+  - sd (in struct kobject): sysfs dirent
