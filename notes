@@ -1102,6 +1102,82 @@ sysfs:
       kobject_uevent(&foo->kobj, KOBJ_ADD);
       return foo;
 
+/proc:
+
+  - Documentation/filesystems/proc.txt has some stuff that's not in proc(5)
+
+  - sysctl(8) simply accesses /sys/
+
+  - prctl(2) controls various other process-related stuff
+
+  - /<pid>/ files:
+    * attr/: selinux-related - the source for proc(5) has comments
+    * autogroup: the source for the proc(5) man page has comments -
+      CONFIG_SCHED_AUTOGROUP
+    * auxv: contents of the auxiliary vector passed to processes by the
+      kernel's ELF binary loader - getauxval(3)
+    * cgroup: the cgroup, from each hierarchy, that the process is in
+    * clear_refs: clears the PG_Referenced and ACCESSED/YOUNG bits for
+      different types of mappings, as seen through e.g. smaps
+    * cmdline: the execve() command line for the process
+    * comm: the command name associated with the process. Maybe this holds
+      thread names too?
+    * coredump_filter: controls which segments are written to core dumps
+    * cpuset: the cgroup within the cpuset hierarchy. Maybe a leftover from
+      a time when cpusets weren't implemented with cgroups.
+    * environ: environment block
+    * exe: symbolic link containing the actual pathname of the executed
+      command. Can be executed to run the same command again.
+    * fd/: one entry per open file descriptor - a symbolic link to the file
+      (or containing some related information for special files)
+    * fdinfo/: has some more information, e.g. position, per file descriptor
+    * uid_map/gid_map: user namespace mapping thingy
+    * io: i/o stats - read/written bytes, number of read()/write() calls, etc.
+    * limits: resource limits
+    * loginuid: someting related to
+      audit_get_loginuid()/CAP_AUDIT_CONTROL/CONFIG_AUDITSYSCAL
+    * map_files/: symbolic links to memory-mapped files, named by virtual
+      address region. Needs CONFIG_CHECKPOINT_RESTORE.
+    * maps: process mappings - files and special memory areas
+    * mem: provides access to the process's memory through
+      open()/read()/lseek()
+    * mountinfo: information about mount points in some odd format
+    * mounts: currently mounted filesystem. This can vary between processes due
+      to mount namespaces. /proc/mounts is a symlink to /proc/self/mounts for
+      this reason.
+    * mountstats: some more information about the mount points
+    * ns/: contains symlinks to various namespaces for the process. Various
+      magic can be used on them - namespaces(7)
+    * numa_maps: information on NUMA policies and allocations for memory ranges
+    * oom_adj: bit-shift applied to the oom_score value for OOM decisions
+    * oom_score: higher score means higher likelhood of being selected by the
+      OOM killer
+    * oom_score_adj: another oom_score adjustment. Perhaps simply added.
+    * pagemap: virtual-to-physical mapping (for in-RAM pages) and some flags.
+      Needs CONFIG_PROC_PAGE_MONITOR. TODO: /proc/kpageflags, /proc/kpagecount.
+    * personality: the personality of the process. Personalities alter some
+      behaviors to provide compatibility for programs written for other *nixes.
+      See personality(2).
+    * projid_map: seems to be something related to per-"project" disk quotas
+    * root: symbolic link to the process's root (changeable with chroot(2))
+    * sched/schedstat: "Displays various scheduling parameters" according to
+      comment in proc.5.gz
+    * sessionid: ?
+    * setgroups: seems to indicate whether setgroups(2) is allowed for the
+      process. Also settable.
+    * smaps: shows memory consumption for each mapping. pmap(1) can be used
+      too. Non-file-backed mappings can be dirty too, meaning the version in
+      swap is outdated and would need to be updated.
+    * stack: kernel stacktrace for the process. Needs CONFIG_STACKTRACE.
+    * stat: status information. Used by ps(1).
+    * statm: memory usage info
+    * status: human-readable version of stat and statm
+    * syscall: number and argument registers for the currently executing
+      syscall (if any)
+    * timers: list of POSIX timers for the process
+    * wchan: the symbolic name corresponding to the location in the kernel
+      where the process is sleeping
+
 Terms and acronyms:
 
   - BW: bandwidth
@@ -1111,4 +1187,6 @@ Terms and acronyms:
   - LSM: Linux Security Module
   - namei: sarnold suggested "name to inode"
   - ns: namespace
+  - PFN: page frame number - page number in e.g. 4096-byte units
+  - pte: page table entry
   - sd (in struct kobject): sysfs dirent
