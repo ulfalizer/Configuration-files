@@ -1157,7 +1157,8 @@ sysfs:
       Needs CONFIG_PROC_PAGE_MONITOR. TODO: /proc/kpageflags, /proc/kpagecount.
     * personality: the personality of the process. Personalities alter some
       behaviors to provide compatibility for programs written for other *nixes.
-      See personality(2).
+      See personality(2) and 973f911f ("Remove execution domain support") as
+      well.
     * projid_map: seems to be something related to per-"project" disk quotas
     * root: symbolic link to the process's root (changeable with chroot(2))
     * sched/schedstat: "Displays various scheduling parameters" according to
