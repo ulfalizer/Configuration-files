@@ -275,7 +275,6 @@ g() {
     fi
 
     if [[ $1 = -c ]]; then
-        echo lel
         ignore_case=
         shift
         if [[ $# -eq 0 ]]; then
