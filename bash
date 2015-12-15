@@ -267,7 +267,7 @@ f() {
 # search.
 
 g() {
-    local pattern includes ignore_case=i
+    local pattern includes ignore_case=true
 
     if [[ $# -eq 0 ]]; then
         _usage "<pattern> [-c] [<file pattern> ...] "
@@ -275,7 +275,7 @@ g() {
     fi
 
     if [[ $1 = -c ]]; then
-        ignore_case=
+        ignore_case=false
         shift
         if [[ $# -eq 0 ]]; then
             _err "missing pattern"
@@ -285,9 +285,15 @@ g() {
 
     pattern=$1
     shift
-    includes=("${@/#/--include=}")
-
-    grep -I${ignore_case}nr --exclude-dir=.git "${includes[@]}" -- "$pattern" .
+    if _prg_exists ag; then
+        includes=("${@/#/-G}")
+        ag --silent -U $(if ! $ignore_case; then echo -s; fi) "${includes[@]}" \
+           -- "$pattern"
+    else
+        includes=("${@/#/--include=}")
+        grep $(if $ignore_case; then echo -i; fi) -Inr --exclude-dir=.git \
+             "${includes[@]}" -- "$pattern" .
+    fi
 }
 
 # Jumps to a file matching a _super_glob() pattern. For directories, cd's to
